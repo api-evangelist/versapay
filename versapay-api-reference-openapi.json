@@ -1,0 +1,1446 @@
+{
+    "openapi": "3.0.0",
+    "servers": [
+        "httpssecure.versapay.com\/"
+    ],
+    "paths": {
+        "\/api\/funds": {
+            "get": {
+                "summary": "View Your Fund Sources",
+                "description": "View your fund sources.",
+                "operationId": "GetFundSources",
+                "deprecated": 0,
+                "parameters": []
+            }
+        },
+        "\/api\/transactions": {
+            "get": {
+                "summary": "View Transactions",
+                "description": "View transactions.",
+                "operationId": "ViewAllTransactions",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "50 items are displayed per page."
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Create Transactions",
+                "description": "Create transactions.",
+                "operationId": "CreateTransaction",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Transaction to create."
+                    }
+                ]
+            }
+        },
+        "\/api\/transactions\/{token}": {
+            "get": {
+                "summary": "View a Transaction",
+                "description": "View a transaction.",
+                "operationId": "ViewTransaction",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "The transaction identifier."
+                    }
+                ]
+            }
+        },
+        "\/api\/transactions\/{token}\/approve": {
+            "post": {
+                "summary": "Approve a Transaction",
+                "description": "Approve a `new` or `wait_for_request_approval` transaction.<br>\nAn API key with administrative access is required to approve a transaction.\n",
+                "operationId": "ApproveTransaction",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "The transaction identifier."
+                    },
+                    {
+                        "name": "fund_token",
+                        "in": "body",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/api\/transactions\/{token}\/cancel": {
+            "post": {
+                "summary": "Cancel a Transaction",
+                "description": "Cancel a `new`, `wait_for_request_approval` or `wait_for_bank_account_verification` transaction you created. Transactions cannot be cancelled after they have been sent to the bank and are `in_progress`.<br>\nAn API key with administrative access is required to approve a transaction.\n",
+                "operationId": "CancelTransaction",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "The transaction identifier."
+                    }
+                ]
+            }
+        },
+        "\/api\/debit_agreements": {
+            "post": {
+                "summary": "Create an Agreement",
+                "description": "Create an agreement.",
+                "operationId": "CreateAgreement",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Transaction to create."
+                    }
+                ]
+            }
+        },
+        "\/api\/debit_agreements\/sent": {
+            "get": {
+                "summary": "View Sent Agreements",
+                "description": "View sent agreements.",
+                "operationId": "ViewSentAgreements",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "50 items are displayed per page."
+                    }
+                ]
+            }
+        },
+        "\/api\/debit_agreements\/received": {
+            "get": {
+                "summary": "View Received Agreements",
+                "description": "View received agreements.",
+                "operationId": "ViewReceivedAgreements",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "50 items are displayed per page."
+                    }
+                ]
+            }
+        },
+        "\/api\/debit_agreements\/{token}\/approve": {
+            "post": {
+                "summary": "Approve an Agreement",
+                "description": "Approve an agreement.",
+                "operationId": "ApproveAgreement",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "The transaction identifier."
+                    },
+                    {
+                        "name": "fund_token",
+                        "in": "body",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/api\/debit_agreements\/{token}\/cancel": {
+            "post": {
+                "summary": "Cancel an Agreement",
+                "description": "Cancel an agreement.",
+                "operationId": "CancelAgreement",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "The transaction identifier."
+                    }
+                ]
+            }
+        },
+        "\/api\/debit_agreements\/{token}\/reject": {
+            "post": {
+                "summary": "Reject an Agreement",
+                "description": "Reject a *pending* agreement by supplying an agreement's *token* attribute and providing a *rejection_reason*.\n",
+                "operationId": "RejectAgreement",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "The transaction identifier."
+                    }
+                ]
+            }
+        },
+        "\/api\/debit_agreements\/{token}\/revoke": {
+            "post": {
+                "summary": "Revoke an Agreement",
+                "description": "Revoke an *approved* agreement for your account by supplying an agreement's token attribute. The agreement's creator will no longer be able to debit your account using this agreement.\n",
+                "operationId": "RevokeAgreement",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "The transaction identifier."
+                    }
+                ]
+            }
+        },
+        "\/send_money": {
+            "get": {
+                "summary": "Single Payment Hosted Checkout",
+                "description": "Clients, customers, or donors, for instance, can send your organization money directly from their bank account or credit card simply by clicking a link which displays a page with your account name allowing your customer to make a payment to you for the specified dollar amount:\n<br>\n`https:\/\/secure.versapay.com\/send_money?api_token={your_api_token}&amount={dollar_amount_for_customer_to_pay}`\n<br>\nFunds will go to the fund destination passed in the to_fund parameter. By default, the funds will be ",
+                "operationId": "HostedCheckout",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "api_token",
+                        "in": "query",
+                        "description": "A valid API token generated from your account."
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "The amount in dollars that the transaction is for."
+                    },
+                    {
+                        "name": "message",
+                        "in": "query",
+                        "description": "A message which will be stored with the transaction."
+                    },
+                    {
+                        "name": "return_to",
+                        "in": "query",
+                        "description": "A url which will displayed to the user to return to your website after they finish the Signup and Confirmation."
+                    },
+                    {
+                        "name": "link_url",
+                        "in": "query",
+                        "description": "A url that gets stored and displayed on the transaction for an invoice."
+                    },
+                    {
+                        "name": "pref",
+                        "in": "query",
+                        "description": "The preferred payment type either `ba` or `cc` for bank or credit card respectively."
+                    },
+                    {
+                        "name": "to_fund",
+                        "in": "query",
+                        "description": "The token of the bank account or balance where the funds should go to."
+                    },
+                    {
+                        "name": "reference",
+                        "in": "query",
+                        "description": "Extra data (max 255 characters). Great for storing internal order or account number."
+                    },
+                    {
+                        "name": "locale",
+                        "in": "query",
+                        "description": "Set the default language of the checkout, either `en` or `fr`. Users will still be able to switch to their preferred language."
+                    }
+                ]
+            }
+        },
+        "\/authorize": {
+            "get": {
+                "summary": "Debit Agreement Hosted Checkout",
+                "description": "Clients, customers, or donors, for instance, can initiate a pre-authorized debit agreement by clicking a link on your website or in an email.\n<br>\n`https:\/\/secure.versapay.com\/authorize?api_token={your_api_token}&message={explanation_of_what_this_is_for}`\n<br>\n",
+                "operationId": "ClientsCustomersOrDonorsForInstanceCanInitiateAPreauthorizedDebitAgreementByClickingA",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "api_token",
+                        "in": "query",
+                        "description": "A valid API token generated from your account."
+                    },
+                    {
+                        "name": "message",
+                        "in": "query",
+                        "description": "A message which will be stored with the transaction."
+                    },
+                    {
+                        "name": "return_to",
+                        "in": "query",
+                        "description": "A url which will displayed to the user to return to your website after they finish the Signup and Confirmation."
+                    },
+                    {
+                        "name": "reference",
+                        "in": "query",
+                        "description": "Extra data (max 255 characters). Great for storing internal order or account number."
+                    }
+                ]
+            }
+        },
+        "\/api\/imports\/customer": {
+            "post": {
+                "summary": "Create and Update Customer",
+                "description": "Create a customer in ARC using the following attributes (at minimum by providing values for required attributes). If providing an identifier for an existing customer, its information is updated.<br><br>\n*Note: Any additional non-standard attribute will be stored with customer record and available for presentment rendering.*\n",
+                "operationId": "CreateCustomer",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Transaction to create."
+                    }
+                ]
+            }
+        },
+        "\/api\/imports\/invoice": {
+            "post": {
+                "summary": "Create and Update Invoice",
+                "description": "Create and update invoices in ARC. If the invoice already exists when a request is processed, it will be updated.<br><br>\nThe set of attributes to send in the request body may vary based on the account configuration. Please contact the implementation specialist for more information.<br><br>\n*Note:*\n  * *Customer will be created\/updated using the customer_&ast; attributes if necessary at time of invoice import.*\n  * *Any additional non-standard attribute will be stored with invoice record and ava",
+                "operationId": "CreateInvoice",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Transaction to create."
+                    }
+                ]
+            }
+        },
+        "\/api\/imports\/payment": {
+            "post": {
+                "summary": "Create a Payment",
+                "description": "Create and update external payment records in ARC.<br><br>The set of attributes to send in the request body may vary based on the account configuration. Please contact the implementation specialist for more information.<br><br>\nThe request schema for posting a payment for a single invoice is slightly different than that for posting a payment for multiple invoices.\n\nFor instance, sample request for posting payment for a single invoice looks like:\n```\n{\n  \"identifier\": \"PMT0010-05\",\n  \"invoice_num",
+                "operationId": "CreatePayment",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Transaction to create."
+                    }
+                ]
+            }
+        },
+        "\/api\/imports": {
+            "get": {
+                "summary": "View In-Progress & Completed Batches",
+                "description": "View recent in-progress and completed import batches.",
+                "operationId": "ViewAllBatches",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "50 items are displayed per page."
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Import a CSV File",
+                "description": "When uploading a CSV-formatted file it???s helpful to use your language\/framework tooling to simplify the [multipart\/form-data](https:\/\/www.ietf.org\/rfc\/rfc2388.txt) file upload.\n### Size Limit\nThe file cannot exceed 25MB.\n### Layouts\nPlease contact support@versapay.com or reach out to your implementation specialist for standard inbound CSV file layouts.\n",
+                "operationId": "ImportBatchFile",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "description": "The file to upload."
+                    },
+                    {
+                        "name": "filename",
+                        "in": "formData",
+                        "description": "Name of original file."
+                    }
+                ]
+            }
+        },
+        "\/api\/imports\/processing": {
+            "get": {
+                "summary": "View In-Progress Batches",
+                "description": "View only recent in-progress import batches.",
+                "operationId": "ViewInProgressBatches",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "50 items are displayed per page."
+                    }
+                ]
+            }
+        },
+        "\/api\/imports\/completed": {
+            "get": {
+                "summary": "View Completed Batches",
+                "description": "View only recent completed import batches.",
+                "operationId": "ViewCompletedBatches",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "50 items are displayed per page."
+                    }
+                ]
+            }
+        },
+        "\/api\/imports\/{id}": {
+            "get": {
+                "summary": "View Batch Details",
+                "description": "View batch details.",
+                "operationId": "ViewBatchDetail",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The import batch identifier."
+                    }
+                ]
+            }
+        },
+        "\/api\/exports\/payment_amounts": {
+            "get": {
+                "summary": "Payments made in ARC",
+                "description": "Payments made to your supplier account from your customers since watermark, limited to 100 payment amounts at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for a subsequent calls.\n",
+                "operationId": "GetARCPayments",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "watermark",
+                        "in": "query",
+                        "description": "The `id` value to base a subsequent extract of the next 100 payment amounts."
+                    }
+                ]
+            }
+        },
+        "\/api\/exports\/disputes": {
+            "get": {
+                "summary": "Open and Closed Disputes",
+                "description": "Open and closed disputes since watermark, limited to 100 disputes at a time.",
+                "operationId": "GetDisputes",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "watermark",
+                        "in": "query",
+                        "description": "The `id` value to base a subsequent extract of the next 100 payment amounts."
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "FundSource": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "token": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "state": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "Transaction": {
+                "type": "object",
+                "properties": {
+                    "transaction_type": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "amount_in_cents": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "email": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "message": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "transaction_reference": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "unique_reference": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "process_on": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "auto_withdraw": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "TransactionResponse": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "amount_in_cents": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "email": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "message": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "state": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "from_account": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "to_account": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "from_fund": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "to_fund": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "transaction_reference": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "unique_reference": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "link_url": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "process_on": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "created_by_user": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "auto_withdraw": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "auto_withdrawal_token": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "Agreement": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "state": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "email": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "created_by_user": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "created_by_account": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "reference": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "message": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "rejection_reason": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "type": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "Customer": {
+                "type": "object",
+                "properties": {
+                    "identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "email": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "first_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "last_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "notes": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "address_1": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "address_2": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "city": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "province": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "postal_code": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "country": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "telephone": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "fax": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "url": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "business_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "locale": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "parent_identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "pdf_attachment_opt_in": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "account_status": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "last_contact_date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "next_contact_date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "credit_limit_cents": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "credit_limit_currency": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "credit_rating": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "terms_type": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "terms_value": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "company_bio": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "ignores_cc_payment_rules": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "tags": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "line_item_attributes": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "Contact": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "first_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "last_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "title": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "department": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "telephone": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "Invoice": {
+                "type": "object",
+                "properties": {
+                    "number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "display_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "currency": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "amount": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "subtotal_tax1": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "subtotal_tax2": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "customer_identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "order_date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "due_date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "purchase_order_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "notes": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "shipping_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "shipping_address_1": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "shipping_address_2": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "shipping_city": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "shipping_province": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "shipping_postal_code": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "line_item_attributes": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "auto_debit": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "division": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "auto_pay_reference": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "owing_cents": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "ref1": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "ref2": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "ref3": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "adjustments_attributes": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "plan_identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "plan_start_date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "plan_end_date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "plan_payment_amount": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "annualized_amount": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "annualized_effective_date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "annualized_expiry_date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "external_id": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "LineItem": {
+                "type": "object",
+                "properties": {
+                    "number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "description": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "quantity": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "unit_cost_cents": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "amount": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "balance_cents": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "PaymentImport": {
+                "type": "object",
+                "properties": {
+                    "identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "amount": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "currency": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_code": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_description": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_amount_attributes": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "division": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "customer_identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "customer_name": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "FileImport": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "file_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "file_size": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "file_content_type": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "file_fingerprint": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "error": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "result_message": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "complete_at": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "PaymentExport": {
+                "type": "object",
+                "properties": {
+                    "payment_reference": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "amount": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "plan_fee": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_amount": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_transaction_amount": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_method": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_from_bank_account": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_from_credit_card": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_institution_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_credit_card_brand": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "short_pay_indicator": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_note": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "auto_debit_indicator": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_balance": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_timestamp": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_division": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_division_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_division_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "pay_to_bank_account": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "pay_to_bank_account_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "customer_identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "customer_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "status": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_source": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_code": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "payment_description": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "gateway_authorization_code": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "purchase_order_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "ref1": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "ref2": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "ref3": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "short_pay_reason_identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "short_pay_reason": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_amount_paid": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_date": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_external_id": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_currency": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_purchase_order_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_ref1": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_ref2": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_ref3": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "cumulative_customer_amount": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "Dispute": {
+                "type": "object",
+                "properties": {
+                    "closed_at": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "opened_at": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "opener": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "closer": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "opening_comment_text": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "closing_comment_text": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_amount_paid": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_balance": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "dispute_reason_identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "dispute_reason_label_en": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "dispute_reason_label_fr": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "opening_comment_users_notified": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "closing_comment_user_notified": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "creator_business_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "closer_business_name": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "invoice_external_id": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "inline_response_401": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "fund_token": {
+                "type": "object",
+                "properties": {
+                    "fund_token": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "inline_response_412": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "body": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "reference": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "message": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "fund_token_1": {
+                "type": "object",
+                "properties": {
+                    "fund_token": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "inline_response_201": {
+                "type": "object",
+                "properties": {
+                    "identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "message": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "inline_response_201_1": {
+                "type": "object",
+                "properties": {
+                    "identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "message": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "inline_response_201_2": {
+                "type": "object",
+                "properties": {
+                    "identifier": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "message": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "inline_response_200": {
+                "type": "object",
+                "properties": {
+                    "payment_amounts": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "Invoice_adjustments_attributes": {
+                "type": "object",
+                "properties": {
+                    "label": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "amount": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            },
+            "PaymentImport_payment_amount_attributes": {
+                "type": "object",
+                "properties": {
+                    "invoice_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "amount": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "notes": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "purchase_order_number": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "ref1": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "ref2": {
+                        "description": "",
+                        "type": "get"
+                    },
+                    "ref3": {
+                        "description": "",
+                        "type": "get"
+                    }
+                }
+            }
+        }
+    }
+}
