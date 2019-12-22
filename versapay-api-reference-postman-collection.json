@@ -1,5 +1,5 @@
 {
-    "id": "bd03514f194129f1b4e6c4e2bca27cb3",
+    "id": "6a8946c0a0e12c0e31e65d6172d94056",
     "name": "VersaPay API Reference",
     "description": null,
     "auth": null,
@@ -10,7 +10,7 @@
     "folders": [],
     "requests": [
         {
-            "id": "4973e10d5683dd5c2fc54260979c360c",
+            "id": "aed67b576a0237e3d77ec5e7e7922d7e",
             "name": "View Your Fund Sources",
             "url": "httpssecure.versapay.com\/\/api\/funds",
             "description": "View your fund sources.",
@@ -29,11 +29,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "f37689582a135cb0ce162a3d51c46266",
+            "id": "df4f475293c76204433d28d0ee893479",
             "name": "View Transactions",
             "url": "httpssecure.versapay.com\/\/api\/transactions",
             "description": "View transactions.",
@@ -60,11 +60,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "9bf9d6b38fbdab6628c126e50d52eefb",
+            "id": "71711b412e847c8ba0508b14d3b71fa3",
             "name": "Create Transactions",
             "url": "httpssecure.versapay.com\/\/api\/transactions",
             "description": "Create transactions.",
@@ -91,11 +91,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "a55e2ff290b4644f944f37f13edff1d9",
+            "id": "76c7f517b53e39d0dd374fc3b14ecaba",
             "name": "View a Transaction",
             "url": "httpssecure.versapay.com\/\/api\/transactions\/{token}",
             "description": "View a transaction.",
@@ -122,11 +122,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "85a7658a68dae9b9372078134b96bac6",
+            "id": "74e8114818074a43f9b2fa794b29b50f",
             "name": "Approve a Transaction",
             "url": "httpssecure.versapay.com\/\/api\/transactions\/{token}\/approve",
             "description": "Approve a `new` or `wait_for_request_approval` transaction.<br>\nAn API key with administrative access is required to approve a transaction.\n",
@@ -160,11 +160,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "246bc681a9bbc788979081cb75c302c0",
+            "id": "77ffffc8b0e8328df50537d26a41a5ed",
             "name": "Cancel a Transaction",
             "url": "httpssecure.versapay.com\/\/api\/transactions\/{token}\/cancel",
             "description": "Cancel a `new`, `wait_for_request_approval` or `wait_for_bank_account_verification` transaction you created. Transactions cannot be cancelled after they have been sent to the bank and are `in_progress`.<br>\nAn API key with administrative access is required to approve a transaction.\n",
@@ -191,11 +191,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "6d783948c4bc7a84690783c79c1f2afe",
+            "id": "1743eb6a67bae51e8cfe02baa5d1aeff",
             "name": "Create an Agreement",
             "url": "httpssecure.versapay.com\/\/api\/debit_agreements",
             "description": "Create an agreement.",
@@ -222,11 +222,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "62535fcef77a187c88c2526bb0ca4881",
+            "id": "670799d42d687dfadd36aba60a0b5f0f",
             "name": "View Sent Agreements",
             "url": "httpssecure.versapay.com\/\/api\/debit_agreements\/sent",
             "description": "View sent agreements.",
@@ -253,11 +253,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "8e90a8e709f8d40b1b57a15dc0c1de02",
+            "id": "e3e95da3a642f513ddf2681478e819bd",
             "name": "View Received Agreements",
             "url": "httpssecure.versapay.com\/\/api\/debit_agreements\/received",
             "description": "View received agreements.",
@@ -284,11 +284,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "8926e185c673c8ef19c2c94622b3ad38",
+            "id": "95bf4dc7cd7ca5e17ba6d623087c79cd",
             "name": "Approve an Agreement",
             "url": "httpssecure.versapay.com\/\/api\/debit_agreements\/{token}\/approve",
             "description": "Approve an agreement.",
@@ -322,11 +322,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "3e2523cefc10da4dc0bfb4caaa346553",
+            "id": "0d4a25e80bd8ce191e9d3e4580426743",
             "name": "Cancel an Agreement",
             "url": "httpssecure.versapay.com\/\/api\/debit_agreements\/{token}\/cancel",
             "description": "Cancel an agreement.",
@@ -353,11 +353,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "22eecf2be63e75d0cbfcf86cc515d9fd",
+            "id": "7052c06929f41c3e389e824714c441bd",
             "name": "Reject an Agreement",
             "url": "httpssecure.versapay.com\/\/api\/debit_agreements\/{token}\/reject",
             "description": "Reject a *pending* agreement by supplying an agreement's *token* attribute and providing a *rejection_reason*.\n",
@@ -384,11 +384,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "2a4237dcb3afcd2220fb45df4eaa87ff",
+            "id": "9b97fe814c8f35f297ba181175c30f9c",
             "name": "Revoke an Agreement",
             "url": "httpssecure.versapay.com\/\/api\/debit_agreements\/{token}\/revoke",
             "description": "Revoke an *approved* agreement for your account by supplying an agreement's token attribute. The agreement's creator will no longer be able to debit your account using this agreement.\n",
@@ -415,11 +415,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "3a94ac12bcbd91672f3d65396822d006",
+            "id": "917f979e394c11262435bd1d51b06767",
             "name": "Single Payment Hosted Checkout",
             "url": "httpssecure.versapay.com\/\/send_money",
             "description": "Clients, customers, or donors, for instance, can send your organization money directly from their bank account or credit card simply by clicking a link which displays a page with your account name allowing your customer to make a payment to you for the specified dollar amount:\n<br>\n`https:\/\/secure.versapay.com\/send_money?api_token={your_api_token}&amount={dollar_amount_for_customer_to_pay}`\n<br>\nFunds will go to the fund destination passed in the to_fund parameter. By default, the funds will be ",
@@ -502,11 +502,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "7ed738117be98f6342248bc8b5b12bf0",
+            "id": "ee44ada77605d656b46f1c314a39f4e2",
             "name": "Debit Agreement Hosted Checkout",
             "url": "httpssecure.versapay.com\/\/authorize",
             "description": "Clients, customers, or donors, for instance, can initiate a pre-authorized debit agreement by clicking a link on your website or in an email.\n<br>\n`https:\/\/secure.versapay.com\/authorize?api_token={your_api_token}&message={explanation_of_what_this_is_for}`\n<br>\n",
@@ -554,11 +554,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "4a820bd80f1e1f0638d7c5d2b92bbead",
+            "id": "a6e1208a6f89433a6ff36e403eb494fc",
             "name": "Create and Update Customer",
             "url": "httpssecure.versapay.com\/\/api\/imports\/customer",
             "description": "Create a customer in ARC using the following attributes (at minimum by providing values for required attributes). If providing an identifier for an existing customer, its information is updated.<br><br>\n*Note: Any additional non-standard attribute will be stored with customer record and available for presentment rendering.*\n",
@@ -585,11 +585,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "07712ace6e576d565d305bd801c93811",
+            "id": "dbbcf224d0a85d17a422b140c5f70644",
             "name": "Create and Update Invoice",
             "url": "httpssecure.versapay.com\/\/api\/imports\/invoice",
             "description": "Create and update invoices in ARC. If the invoice already exists when a request is processed, it will be updated.<br><br>\nThe set of attributes to send in the request body may vary based on the account configuration. Please contact the implementation specialist for more information.<br><br>\n*Note:*\n  * *Customer will be created\/updated using the customer_&ast; attributes if necessary at time of invoice import.*\n  * *Any additional non-standard attribute will be stored with invoice record and ava",
@@ -616,11 +616,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "d473398d9fb9f305909aab157da48938",
+            "id": "cd4c2995557a064c8cad01d23a53c102",
             "name": "Create a Payment",
             "url": "httpssecure.versapay.com\/\/api\/imports\/payment",
             "description": "Create and update external payment records in ARC.<br><br>The set of attributes to send in the request body may vary based on the account configuration. Please contact the implementation specialist for more information.<br><br>\nThe request schema for posting a payment for a single invoice is slightly different than that for posting a payment for multiple invoices.\n\nFor instance, sample request for posting payment for a single invoice looks like:\n```\n{\n  \"identifier\": \"PMT0010-05\",\n  \"invoice_num",
@@ -647,11 +647,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "c3d6a02748f467cd81285c5aae5da3f6",
+            "id": "9656b20f2d1d864178c28cf33943e5cb",
             "name": "View In-Progress & Completed Batches",
             "url": "httpssecure.versapay.com\/\/api\/imports",
             "description": "View recent in-progress and completed import batches.",
@@ -678,11 +678,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "51794ff6b0530a97de9cd9679377dca0",
+            "id": "4bd7dda5b9d9c80593bc3005ea85cf9e",
             "name": "Import a CSV File",
             "url": "httpssecure.versapay.com\/\/api\/imports",
             "description": "When uploading a CSV-formatted file it???s helpful to use your language\/framework tooling to simplify the [multipart\/form-data](https:\/\/www.ietf.org\/rfc\/rfc2388.txt) file upload.\n### Size Limit\nThe file cannot exceed 25MB.\n### Layouts\nPlease contact support@versapay.com or reach out to your implementation specialist for standard inbound CSV file layouts.\n",
@@ -716,11 +716,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "6547da4fea0e656b484f15b5ce2ca681",
+            "id": "074d21978026379dc9f88cdf3fb4e602",
             "name": "View In-Progress Batches",
             "url": "httpssecure.versapay.com\/\/api\/imports\/processing",
             "description": "View only recent in-progress import batches.",
@@ -747,11 +747,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "c974333297d3e92cd7fd0de9ea3f63b0",
+            "id": "5ac8c9f648c21eef6f686c803868b416",
             "name": "View Completed Batches",
             "url": "httpssecure.versapay.com\/\/api\/imports\/completed",
             "description": "View only recent completed import batches.",
@@ -778,11 +778,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "e045d172b53cbd86ee1fbed0effd24d5",
+            "id": "a1f606698a221d46f76424b5f7481ae3",
             "name": "View Batch Details",
             "url": "httpssecure.versapay.com\/\/api\/imports\/{id}",
             "description": "View batch details.",
@@ -809,11 +809,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "d2c1962f71476cd99488104f9c02d62a",
+            "id": "e0f71c7cbf6e7060417543264e5d2e03",
             "name": "Payments made in ARC",
             "url": "httpssecure.versapay.com\/\/api\/exports\/payment_amounts",
             "description": "Payments made to your supplier account from your customers since watermark, limited to 100 payment amounts at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for a subsequent calls.\n",
@@ -840,11 +840,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         },
         {
-            "id": "fa093ba8d99dca18ee6d9afc97bf9c00",
+            "id": "b49cabc2a87163eaf31a2f16b66f0c4d",
             "name": "Open and Closed Disputes",
             "url": "httpssecure.versapay.com\/\/api\/exports\/disputes",
             "description": "Open and closed disputes since watermark, limited to 100 disputes at a time.",
@@ -871,7 +871,7 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "bd03514f194129f1b4e6c4e2bca27cb3",
+            "collectionId": "6a8946c0a0e12c0e31e65d6172d94056",
             "rawModeData": ""
         }
     ]
