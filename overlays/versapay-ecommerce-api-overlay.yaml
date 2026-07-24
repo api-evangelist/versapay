@@ -1,0 +1,15 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Versapay Ecommerce API
+  version: 1.0.0
+extends: openapi/versapay-ecommerce-api.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enriched: '2026-07-24'
+      x-auth-styles: [http-basic, jwt-bearer]
+      x-hosted-iframe: true
+      x-pci-scope: reduced (Versapay-hosted iframe; payment data does not transit merchant app)
+      x-client-sdk: components/versapay-components.yml
+      x-flow: create session -> init SDK -> tokenize payment method -> create order/sale -> take payment
+      x-sandbox: https://uat.versapay.com

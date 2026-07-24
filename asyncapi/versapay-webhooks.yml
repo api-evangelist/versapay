@@ -1,0 +1,31 @@
+generated: '2026-07-24'
+method: searched
+source: https://developers.versapay.com/
+spec_type: Webhooks
+notes: >-
+  Versapay documents a webhook event model but publishes no AsyncAPI document, so
+  this captures the webhook catalog rather than a machine spec (type: Webhooks).
+  Webhooks are configured in the account console; Versapay POSTs updates to a
+  consumer URL (HTTP/HTTPS). The consumer MUST return 200 or delivery is retried up
+  to a system-defined number of attempts. Consumers must be idempotent against
+  replayed/duplicated payloads.
+delivery:
+  transport: HTTP POST to a consumer-specified URL
+  ack: consumer returns 200; non-200 triggers retry up to a system-defined max attempts
+  idempotency: consumer must de-duplicate replayed/duplicated transmissions
+  portal: /developers/webhook_responses (UAT and Production consoles)
+entities:
+  - name: Customer
+    description: Recent events for any Customer in your supplier account.
+    payload_matches: GET /api/exports/customer/{identifier}
+  - name: Invoice
+    description: Recent events for any Invoice in your supplier account.
+    payload_matches: GET /api/exports/invoice/{number_or_id}
+  - name: Payment
+    description: Recent events for any Payment in your supplier account.
+    payload_matches: GET /api/exports/payment/{reference_or_token}
+polling_alternative:
+  note: >-
+    Watermark + limit GET exports (customer, invoice, payment, settlement reporting)
+    are the documented supplement/alternative to webhook integration.
+  ref: conventions/versapay-conventions.yml

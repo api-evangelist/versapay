@@ -1,0 +1,24 @@
+generated: '2026-07-24'
+method: searched
+source: https://secure.versapay.com/.well-known/
+host: https://secure.versapay.com
+documents:
+  - path: /.well-known/openid-configuration          # OpenID Connect Discovery 1.0
+    status: 200
+    file: versapay-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server     # RFC 8414
+    status: 200
+    file: versapay-oauth-authorization-server.json
+  - path: /.well-known/security.txt                    # RFC 9116
+    status: 404
+  - path: /.well-known/api-catalog                     # RFC 9727
+    status: 404
+notes: >-
+  secure.versapay.com runs a Doorkeeper-style OIDC/OAuth2 authorization server.
+  Both openid-configuration and oauth-authorization-server return the same
+  metadata: issuer https://secure.versapay.com, authorization_endpoint
+  /oauth/authorize, token_endpoint /oauth/token, introspection /oauth/introspect,
+  revocation /oauth/revoke, userinfo /oauth/userinfo, jwks /oauth/discovery/keys.
+  scopes_supported: receivables, payables, read, write, update. Grant types:
+  authorization_code, client_credentials, password. PKCE S256 supported;
+  id_token signed RS256. Probed 2026-07-24.

@@ -63,6 +63,10 @@ apis:
     url: https://developers.versapay.com/
   - type: APIReference
     url: https://developers.versapay.com/
+  - type: Overlay
+    url: overlays/versapay-api-reference-overlay.yaml
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
 - aid: versapay:versapay-ecommerce-api
   name: Versapay Ecommerce API
   description: >-
@@ -87,7 +91,47 @@ apis:
     url: https://developers.versapay.com/ecommerce/
   - type: APIReference
     url: https://developers.versapay.com/ecommerce/
+  - type: Overlay
+    url: overlays/versapay-ecommerce-api-overlay.yaml
 common:
+- type: AgenticAccess
+  url: agentic-access/versapay-agentic-access.yml
+- type: DomainSecurity
+  url: security/versapay-domain-security.yml
+- type: Authentication
+  url: authentication/versapay-authentication.yml
+- type: OAuthScopes
+  url: scopes/versapay-scopes.yml
+- type: WellKnown
+  url: well-known/versapay-well-known.yml
+- type: MCPServer
+  url: mcp/versapay-mcp.yml
+- type: LLMsTxt
+  url: llms/versapay-llms.txt
+- type: Conventions
+  url: conventions/versapay-conventions.yml
+- type: ErrorCatalog
+  url: errors/versapay-problem-types.yml
+- type: DeclineCodes
+  url: errors/versapay-decline-codes.yml
+- type: Lifecycle
+  url: lifecycle/versapay-lifecycle.yml
+- type: Deprecation
+  url: lifecycle/versapay-lifecycle.yml
+- type: Conformance
+  url: conformance/versapay-conformance.yml
+- type: Compliance
+  url: https://versapay.com/security
+- type: Sandbox
+  url: sandbox/versapay-sandbox.yml
+- type: Components
+  url: components/versapay-components.yml
+- type: DataModel
+  url: data-model/versapay-data-model.yml
+- type: Webhooks
+  url: asyncapi/versapay-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
 - type: Website
   url: https://versapay.com
 - type: DeveloperPortal

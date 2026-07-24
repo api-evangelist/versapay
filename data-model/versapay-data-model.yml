@@ -1,0 +1,67 @@
+generated: '2026-07-24'
+method: derived
+source: openapi/versapay-api-reference.json, openapi/versapay-ecommerce-api.json
+notes: >-
+  Entity graph derived from the operation surface and id-reference fields (tokens
+  and identifiers) across the platform and ecommerce specs. Versapay identifies
+  most resources by opaque string tokens (wallet_token, fund_token, gateway_token,
+  session id, transaction token). Relationships reflect the documented payload
+  references, not a formally published ER model.
+entities:
+  - name: Customer
+    id: identifier
+    domain: Collaborative AR
+  - name: Invoice
+    id: number_or_id
+    belongs_to: [Customer]
+  - name: Payment
+    id: reference_or_token
+    belongs_to: [Customer]
+    references: [Invoice]
+  - name: Division
+    id: identifier
+    note: organizational grouping under a supplier account
+  - name: Wallet
+    id: wallet_token
+    has_many: [PaymentMethod]
+  - name: PaymentMethod
+    id: fund_token
+    belongs_to: [Wallet]
+    kinds: [credit_card, bank_account, gift_card]
+  - name: Order
+    id: identifier
+    has_many: [OrderTransaction]
+  - name: OrderTransaction
+    id: token
+    belongs_to: [Order]
+    references: [Wallet]
+    types: [verify, sale, auth, capture, refund, void, credit]
+    carries: [response_code, gateway_error_*]
+  - name: DebitAgreement
+    id: token
+    belongs_to: [Customer]
+  - name: Autopay
+    id: token
+    belongs_to: [Customer]
+  - name: SettlementStatement
+    id: statement_identifier
+  - name: SettlementBatch
+  - name: Session
+    id: id
+    domain: Ecommerce
+    has_one: [Wallet]
+    has_many: [Sale]
+  - name: Sale
+    id: saleid
+    belongs_to: [Session]
+    has_many: [Payment]
+relationships:
+  - {from: Invoice, type: belongs_to, to: Customer, via: customer}
+  - {from: Payment, type: belongs_to, to: Customer, via: customer}
+  - {from: PaymentMethod, type: belongs_to, to: Wallet, via: wallet_token}
+  - {from: OrderTransaction, type: belongs_to, to: Order, via: order}
+  - {from: OrderTransaction, type: references, to: Wallet, via: wallet}
+  - {from: DebitAgreement, type: belongs_to, to: Customer, via: customer}
+  - {from: Autopay, type: belongs_to, to: Customer, via: customer}
+  - {from: Sale, type: belongs_to, to: Session, via: session_id}
+  - {from: Session, type: has_one, to: Wallet, via: walletid}

@@ -1,0 +1,18 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Versapay API Reference
+  version: 1.0.0
+extends: openapi/versapay-api-reference.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enriched: '2026-07-24'
+      x-auth-styles: [http-basic, jwt-bearer, oauth2]
+      x-oauth-discovery: https://secure.versapay.com/.well-known/openid-configuration
+      x-oauth-scopes: [receivables, payables, read, write, update]
+      x-rate-limit: 1500 requests/minute/IP (HTTP 1015 when exceeded)
+      x-pagination: watermark + limit (1-2500, default 100)
+      x-error-envelope: 'custom application/json { success: false } (not RFC 9457)'
+      x-sandbox: https://uat.versapay.com
+      x-webhooks: Customer, Invoice, Payment entities
+      x-compliance: [PCI DSS, AICPA SOC]

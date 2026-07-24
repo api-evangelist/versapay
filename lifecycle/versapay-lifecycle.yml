@@ -1,0 +1,23 @@
+generated: '2026-07-24'
+method: searched
+source: https://developers.versapay.com/
+versioning:
+  scheme: semantic version embedded in the API title
+  current: 1.3.35
+  ecommerce_current: 2.0.0
+  policy: >-
+    Versapay commits to maintaining backward compatibility with each release —
+    updates modify existing endpoints and/or introduce new ones without breaking
+    published contracts.
+  docs: https://developers.versapay.com/
+deprecation:
+  policy: >-
+    Should Versapay require deprecation of a published API, it works with API
+    clients to confirm specific EOL/migration timelines with ample lead time, plus
+    endpoint migration strategies.
+  policy_url: https://developers.versapay.com/
+  sunset_header: false
+sla:
+  url: https://status.versapay.com
+status_page: https://status.versapay.com
+deprecated_operations: []

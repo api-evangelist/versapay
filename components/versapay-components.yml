@@ -1,0 +1,23 @@
+generated: '2026-07-24'
+method: searched
+source: https://developers.versapay.com/ecommerce/
+notes: >-
+  Client-side / embeddable UI surface distinct from server-side SDKs. Versapay's
+  Ecommerce solution ships a client-side JavaScript SDK that renders a
+  Versapay-hosted iframe for payment entry, so sensitive card/bank data never
+  transits the merchant application (reduced PCI scope).
+families:
+  - name: Ecommerce Payment SDK
+    kind: hosted-iframe + javascript element library
+    description: >-
+      Initializes with a server-generated session ID, renders the Versapay-hosted
+      payment iframe, collects a payment method, and returns a token to the
+      merchant's client-side code for server-side order/payment creation.
+    flow:
+      - Server creates a session via POST /sessions (Ecommerce API).
+      - Client initializes the SDK with the returned session ID.
+      - SDK renders the hosted iframe; customer enters a payment method.
+      - SDK returns a payment-method token to the merchant's client code.
+      - Merchant server creates the order/sale and takes payment with the session ID + token.
+    supports: [credit cards, bank accounts, Apple Pay]
+    docs: https://developers.versapay.com/ecommerce/

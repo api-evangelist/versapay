@@ -1,0 +1,48 @@
+generated: '2026-07-24'
+method: searched
+source: https://developers.versapay.com/
+notes: Cross-cutting request/response semantics searched from the docs and derived from the OpenAPI.
+authentication:
+  style: HTTPS Basic (API Token & Key) or JWT bearer; OAuth2/OIDC also available
+  ref: authentication/versapay-authentication.yml
+idempotency:
+  request_idempotency_key: false
+  note: >-
+    Versapay does NOT document a request-level Idempotency-Key header on the REST
+    API. Idempotency is specified for WEBHOOK CONSUMERS ONLY: "A webhook consumer
+    must be idempotent in receiving replayed/duplicated webhook payload
+    transmissions." Consumers should de-duplicate on the event/entity identity.
+  webhook_consumer_idempotency: true
+  ref: asyncapi/versapay-webhooks.yml
+pagination:
+  style: watermark + limit (incremental polling)
+  params:
+    watermark: >-
+      8-byte integer high-water mark; returns records more recent than the value.
+      Supported on customer, invoice, payment, and settlement-reporting GET exports.
+    limit: integer 1-2500, default 100
+  example: GET /api/exports/open_invoices?watermark=13207500&limit=5
+  note: Polling endpoints are the supplement/alternative to webhook integration.
+rate_limiting:
+  limit: 1500 requests per minute per IP address
+  signal: HTTP 1015 "you are being rate limited" when exceeded
+  note: Versapay reserves the right to raise/lower; partner/customer-specific limits by agreement.
+  ref: rate-limits/
+versioning:
+  scheme: semantic version in title (current 1.3.35); backward-compatible additive changes
+  ecommerce_scheme: uri-path (/api/v2)
+  ref: lifecycle/versapay-lifecycle.yml
+error_envelope:
+  format: custom JSON (NOT RFC 9457 problem+json)
+  shape: 'custom JSON with success:false; gateway transactions add response_code and gateway_error_* keys'
+  http_codes_used: [400, 401, 403, 404, 409, 412, 500]
+  precondition: HTTP 412 is used heavily for precondition/validation failures
+  ref: errors/versapay-problem-types.yml
+environments:
+  uat: https://uat.versapay.com
+  production: https://secure.versapay.com
+  ref: sandbox/versapay-sandbox.yml
+webhooks:
+  pattern: provider POSTs to a consumer URL; consumer must return 200 or delivery is retried
+  entities: [Customer, Invoice, Payment]
+  ref: asyncapi/versapay-webhooks.yml

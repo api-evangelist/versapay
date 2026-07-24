@@ -1,0 +1,36 @@
+generated: '2026-07-24'
+method: searched
+source: https://developers.versapay.com/
+notes: Cross-cutting standards conformance derived from the OpenAPI + docs, and compliance program searched from versapay.com/security.
+standards:
+  - id: oauth2
+    conforms: true
+    evidence: secure.versapay.com exposes an OAuth2 authorization server (RFC 6749) with authorization_code, client_credentials, and password grants.
+  - id: oidc
+    conforms: true
+    evidence: OpenID Connect Discovery document at /.well-known/openid-configuration; userinfo + jwks endpoints; id_token RS256.
+  - id: rfc8414-oauth-metadata
+    conforms: true
+    evidence: /.well-known/oauth-authorization-server returns RFC 8414 metadata.
+  - id: pkce-rfc7636
+    conforms: true
+    evidence: code_challenge_methods_supported includes S256.
+  - id: http-basic-auth
+    conforms: true
+    evidence: Primary API auth is HTTPS Basic access authentication (API Token & Key).
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors use a custom application/json success:false envelope, not application/problem+json.
+  - id: webhooks
+    conforms: true
+    evidence: Documented webhook event model for Customer, Invoice, and Payment entities with retry + consumer idempotency guidance.
+  - id: pci-dss
+    conforms: true
+    evidence: Versapay publishes PCI Compliance; hosted-iframe Ecommerce API reduces merchant PCI scope.
+  - id: soc2
+    conforms: true
+    evidence: Versapay publishes AICPA SOC compliance.
+compliance:
+  published: true
+  certifications: [PCI DSS, AICPA SOC]
+  url: https://versapay.com/security

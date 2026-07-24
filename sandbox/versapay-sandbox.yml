@@ -1,0 +1,71 @@
+generated: '2026-07-24'
+method: searched
+source: https://developers.versapay.com/
+notes: >-
+  Test values published verbatim in the API Reference "Environments" and "Testing
+  Order Transactions" sections. Usable in UAT only, and only when the account is
+  set up for payment acceptance (contact support@versapay.com).
+environments:
+  uat:
+    url: https://uat.versapay.com
+    console: https://uat.versapay.com/account
+    description: Sandbox for integration testing; settlements simulated with test account numbers and test dollar amounts.
+  production:
+    url: https://secure.versapay.com
+    console: https://secure.versapay.com/account
+test_bank_accounts:
+  - type: ACH
+    routing: '122105278'
+    account_number: '0000000016'
+test_credit_cards:
+  expiry: any future-dated expiry month/year
+  cards:
+    - brand: Visa
+      number: '4895281000000006'
+    - brand: Visa
+      number: '4264280001234500'
+      note: will always decline
+    - brand: Mastercard
+      number: '5541032000004422'
+    - brand: Discover
+      number: '6011000990911111'
+    - brand: American Express
+      number: '341111597242000'
+cvv_test_values:
+  - cvv: '123'
+    code: P
+    description: Not Processed
+  - cvv: '234'
+    code: M
+    description: Match
+  - cvv: '345'
+    code: N
+    description: No Match
+  - cvv: '456'
+    code: S
+    description: CVV value should be on the card but the merchant indicated it is not present
+  - cvv: '567'
+    code: U
+    description: Issuer not certified for CVV processing
+  - cvv: '6789'
+    code: M
+    description: Match (Amex)
+  - cvv: '1011'
+    code: N
+    description: No Match (Amex)
+  - cvv: '1213'
+    code: P
+    description: Not Processed (Amex)
+  - cvv: any other number
+    code: M
+    description: Match
+avs_test_values:
+  note: Use the postal/zip + address pair to force a specific AVS response code.
+  values:
+    - {zip: '80801', address: 234 Elm Street, code: A, response: Address match; zip no match}
+    - {zip: '80802', address: 234 Elm Street, code: G, response: Global non-AVS participant}
+    - {zip: '80803', address: 234 Elm Street, code: N, response: Address and zip do not match}
+    - {zip: '80804', address: 234 Elm Street, code: R, response: System unavailable or timed out}
+    - {zip: '80809', address: 234 Elm Street, code: Y, response: 5-digit zip and address match}
+    - {zip: '808000000', address: 234 Elm Street, code: X, response: 9-digit zip and address match}
+    - {zip: K1A0A9, address: 234 Elm Street, code: D, response: Zip and address match (International)}

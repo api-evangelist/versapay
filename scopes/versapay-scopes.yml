@@ -1,0 +1,50 @@
+generated: '2026-07-24'
+method: searched
+source: https://secure.versapay.com/.well-known/openid-configuration
+docs: https://developers.versapay.com/
+notes: >-
+  Versapay's primary API auth is HTTPS Basic (API Token & Key) or JWT bearer, but
+  secure.versapay.com additionally exposes a Doorkeeper OIDC/OAuth2 authorization
+  server (discovery at /.well-known/openid-configuration). The scopes below are
+  taken verbatim from scopes_supported in that discovery document. Scope-to-
+  operation mapping is not published per-endpoint; descriptions are inferred from
+  the platform surface (receivables/payables product lines + CRUD verbs) and
+  should be confirmed against an issued client's grant.
+schemes:
+  - name: OAuth2
+    source: https://secure.versapay.com/.well-known/openid-configuration
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://secure.versapay.com/oauth/authorize
+        tokenUrl: https://secure.versapay.com/oauth/token
+        pkce: [plain, S256]
+      - flow: clientCredentials
+        tokenUrl: https://secure.versapay.com/oauth/token
+      - flow: password
+        tokenUrl: https://secure.versapay.com/oauth/token
+    token_endpoint_auth: [client_secret_basic, client_secret_post]
+    revocation_endpoint: https://secure.versapay.com/oauth/revoke
+    introspection_endpoint: https://secure.versapay.com/oauth/introspect
+    userinfo_endpoint: https://secure.versapay.com/oauth/userinfo
+    jwks_uri: https://secure.versapay.com/oauth/discovery/keys
+scopes:
+  - scope: receivables
+    description: Access to the accounts-receivable / Collaborative AR surface (customers, invoices, payments, collaboration, notifications).
+    flows: [authorizationCode, clientCredentials, password]
+    sources: [https://secure.versapay.com/.well-known/openid-configuration]
+  - scope: payables
+    description: Access to the payables / money-movement surface (funds, transactions, debit agreements, autopay).
+    flows: [authorizationCode, clientCredentials, password]
+    sources: [https://secure.versapay.com/.well-known/openid-configuration]
+  - scope: read
+    description: Read access to permitted resources.
+    flows: [authorizationCode, clientCredentials, password]
+    sources: [https://secure.versapay.com/.well-known/openid-configuration]
+  - scope: write
+    description: Create access to permitted resources.
+    flows: [authorizationCode, clientCredentials, password]
+    sources: [https://secure.versapay.com/.well-known/openid-configuration]
+  - scope: update
+    description: Update access to permitted resources.
+    flows: [authorizationCode, clientCredentials, password]
+    sources: [https://secure.versapay.com/.well-known/openid-configuration]

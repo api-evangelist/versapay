@@ -1,0 +1,50 @@
+generated: '2026-07-24'
+method: derived
+source: mcp/versapay-mcp.yml, openapi/versapay-api-reference.json, openapi/versapay-ecommerce-api.json
+notes: >-
+  Binds each candidate MCP tool to its backing REST operation. The MCP server is a
+  DERIVED candidate (no hosted server published), so every tool is REST-backed and
+  inherits its inputSchema from the referenced operation. Operations are referenced
+  by operationId where the spec declares one, otherwise by METHOD path (most
+  platform operations omit operationId).
+surfaces:
+  openapi:
+    - openapi/versapay-api-reference.json
+    - openapi/versapay-ecommerce-api.json
+  graphql: null
+  mcp:
+    url: null
+    status: candidate (derived; no hosted server)
+crosswalk:
+  - {tool: whoami, category: identity, rest: [whoami], binding: rest, confidence: high}
+  - {tool: create_order, category: orders, rest: [createOrder], binding: rest, confidence: high}
+  - {tool: update_order, category: orders, rest: [updateOrder], binding: rest, confidence: high}
+  - {tool: sale_transaction, category: transactions, rest: ["POST /api/gateway/v1/orders/sale"], binding: rest, confidence: high}
+  - {tool: auth_transaction, category: transactions, rest: ["POST /api/gateway/v1/orders/auth"], binding: rest, confidence: high}
+  - {tool: capture_transaction, category: transactions, rest: ["POST /api/gateway/v1/orders/capture"], binding: rest, confidence: high}
+  - {tool: refund_transaction, category: transactions, rest: ["POST /api/gateway/v1/orders/refund"], binding: rest, confidence: high}
+  - {tool: create_wallet, category: wallets, rest: ["POST /api/gateway/v1/wallets"], binding: rest, confidence: high}
+  - {tool: view_wallet, category: wallets, rest: ["GET /api/gateway/v1/wallets/{wallet_token}"], binding: rest, confidence: high}
+  - {tool: import_invoice, category: invoices, rest: ["POST /api/imports/invoice"], binding: rest, confidence: high}
+  - {tool: export_open_invoices, category: invoices, rest: ["GET /api/exports/open_invoices"], binding: rest, confidence: high}
+  - {tool: create_payment, category: payments, rest: ["POST /api/imports/payment"], binding: rest, confidence: high}
+  - {tool: retrieve_settlement_statements, category: settlement, rest: ["GET /api/gateway/v1/settlement/statements"], binding: rest, confidence: high}
+  - {tool: create_ecommerce_session, category: ecommerce, rest: [createSession], binding: rest, confidence: high}
+  - {tool: ecommerce_create_sale, category: ecommerce, rest: [createSale], binding: rest, confidence: high}
+mcp_only: []
+rest_only:
+  - {capability: onboarding, note: merchant onboarding applications/terms/steps not exposed as candidate tools}
+  - {capability: gift_cards, note: gift-card activate/load/read}
+  - {capability: card_present_emv, note: POS terminal commands}
+  - {capability: autopay, note: autopay create/update/revoke}
+  - {capability: debit_agreements, note: agreement create/approve/cancel/reject/revoke}
+  - {capability: notifications, note: invoice reminders + direct messages}
+  - {capability: collaboration, note: disputes + comments exports}
+  - {capability: file_imports, note: CSV batch import + reconciliation exports}
+  - {capability: reference_data, note: response codes, country codes, BIN lookup}
+coverage:
+  tools_named: 15
+  tools_bound: 15
+  mcp_only: 0
+  rest_ops_total: 106
+  rest_ops_with_tool: 15

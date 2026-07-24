@@ -1,0 +1,41 @@
+generated: '2026-07-24'
+method: derived
+source: openapi/versapay-api-reference.json
+format: custom-json
+envelope: '{ "success": false, ... }'
+notes: >-
+  Derived from the HTTP status codes declared across the API Reference responses.
+  Versapay does NOT use RFC 9457 application/problem+json; error bodies are custom
+  application/json with a success:false envelope. Gateway/transaction failures
+  additionally carry a numeric response_code and gateway_error_* keys — see
+  errors/versapay-decline-codes.yml. Titles/remediation searched from the docs
+  where present.
+problems:
+  - status: 400
+    title: Bad Request
+    meaning: Invalid input or malformed request parameters (invalid input, object invalid, bad input parameter).
+    remediation: Validate request body/params against the endpoint schema.
+  - status: 401
+    title: Unauthorized
+    meaning: Missing or invalid API Token & Key (or JWT/OAuth token). Most heavily used error across the API.
+    remediation: Verify Basic credentials from the account console; confirm UAT vs production host.
+  - status: 403
+    title: Forbidden
+    meaning: Authenticated but not permitted for the resource/operation.
+    remediation: Confirm the account/division and granted scope permit the action.
+  - status: 404
+    title: Not Found
+    meaning: Resource (application, order, customer, invoice, etc.) does not exist.
+    remediation: Check the identifier/token; the record may not be visible to your account.
+  - status: 409
+    title: Conflict
+    meaning: An existing item already exists (duplicate create).
+    remediation: Use the existing record or an update/import call instead of re-creating.
+  - status: 412
+    title: Precondition Failed
+    meaning: A precondition/validation constraint on the request was not met. Used widely across write operations.
+    remediation: Inspect the returned messages and satisfy the stated precondition before retrying.
+  - status: 500
+    title: Internal Server Error
+    meaning: Unexpected server-side failure.
+    remediation: Retry with backoff; contact support@versapay.com if persistent.

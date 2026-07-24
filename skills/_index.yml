@@ -1,0 +1,16 @@
+generated: '2026-07-24'
+method: generated
+source: openapi/versapay-api-reference.json, openapi/versapay-ecommerce-api.json
+skills:
+  - file: versapay-hosted-ecommerce-payment.md
+    name: Accept a hosted-iframe ecommerce payment
+    api: openapi/versapay-ecommerce-api.json
+    operations: [createSession, getToken, createSale, createPayment]
+  - file: versapay-invoice-and-collect.md
+    name: Import an invoice and record a payment
+    api: openapi/versapay-api-reference.json
+    operations: ["POST /api/imports/invoice", "POST /api/imports/payment", "GET /api/exports/open_invoices"]
+  - file: versapay-onboard-merchant.md
+    name: Onboard a merchant for payment acceptance
+    api: openapi/versapay-api-reference.json
+    operations: [getTerms, addApplication, addApplicationSteps, getApplicationStatus]

@@ -1,0 +1,31 @@
+generated: '2026-07-24'
+method: searched
+source: https://developers.versapay.com/
+notes: >-
+  Versapay returns a numeric gateway response code on Order Transactions (verify,
+  sale, auth, capture, refund, void, credit). The code appears on a `response_code`
+  key (with related `gateway_error_*` keys) in the transaction payload. The
+  authoritative, complete list is served at runtime from the (auth-gated)
+  reference-data endpoint below rather than enumerated in the OpenAPI, so only the
+  envelope, the documented example code, and the retrievable source are captured
+  here — the full code table is intentionally not fabricated.
+envelope:
+  fields:
+    - success        # boolean; false on a declined/failed transaction
+    - response_code  # numeric gateway response code (e.g. 211)
+    - gateway_error_*  # related gateway error detail keys
+  location: Order Transactions API transaction payload
+reference_endpoint:
+  operation: GET /api/reference_data/v1/response_codes
+  description: Retrieve the list of supported error/response codes returned on the response_code key.
+  auth_required: true
+cvv_response_codes:
+  source: sandbox/versapay-sandbox.yml
+  note: CVV verification result codes (P/M/N/S/U) are documented and testable in UAT.
+avs_response_codes:
+  source: sandbox/versapay-sandbox.yml
+  note: AVS verification result codes (A/G/N/R/S/U/W/X/Y/Z/I/E/D/M) are documented and testable in UAT.
+decline_codes:
+  - code: '211'
+    meaning: Example gateway response code documented in the Reference Data section (declined transaction).
+    action: Inspect gateway_error_* keys; retrieve full code meanings from GET /api/reference_data/v1/response_codes.

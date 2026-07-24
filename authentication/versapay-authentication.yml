@@ -1,0 +1,50 @@
+generated: '2026-07-24'
+method: searched
+source: https://developers.versapay.com/
+docs: https://developers.versapay.com/
+notes: >-
+  The published OpenAPI specs do not declare components.securitySchemes, so this
+  profile is searched from the docs Authentication section plus the live OAuth/OIDC
+  discovery document at secure.versapay.com/.well-known/openid-configuration.
+summary:
+  types: [http, oauth2, openIdConnect]
+  http_schemes: [basic, bearer]
+  oauth2_flows: [authorizationCode, clientCredentials, password]
+schemes:
+  - name: apiTokenKeyBasic
+    type: http
+    scheme: basic
+    description: >-
+      Primary API auth. HTTPS Basic access authentication supplying the account's
+      API Token as the username and API Key as the password (curl -u "Token:Key").
+      Credentials are generated/disabled in the account console at
+      https://secure.versapay.com/account (UAT: https://uat.versapay.com/account).
+    sources: [https://developers.versapay.com/]
+  - name: jwtBearer
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
+    description: Alternative auth via HTTPS Bearer authentication with a JWT token.
+    sources: [https://developers.versapay.com/]
+  - name: oauth2
+    type: oauth2
+    description: >-
+      Doorkeeper OAuth2/OIDC server on secure.versapay.com. Scopes: receivables,
+      payables, read, write, update.
+    flows:
+      authorizationCode:
+        authorizationUrl: https://secure.versapay.com/oauth/authorize
+        tokenUrl: https://secure.versapay.com/oauth/token
+        scopes: [receivables, payables, read, write, update]
+      clientCredentials:
+        tokenUrl: https://secure.versapay.com/oauth/token
+        scopes: [receivables, payables, read, write, update]
+      password:
+        tokenUrl: https://secure.versapay.com/oauth/token
+        scopes: [receivables, payables, read, write, update]
+    sources: [https://secure.versapay.com/.well-known/openid-configuration]
+  - name: openIdConnect
+    type: openIdConnect
+    openIdConnectUrl: https://secure.versapay.com/.well-known/openid-configuration
+    description: OIDC discovery available; id_token signed RS256, userinfo + jwks endpoints published.
+    sources: [https://secure.versapay.com/.well-known/openid-configuration]

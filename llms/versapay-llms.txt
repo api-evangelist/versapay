@@ -1,0 +1,31 @@
+# Versapay
+
+> Versapay is a Toronto-based B2B payments company focused on accounts-receivable (AR) automation and integrated payment acceptance. Its "Collaborative AR" platform combines electronic invoicing, customer collaboration, cash application, and embedded payment processing. Two public APIs: a broad REST platform API (v1.3.35) and a hosted-iframe Ecommerce API (v2.0.0). Auth is HTTPS Basic (API Token & Key) or JWT bearer; an OAuth2/OIDC server is also available. UAT sandbox + production.
+
+## APIs
+- [Versapay API Reference](https://developers.versapay.com/): Core platform REST API — onboarding, wallets, orders, order transactions, gift cards, card-present EMV, reference data, settlement reporting, autopay, customers, invoices, invoicing payments, divisions, notifications, collaboration, file imports, webhooks. Base: https://secure.versapay.com
+- [Versapay Ecommerce API](https://developers.versapay.com/ecommerce/): Hosted-iframe payment sessions, wallets, sales/payments, gift-card balance, Apple Pay merchant validation. Base: https://secure.versapay.com/api/v2
+
+## Specs
+- [Platform OpenAPI](https://raw.githubusercontent.com/api-evangelist/versapay/refs/heads/main/openapi/versapay-api-reference.json)
+- [Ecommerce OpenAPI](https://raw.githubusercontent.com/api-evangelist/versapay/refs/heads/main/openapi/versapay-ecommerce-api.json)
+
+## Authentication
+- HTTPS Basic access authentication: API Token as username, API Key as password. Generated in the account console (https://secure.versapay.com/account).
+- JWT bearer as an alternative.
+- OAuth2/OIDC: https://secure.versapay.com/.well-known/openid-configuration — scopes: receivables, payables, read, write, update; grants: authorization_code, client_credentials, password; PKCE S256.
+
+## Conventions
+- Pagination: watermark + limit (1-2500, default 100) on GET exports.
+- Rate limit: 1500 requests/minute/IP (HTTP 1015 when exceeded).
+- Errors: custom JSON `{ "success": false, ... }` (not RFC 9457); gateway transactions carry a numeric response_code.
+- Webhooks: POST to consumer URL for Customer, Invoice, Payment entities; consumer returns 200 and must be idempotent.
+
+## Environments
+- UAT sandbox: https://uat.versapay.com (test cards, ACH, CVV/AVS test values published)
+- Production: https://secure.versapay.com
+
+## Docs
+- [Developer Portal](https://developers.versapay.com/)
+- [Status](https://status.versapay.com)
+- [Security & Compliance](https://versapay.com/security) — PCI DSS, AICPA SOC
