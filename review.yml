@@ -1,0 +1,122 @@
+aid: versapay
+name: Versapay
+review:
+  question: Does Versapay publish a real, self-serve public developer portal with downloadable API specifications?
+  answer: true
+  date: '2026-07-24'
+  reviewer: API Evangelist
+findings:
+  summary: |
+    Versapay operates a genuine, first-party public developer portal at
+    https://developers.versapay.com/ (HTTP 200), rendered with Redocly. Two
+    real OpenAPI 3.0.0 specifications were harvested verbatim from the portal's
+    embedded Redocly hydration state:
+
+      1. "Versapay API Reference" v1.3.35 — the core Collaborative AR and
+         payment-acceptance platform API, 86 documented paths, servers
+         https://secure.versapay.com (production) and https://uat.versapay.com
+         (UAT sandbox). Resource areas include onboarding, wallets, orders,
+         order transactions, gift cards, card-present EMV, reference data,
+         settlement reporting, autopay, customers, invoices, invoicing
+         payments, divisions, notifications, collaboration, file imports, and
+         webhooks.
+
+      2. "Versapay Ecommerce API" v2.0.0 — the hosted-iframe payment-session
+         API, 11 documented paths, server template
+         https://{subdomain}.versapay.com/api/v2, covering sessions, wallets
+         (credit cards / bank accounts), sales, payments, gift-card balance,
+         and Apple Pay merchant validation, paired with a client-side
+         JavaScript SDK and Versapay-hosted iframe for reduced PCI scope.
+
+    Home market is Canada (Versapay is headquartered in Toronto). This is a
+    B2B AR-automation and payment-acceptance company, not a consumer
+    money-movement player, so it does not touch Canada's Interac / RTR consumer
+    rails; it sits in the API-native acquiring and order-to-cash layer.
+  authModel:
+    scheme: HTTP Basic
+    detail: |
+      API requests are authenticated using an API Token and API Key via HTTPS
+      Basic access authentication. Credentials are generated and disabled from
+      the account console (https://secure.versapay.com/account or the UAT
+      equivalent). No OAuth2, mTLS, or FAPI scheme is documented. The harvested
+      specs did not carry populated components.securitySchemes objects; the
+      Basic-auth model is documented in the portal's Authentication section.
+  environments:
+    - name: Production
+      baseURL: https://secure.versapay.com
+    - name: UAT (sandbox)
+      baseURL: https://uat.versapay.com
+  rateLimits:
+    standard: 1500 requests per minute per IP address; HTTP 1015 on exceed; partner/customer-specific limits by agreement.
+  webhooks:
+    documented: true
+    asyncapi: false
+    note: |
+      Versapay documents a webhook event model: it POSTs entity updates
+      (Collaborative AR payloads) to a consumer-specified HTTP/HTTPS URL,
+      expects a 200 acknowledgement, retries on failure, and requires the
+      consumer to be idempotent against replayed deliveries. Webhook responses
+      can be inspected at /developers/webhook_responses in UAT/production. No
+      AsyncAPI document is published; the event surface is described in the
+      REST reference under the Webhooks tag.
+  postman:
+    firstParty: false
+    note: |
+      No first-party Versapay-published Postman workspace was confirmed. A
+      public Postman collection exists under the api-evangelist workspace (a
+      third-party API Evangelist mirror), not an official Versapay collection,
+      so it is not listed as a company property.
+  graphql:
+    documented: false
+  grpc:
+    documented: false
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://secure.versapay.com
+      documented: true
+      note: Core platform API (Versapay API Reference v1.3.35).
+    - protocol: REST
+      scheme: https
+      baseURL: https://{subdomain}.versapay.com/api/v2
+      documented: true
+      note: Ecommerce API v2.0.0 (hosted-iframe payment sessions).
+    - protocol: Webhooks
+      scheme: https
+      documented: true
+      note: Outbound POST callbacks to a consumer URL; idempotent, retried, 200-ack.
+sources:
+  - url: https://developers.versapay.com/
+    type: DeveloperPortal
+    status: 200
+    note: Redocly-rendered core API reference; embedded spec extracted verbatim.
+  - url: https://developers.versapay.com/ecommerce/
+    type: APIReference
+    status: 200
+    note: Redocly-rendered Ecommerce API reference; embedded spec extracted verbatim.
+  - url: https://status.versapay.com
+    type: StatusPage
+    status: 200
+  - url: https://versapay.com
+    type: Website
+    status: 200
+  - url: https://versapay.com/blog
+    type: Blog
+    status: 200
+harvested:
+  - path: openapi/versapay-api-reference.json
+    title: Versapay API Reference
+    version: 1.3.35
+    openapi: 3.0.0
+    paths: 86
+    source: https://developers.versapay.com/
+    fetched: '2026-07-24'
+    httpStatus: 200
+  - path: openapi/versapay-ecommerce-api.json
+    title: Versapay Ecommerce API
+    version: 2.0.0
+    openapi: 3.0.0
+    paths: 11
+    source: https://developers.versapay.com/ecommerce/
+    fetched: '2026-07-24'
+    httpStatus: 200

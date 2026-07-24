@@ -1,0 +1,115 @@
+aid: versapay
+url: https://raw.githubusercontent.com/api-evangelist/versapay/refs/heads/main/apis.yml
+name: Versapay
+kind: company
+description: >-
+  Versapay is a Toronto, Canada based B2B payments company focused on accounts
+  receivable (AR) automation and integrated payment acceptance for suppliers and
+  their buyers. Its "Collaborative AR" platform combines electronic invoicing,
+  customer collaboration, cash application, and embedded payment processing so
+  businesses can invoice, get paid, and reconcile inside one workflow, with
+  ERP-adjacent integrations for order-to-cash. Versapay serves the North
+  American mid-market and enterprise segment and, unlike consumer money-movement
+  players in Canada's Interac-dominated market, sits in the API-native B2B
+  acquiring and AR/AP money-movement layer. Its API posture is genuinely public
+  and honest: developers.versapay.com hosts a Redocly-rendered reference for a
+  broad REST platform API (onboarding, wallets, orders, order transactions, gift
+  cards, card-present EMV, settlement reporting, autopay, customers, invoices,
+  divisions, notifications, and webhooks) plus a separate hosted-iframe
+  Ecommerce API for PCI-reduced payment sessions. Authentication is HTTPS Basic
+  access authentication using an API Token and Key issued from the account
+  console, with a UAT sandbox alongside production and a documented webhook
+  event model.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Payments
+- Canada
+- Accounts Receivable
+- AR Automation
+- Order to Cash
+- Payment Acceptance
+- Payment Processing
+- B2B Payments
+- Invoicing
+- Ecommerce
+- Card Present
+- Webhooks
+created: '2026-07-24'
+modified: '2026-07-24'
+specificationVersion: '0.19'
+apis:
+- aid: versapay:versapay-api-reference
+  name: Versapay API Reference
+  description: >-
+    The core Versapay platform REST API (v1.3.35, OpenAPI 3.0.0, 86 documented
+    paths) covering the Collaborative AR and payment-acceptance surface:
+    onboarding applications, wallets, orders and order transactions, gift cards,
+    card-present EMV, reference data, settlement reporting, autopay, customers,
+    invoices and invoicing payments, divisions, notifications, collaboration,
+    file imports, and webhooks. Authenticated with HTTPS Basic access
+    authentication (API Token and Key) against a UAT sandbox and production.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Accounts Receivable
+  - Payment Acceptance
+  - Invoicing
+  - Card Present
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-api-reference.json
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+- aid: versapay:versapay-ecommerce-api
+  name: Versapay Ecommerce API
+  description: >-
+    The Versapay Ecommerce server-side API (v2.0.0, OpenAPI 3.0.0, 11 documented
+    paths) that configures payment sessions, manages customer wallets (credit
+    cards and bank accounts), creates and captures order sales and payments,
+    checks gift-card balances, and validates Apple Pay merchants. It pairs with
+    a client-side JavaScript SDK and a Versapay-hosted iframe so sensitive
+    payment data never transits the merchant application, reducing PCI scope.
+    Served from https://{subdomain}.versapay.com/api/v2.
+  humanURL: https://developers.versapay.com/ecommerce/
+  baseURL: https://secure.versapay.com/api/v2
+  tags:
+  - Ecommerce
+  - Payment Sessions
+  - Wallets
+  - Hosted Checkout
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-ecommerce-api.json
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+common:
+- type: Website
+  url: https://versapay.com
+- type: DeveloperPortal
+  url: https://developers.versapay.com/
+- type: Documentation
+  url: https://developers.versapay.com/
+- type: APIReference
+  url: https://developers.versapay.com/
+- type: StatusPage
+  url: https://status.versapay.com
+- type: Blog
+  url: https://versapay.com/blog
+- type: SignUp
+  url: https://secure.versapay.com/account
+- type: TermsOfService
+  url: https://versapay.com/terms
+- type: PrivacyPolicy
+  url: https://versapay.com/legal/privacy-policy
+- type: Security
+  url: https://versapay.com/security
+- type: LinkedIn
+  url: https://www.linkedin.com/company/versapay
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
