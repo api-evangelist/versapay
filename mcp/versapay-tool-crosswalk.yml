@@ -14,7 +14,8 @@ surfaces:
   graphql: null
   mcp:
     url: null
-    status: candidate (derived; no hosted server)
+    status: candidate
+    status_raw: candidate
 crosswalk:
   - {tool: whoami, category: identity, rest: [whoami], binding: rest, confidence: high}
   - {tool: create_order, category: orders, rest: [createOrder], binding: rest, confidence: high}
