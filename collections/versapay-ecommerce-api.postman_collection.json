@@ -1,0 +1,4006 @@
+{
+  "item": [
+    {
+      "id": "b103964c-7163-4868-9add-de051a686ca1",
+      "name": "developers",
+      "description": {
+        "content": "Operations available to developers",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "acbeacfe-cc0c-4957-8462-282a3e6f5dd8",
+          "name": "create a session",
+          "request": {
+            "name": "create a session",
+            "description": {
+              "content": "By passing in the appropriate options, you can create an iframe \nsession with options that meet your needs. If successful, this operation will return a session id in the \"id\" property of the response. Your application can then use that session id when initializing our client-side JavaScript library, which will inject an iframe into your page. The iframe will be rendered using the options you specify. When sensitive payment data is entered into the iframe, it will be tokenized by our servers, and that token will be returned to your page via JavaScript. Your page should post that token back to your server and use it to make a follow-on API call to create an order and payment.                                                                                                                                                                                                                                                                                                                                 \n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"<string>\",\n    \"apiKey\": \"<string>\"\n  },\n  \"options\": {\n    \"wallet\": {\n      \"id\": \"<string>\",\n      \"customerId\": \"<string>\",\n      \"tokens\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"allowAdd\": \"<boolean>\",\n      \"allowEdit\": \"<boolean>\",\n      \"allowDelete\": \"<boolean>\",\n      \"saveByDefault\": \"<boolean>\"\n    },\n    \"fields\": [\n      {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"label\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"placeholder\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"errorLabel\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"allowLabelUpdate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"label\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"placeholder\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"errorLabel\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"allowLabelUpdate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"paymentTypes\": [\n      {\n        \"paymentType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"paymentType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"avsRules\": {\n      \"rejectAddressMismatch\": \"<boolean>\",\n      \"rejectPostCodeMismatch\": \"<boolean>\",\n      \"rejectUnknown\": \"<boolean>\"\n    },\n    \"key_0\": \"<object>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4bbcbf1d-8887-49d9-bb84-05b06298eaf6",
+              "name": "The session has been created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  },\n  \"options\": {\n    \"wallet\": {\n      \"id\": \"BA25BVH5HCRI\",\n      \"customerId\": \"1NQGAW7N4S7H\",\n      \"tokens\": [\n        \"1NQGAW7N4S7H\",\n        \"1NQGAW7N4S7H\"\n      ],\n      \"allowAdd\": true,\n      \"allowEdit\": true,\n      \"allowDelete\": true,\n      \"saveByDefault\": true\n    },\n    \"fields\": [\n      {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"label\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"placeholder\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"errorLabel\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"allowLabelUpdate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"label\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"placeholder\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"errorLabel\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"allowLabelUpdate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"paymentTypes\": [\n      {\n        \"name\": \"creditCard\",\n        \"label\": \"Payment Card\",\n        \"promoted\": false,\n        \"fields\": [\n          {\n            \"name\": \"cardholderName\",\n            \"label\": \"Cardholder Name\",\n            \"errorLabel\": \"Cardholder name\"\n          },\n          {\n            \"name\": \"accountNo\",\n            \"label\": \"Account Number\",\n            \"errorLabel\": \"Credit card number\"\n          },\n          {\n            \"name\": \"expDate\",\n            \"label\": \"Expiration Date\",\n            \"errorLabel\": \"Expiration date\"\n          },\n          {\n            \"name\": \"cvv\",\n            \"label\": \"Security Code\",\n            \"errorLabel\": \"Security code\"\n          }\n        ]\n      },\n      {\n        \"name\": \"ach\",\n        \"label\": \"Bank Account\",\n        \"promoted\": false,\n        \"fields\": [\n          {\n            \"name\": \"accountType\",\n            \"label\": \"Account Type\",\n            \"errorLabel\": \"Account type\"\n          },\n          {\n            \"name\": \"checkType\",\n            \"label\": \"Check Type\",\n            \"errorLabel\": \"Check type\"\n          },\n          {\n            \"name\": \"accountHolder\",\n            \"label\": \"Account Holder\",\n            \"errorLabel\": \"Account holder\"\n          },\n          {\n            \"name\": \"routingNo\",\n            \"label\": \"Routing Number\",\n            \"errorLabel\": \"Routing number\"\n          },\n          {\n            \"name\": \"achAccountNo\",\n            \"label\": \"Account Number\",\n            \"errorLabel\": \"Bank account number\"\n          }\n        ]\n      },\n      {\n        \"name\": \"giftCard\",\n        \"label\": \"Gift Card\",\n        \"promoted\": false,\n        \"fields\": [\n          {\n            \"name\": \"gcAccountNo\",\n            \"label\": \"Account Number\",\n            \"errorLabel\": \"Gift card number\"\n          },\n          {\n            \"name\": \"expDate\",\n            \"label\": \"Expiration Date\",\n            \"errorLabel\": \"Expiration date\"\n          },\n          {\n            \"name\": \"pin\",\n            \"label\": \"PIN\",\n            \"errorLabel\": \"PIN\"\n          }\n        ]\n      },\n      {\n        \"name\": \"applePay\",\n        \"label\": \"ApplePay\",\n        \"promoted\": true,\n        \"fields\": [\n          {\n            \"name\": \"applePay\"\n          },\n          {\n            \"label\": \"applePay\"\n          },\n          {\n            \"errorLabel\": \"applePay\"\n          }\n        ]\n      }\n    ],\n    \"avsRules\": {\n      \"rejectAddressMismatch\": true,\n      \"rejectPostCodeMismatch\": true,\n      \"rejectUnknown\": true\n    },\n    \"key_0\": \"<object>\",\n    \"key_1\": \"<object>\",\n    \"key_2\": \"<object>\",\n    \"key_3\": \"<object>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"d290f1ee-6c54-4b01-90e6-d701748f0851\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e94db37-5b04-4181-8650-d8d78990ff86",
+              "name": "Gateway authentication error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  },\n  \"options\": {\n    \"wallet\": {\n      \"id\": \"BA25BVH5HCRI\",\n      \"customerId\": \"1NQGAW7N4S7H\",\n      \"tokens\": [\n        \"1NQGAW7N4S7H\",\n        \"1NQGAW7N4S7H\"\n      ],\n      \"allowAdd\": true,\n      \"allowEdit\": true,\n      \"allowDelete\": true,\n      \"saveByDefault\": true\n    },\n    \"fields\": [\n      {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"label\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"placeholder\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"errorLabel\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"allowLabelUpdate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"label\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"placeholder\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"errorLabel\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"allowLabelUpdate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"paymentTypes\": [\n      {\n        \"name\": \"creditCard\",\n        \"label\": \"Payment Card\",\n        \"promoted\": false,\n        \"fields\": [\n          {\n            \"name\": \"cardholderName\",\n            \"label\": \"Cardholder Name\",\n            \"errorLabel\": \"Cardholder name\"\n          },\n          {\n            \"name\": \"accountNo\",\n            \"label\": \"Account Number\",\n            \"errorLabel\": \"Credit card number\"\n          },\n          {\n            \"name\": \"expDate\",\n            \"label\": \"Expiration Date\",\n            \"errorLabel\": \"Expiration date\"\n          },\n          {\n            \"name\": \"cvv\",\n            \"label\": \"Security Code\",\n            \"errorLabel\": \"Security code\"\n          }\n        ]\n      },\n      {\n        \"name\": \"ach\",\n        \"label\": \"Bank Account\",\n        \"promoted\": false,\n        \"fields\": [\n          {\n            \"name\": \"accountType\",\n            \"label\": \"Account Type\",\n            \"errorLabel\": \"Account type\"\n          },\n          {\n            \"name\": \"checkType\",\n            \"label\": \"Check Type\",\n            \"errorLabel\": \"Check type\"\n          },\n          {\n            \"name\": \"accountHolder\",\n            \"label\": \"Account Holder\",\n            \"errorLabel\": \"Account holder\"\n          },\n          {\n            \"name\": \"routingNo\",\n            \"label\": \"Routing Number\",\n            \"errorLabel\": \"Routing number\"\n          },\n          {\n            \"name\": \"achAccountNo\",\n            \"label\": \"Account Number\",\n            \"errorLabel\": \"Bank account number\"\n          }\n        ]\n      },\n      {\n        \"name\": \"giftCard\",\n        \"label\": \"Gift Card\",\n        \"promoted\": false,\n        \"fields\": [\n          {\n            \"name\": \"gcAccountNo\",\n            \"label\": \"Account Number\",\n            \"errorLabel\": \"Gift card number\"\n          },\n          {\n            \"name\": \"expDate\",\n            \"label\": \"Expiration Date\",\n            \"errorLabel\": \"Expiration date\"\n          },\n          {\n            \"name\": \"pin\",\n            \"label\": \"PIN\",\n            \"errorLabel\": \"PIN\"\n          }\n        ]\n      },\n      {\n        \"name\": \"applePay\",\n        \"label\": \"ApplePay\",\n        \"promoted\": true,\n        \"fields\": [\n          {\n            \"name\": \"applePay\"\n          },\n          {\n            \"label\": \"applePay\"\n          },\n          {\n            \"errorLabel\": \"applePay\"\n          }\n        ]\n      }\n    ],\n    \"avsRules\": {\n      \"rejectAddressMismatch\": true,\n      \"rejectPostCodeMismatch\": true,\n      \"rejectUnknown\": true\n    },\n    \"key_0\": \"<object>\",\n    \"key_1\": \"<object>\",\n    \"key_2\": \"<object>\",\n    \"key_3\": \"<object>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ca493639-8aaa-4e67-83ca-89a0fc33b3f6",
+          "name": "create a wallet for a known user",
+          "request": {
+            "name": "create a wallet for a known user",
+            "description": {
+              "content": "This operation will create a new wallet for a known customer. If the customer is using a guest checkout feature, wallets should not be used until an account is created and the customer becomes known.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wallets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"<string>\",\n    \"apiKey\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dd91eadb-2eff-4c74-bbea-d636409fe9ee",
+              "name": "The wallet has been created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"walletId\": \"BA25BVH5HCRI\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8426c19c-0bf8-4c48-ad37-88cec03e4271",
+              "name": "Bad input parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3a7f40dd-aceb-4220-987a-c9b2df5f40d2",
+          "name": "process a sale",
+          "request": {
+            "name": "process a sale",
+            "description": {
+              "content": "This operation will send a new order to our server. You can optionally process a payment transaction in a single operation. However, if you need to process multiple payment transactions, you should use the seperate payment operation. If a payment is included, the order will be finalized if the payment is approved. If a payment is not included, the order will not be finalized, and a PATCH request will be required to finalize the order once all payments have been processed.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id",
+                "sales"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"<string>\",\n    \"apiKey\": \"<string>\"\n  },\n  \"billingAddress\": {\n    \"contactFirstName\": \"<string>\",\n    \"contactLastName\": \"<string>\",\n    \"companyName\": \"<string>\",\n    \"address1\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"city\": \"<string>\",\n    \"stateOrProvince\": \"<string>\",\n    \"postCode\": \"<string>\",\n    \"country\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"email\": \"<email>\"\n  },\n  \"shippingAddress\": {\n    \"contactFirstName\": \"<string>\",\n    \"contactLastName\": \"<string>\",\n    \"companyName\": \"<string>\",\n    \"address1\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"city\": \"<string>\",\n    \"stateOrProvince\": \"<string>\",\n    \"postCode\": \"<string>\",\n    \"country\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"email\": \"<email>\"\n  },\n  \"orderNumber\": \"<string>\",\n  \"lines\": [\n    {\n      \"number\": \"<string>\",\n      \"description\": \"<string>\",\n      \"price\": \"<float>\",\n      \"quantity\": \"<float>\",\n      \"type\": \"Item\",\n      \"discount\": \"<float>\",\n      \"l3TaxAmount\": \"<float>\",\n      \"l3CommodityCode\": \"<string>\",\n      \"l3UnitOfMeasure\": \"<string>\",\n      \"l3ProductCode\": \"<string>\",\n      \"l3DiscountAmount\": \"<float>\",\n      \"lineAttributes\": \"<object>\"\n    }\n  ],\n  \"currency\": \"<string>\",\n  \"customerNumber\": \"<string>\",\n  \"purchaseOrderNumber\": \"<string>\",\n  \"shippingAgentNumber\": \"<string>\",\n  \"shippingAgentServiceNumber\": \"<string>\",\n  \"shippingAgentDescription\": \"<string>\",\n  \"shippingAgentServiceDescription\": \"<string>\",\n  \"orderAttributes\": \"<object>\",\n  \"l3PoNumber\": \"<string>\",\n  \"l3Tax\": \"<float>\",\n  \"l3Duty\": \"<float>\",\n  \"l3Shipping\": \"<float>\",\n  \"l3ShipFromZip\": \"<string>\",\n  \"l3ShipFromCountry\": \"<string>\",\n  \"shippingAmount\": \"<float>\",\n  \"discountAmount\": \"<float>\",\n  \"taxAmount\": \"<float>\",\n  \"payment\": {\n    \"type\": \"<string>\",\n    \"token\": \"<string>\",\n    \"amount\": \"<float>\",\n    \"capture\": \"<boolean>\",\n    \"settlementToken\": \"<string>\"\n  },\n  \"payments\": [\n    {\n      \"type\": \"<string>\",\n      \"token\": \"<string>\",\n      \"amount\": \"<float>\",\n      \"capture\": \"<boolean>\",\n      \"settlementToken\": \"<string>\"\n    }\n  ],\n  \"applePayPayment\": {\n    \"payment\": {\n      \"token\": {\n        \"paymentData\": {\n          \"data\": \"<string>\",\n          \"signature\": \"<string>\",\n          \"header\": {\n            \"publicKeyHash\": \"<string>\",\n            \"ephemeralPublicKey\": \"<string>\",\n            \"transactionId\": \"<string>\"\n          },\n          \"version\": \"<string>\"\n        },\n        \"paymentMethod\": {\n          \"displayName\": \"<string>\",\n          \"network\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"transactionIdentifier\": \"<string>\"\n      }\n    },\n    \"amount\": \"<float>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1ee0b610-5470-4a50-9d12-5ba2537d1312",
+              "name": "The order has been created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  },\n  \"billingAddress\": {\n    \"contactFirstName\": \"Alice\",\n    \"contactLastName\": \"Smith\",\n    \"companyName\": \"My Company\",\n    \"address1\": \"123 Main Street\",\n    \"address2\": \"Apartment 1\",\n    \"city\": \"Anytown\",\n    \"stateOrProvince\": \"CA\",\n    \"postCode\": \"55555\",\n    \"country\": \"US\",\n    \"phone\": \"555-555-5555\",\n    \"email\": \"me@example.com\"\n  },\n  \"shippingAddress\": {\n    \"contactFirstName\": \"Alice\",\n    \"contactLastName\": \"Smith\",\n    \"companyName\": \"My Company\",\n    \"address1\": \"123 Main Street\",\n    \"address2\": \"Apartment 1\",\n    \"city\": \"Anytown\",\n    \"stateOrProvince\": \"CA\",\n    \"postCode\": \"55555\",\n    \"country\": \"US\",\n    \"phone\": \"555-555-5555\",\n    \"email\": \"me@example.com\"\n  },\n  \"orderNumber\": \"SO1234\",\n  \"lines\": [\n    {\n      \"number\": \"I1234\",\n      \"description\": \"Widget\",\n      \"price\": 1.5,\n      \"quantity\": 2,\n      \"type\": \"Item\",\n      \"discount\": 0,\n      \"l3TaxAmount\": 0.53,\n      \"l3CommodityCode\": \"33712\",\n      \"l3UnitOfMeasure\": \"EA\",\n      \"l3ProductCode\": \"I1234\",\n      \"l3DiscountAmount\": 0,\n      \"lineAttributes\": {\n        \"line_attribute1\": \"attribute1value\",\n        \"line_attribute2\": \"attribute2value\"\n      }\n    }\n  ],\n  \"currency\": \"USD\",\n  \"customerNumber\": \"C1234\",\n  \"purchaseOrderNumber\": \"PO1234\",\n  \"shippingAgentNumber\": \"USPS\",\n  \"shippingAgentServiceNumber\": \"PRIORITY\",\n  \"shippingAgentDescription\": \"United States Postal Service\",\n  \"shippingAgentServiceDescription\": \"Priority Mail\",\n  \"orderAttributes\": {\n    \"order_attribute1\": \"attribute1value\",\n    \"order_attribute2\": \"attribute2value\"\n  },\n  \"l3PoNumber\": \"PO1234\",\n  \"l3Tax\": 1.05,\n  \"l3Duty\": 0,\n  \"l3Shipping\": 5.05,\n  \"l3ShipFromZip\": \"55555\",\n  \"l3ShipFromCountry\": \"US\",\n  \"shippingAmount\": 5.05,\n  \"discountAmount\": 2.25,\n  \"taxAmount\": 1.05,\n  \"payment\": {\n    \"type\": \"creditCard\",\n    \"token\": \"1NQGAW7N4S7H\",\n    \"amount\": 6.85,\n    \"capture\": false,\n    \"settlementToken\": \"MA1F8B2E87AM\"\n  },\n  \"payments\": [\n    {\n      \"type\": \"creditCard\",\n      \"token\": \"1NQGAW7N4S7H\",\n      \"amount\": 6.85,\n      \"capture\": false,\n      \"settlementToken\": \"MA1F8B2E87AM\"\n    }\n  ],\n  \"applePayPayment\": {\n    \"payment\": {\n      \"token\": {\n        \"paymentData\": {\n          \"data\": \"encrypted_payment_data_payload\",\n          \"signature\": \"encrypted_signature_for_the_payment_data\",\n          \"header\": {\n            \"publicKeyHash\": \"hash_of_the_public_key\",\n            \"ephemeralPublicKey\": \"ephemeral_key\",\n            \"transactionId\": \"transaction_id\"\n          },\n          \"version\": \"EC_v1\"\n        },\n        \"paymentMethod\": {\n          \"displayName\": \"MasterCard 1234\",\n          \"network\": \"MasterCard\",\n          \"type\": \"credit\"\n        },\n        \"transactionIdentifier\": \"transaction_id\"\n      }\n    },\n    \"amount\": 6.85\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"orderId\": \"22A4IMSVNN9T\",\n  \"finalized\": true,\n  \"payment\": {\n    \"accountNumberLastFour\": \"1234\",\n    \"accountType\": \"Visa\",\n    \"token\": \"1NQGAW7N4S7H\",\n    \"approvalCode\": \"123456\",\n    \"avsResponseCode\": \"M\",\n    \"fromAccount\": \"Acme Inc.\",\n    \"amount\": 10,\n    \"transactionId\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b25a501-5ba4-466f-94bb-860c9bcdd70f",
+              "name": "Bad input parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  },\n  \"billingAddress\": {\n    \"contactFirstName\": \"Alice\",\n    \"contactLastName\": \"Smith\",\n    \"companyName\": \"My Company\",\n    \"address1\": \"123 Main Street\",\n    \"address2\": \"Apartment 1\",\n    \"city\": \"Anytown\",\n    \"stateOrProvince\": \"CA\",\n    \"postCode\": \"55555\",\n    \"country\": \"US\",\n    \"phone\": \"555-555-5555\",\n    \"email\": \"me@example.com\"\n  },\n  \"shippingAddress\": {\n    \"contactFirstName\": \"Alice\",\n    \"contactLastName\": \"Smith\",\n    \"companyName\": \"My Company\",\n    \"address1\": \"123 Main Street\",\n    \"address2\": \"Apartment 1\",\n    \"city\": \"Anytown\",\n    \"stateOrProvince\": \"CA\",\n    \"postCode\": \"55555\",\n    \"country\": \"US\",\n    \"phone\": \"555-555-5555\",\n    \"email\": \"me@example.com\"\n  },\n  \"orderNumber\": \"SO1234\",\n  \"lines\": [\n    {\n      \"number\": \"I1234\",\n      \"description\": \"Widget\",\n      \"price\": 1.5,\n      \"quantity\": 2,\n      \"type\": \"Item\",\n      \"discount\": 0,\n      \"l3TaxAmount\": 0.53,\n      \"l3CommodityCode\": \"33712\",\n      \"l3UnitOfMeasure\": \"EA\",\n      \"l3ProductCode\": \"I1234\",\n      \"l3DiscountAmount\": 0,\n      \"lineAttributes\": {\n        \"line_attribute1\": \"attribute1value\",\n        \"line_attribute2\": \"attribute2value\"\n      }\n    }\n  ],\n  \"currency\": \"USD\",\n  \"customerNumber\": \"C1234\",\n  \"purchaseOrderNumber\": \"PO1234\",\n  \"shippingAgentNumber\": \"USPS\",\n  \"shippingAgentServiceNumber\": \"PRIORITY\",\n  \"shippingAgentDescription\": \"United States Postal Service\",\n  \"shippingAgentServiceDescription\": \"Priority Mail\",\n  \"orderAttributes\": {\n    \"order_attribute1\": \"attribute1value\",\n    \"order_attribute2\": \"attribute2value\"\n  },\n  \"l3PoNumber\": \"PO1234\",\n  \"l3Tax\": 1.05,\n  \"l3Duty\": 0,\n  \"l3Shipping\": 5.05,\n  \"l3ShipFromZip\": \"55555\",\n  \"l3ShipFromCountry\": \"US\",\n  \"shippingAmount\": 5.05,\n  \"discountAmount\": 2.25,\n  \"taxAmount\": 1.05,\n  \"payment\": {\n    \"type\": \"creditCard\",\n    \"token\": \"1NQGAW7N4S7H\",\n    \"amount\": 6.85,\n    \"capture\": false,\n    \"settlementToken\": \"MA1F8B2E87AM\"\n  },\n  \"payments\": [\n    {\n      \"type\": \"creditCard\",\n      \"token\": \"1NQGAW7N4S7H\",\n      \"amount\": 6.85,\n      \"capture\": false,\n      \"settlementToken\": \"MA1F8B2E87AM\"\n    }\n  ],\n  \"applePayPayment\": {\n    \"payment\": {\n      \"token\": {\n        \"paymentData\": {\n          \"data\": \"encrypted_payment_data_payload\",\n          \"signature\": \"encrypted_signature_for_the_payment_data\",\n          \"header\": {\n            \"publicKeyHash\": \"hash_of_the_public_key\",\n            \"ephemeralPublicKey\": \"ephemeral_key\",\n            \"transactionId\": \"transaction_id\"\n          },\n          \"version\": \"EC_v1\"\n        },\n        \"paymentMethod\": {\n          \"displayName\": \"MasterCard 1234\",\n          \"network\": \"MasterCard\",\n          \"type\": \"credit\"\n        },\n        \"transactionIdentifier\": \"transaction_id\"\n      }\n    },\n    \"amount\": 6.85\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "170f5d59-3b55-4e96-bf22-5ecb525b62df",
+              "name": "Gateway authentication error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  },\n  \"billingAddress\": {\n    \"contactFirstName\": \"Alice\",\n    \"contactLastName\": \"Smith\",\n    \"companyName\": \"My Company\",\n    \"address1\": \"123 Main Street\",\n    \"address2\": \"Apartment 1\",\n    \"city\": \"Anytown\",\n    \"stateOrProvince\": \"CA\",\n    \"postCode\": \"55555\",\n    \"country\": \"US\",\n    \"phone\": \"555-555-5555\",\n    \"email\": \"me@example.com\"\n  },\n  \"shippingAddress\": {\n    \"contactFirstName\": \"Alice\",\n    \"contactLastName\": \"Smith\",\n    \"companyName\": \"My Company\",\n    \"address1\": \"123 Main Street\",\n    \"address2\": \"Apartment 1\",\n    \"city\": \"Anytown\",\n    \"stateOrProvince\": \"CA\",\n    \"postCode\": \"55555\",\n    \"country\": \"US\",\n    \"phone\": \"555-555-5555\",\n    \"email\": \"me@example.com\"\n  },\n  \"orderNumber\": \"SO1234\",\n  \"lines\": [\n    {\n      \"number\": \"I1234\",\n      \"description\": \"Widget\",\n      \"price\": 1.5,\n      \"quantity\": 2,\n      \"type\": \"Item\",\n      \"discount\": 0,\n      \"l3TaxAmount\": 0.53,\n      \"l3CommodityCode\": \"33712\",\n      \"l3UnitOfMeasure\": \"EA\",\n      \"l3ProductCode\": \"I1234\",\n      \"l3DiscountAmount\": 0,\n      \"lineAttributes\": {\n        \"line_attribute1\": \"attribute1value\",\n        \"line_attribute2\": \"attribute2value\"\n      }\n    }\n  ],\n  \"currency\": \"USD\",\n  \"customerNumber\": \"C1234\",\n  \"purchaseOrderNumber\": \"PO1234\",\n  \"shippingAgentNumber\": \"USPS\",\n  \"shippingAgentServiceNumber\": \"PRIORITY\",\n  \"shippingAgentDescription\": \"United States Postal Service\",\n  \"shippingAgentServiceDescription\": \"Priority Mail\",\n  \"orderAttributes\": {\n    \"order_attribute1\": \"attribute1value\",\n    \"order_attribute2\": \"attribute2value\"\n  },\n  \"l3PoNumber\": \"PO1234\",\n  \"l3Tax\": 1.05,\n  \"l3Duty\": 0,\n  \"l3Shipping\": 5.05,\n  \"l3ShipFromZip\": \"55555\",\n  \"l3ShipFromCountry\": \"US\",\n  \"shippingAmount\": 5.05,\n  \"discountAmount\": 2.25,\n  \"taxAmount\": 1.05,\n  \"payment\": {\n    \"type\": \"creditCard\",\n    \"token\": \"1NQGAW7N4S7H\",\n    \"amount\": 6.85,\n    \"capture\": false,\n    \"settlementToken\": \"MA1F8B2E87AM\"\n  },\n  \"payments\": [\n    {\n      \"type\": \"creditCard\",\n      \"token\": \"1NQGAW7N4S7H\",\n      \"amount\": 6.85,\n      \"capture\": false,\n      \"settlementToken\": \"MA1F8B2E87AM\"\n    }\n  ],\n  \"applePayPayment\": {\n    \"payment\": {\n      \"token\": {\n        \"paymentData\": {\n          \"data\": \"encrypted_payment_data_payload\",\n          \"signature\": \"encrypted_signature_for_the_payment_data\",\n          \"header\": {\n            \"publicKeyHash\": \"hash_of_the_public_key\",\n            \"ephemeralPublicKey\": \"ephemeral_key\",\n            \"transactionId\": \"transaction_id\"\n          },\n          \"version\": \"EC_v1\"\n        },\n        \"paymentMethod\": {\n          \"displayName\": \"MasterCard 1234\",\n          \"network\": \"MasterCard\",\n          \"type\": \"credit\"\n        },\n        \"transactionIdentifier\": \"transaction_id\"\n      }\n    },\n    \"amount\": 6.85\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37001068-e807-4803-b68d-fc347eaf2342",
+              "name": "Payment error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  },\n  \"billingAddress\": {\n    \"contactFirstName\": \"Alice\",\n    \"contactLastName\": \"Smith\",\n    \"companyName\": \"My Company\",\n    \"address1\": \"123 Main Street\",\n    \"address2\": \"Apartment 1\",\n    \"city\": \"Anytown\",\n    \"stateOrProvince\": \"CA\",\n    \"postCode\": \"55555\",\n    \"country\": \"US\",\n    \"phone\": \"555-555-5555\",\n    \"email\": \"me@example.com\"\n  },\n  \"shippingAddress\": {\n    \"contactFirstName\": \"Alice\",\n    \"contactLastName\": \"Smith\",\n    \"companyName\": \"My Company\",\n    \"address1\": \"123 Main Street\",\n    \"address2\": \"Apartment 1\",\n    \"city\": \"Anytown\",\n    \"stateOrProvince\": \"CA\",\n    \"postCode\": \"55555\",\n    \"country\": \"US\",\n    \"phone\": \"555-555-5555\",\n    \"email\": \"me@example.com\"\n  },\n  \"orderNumber\": \"SO1234\",\n  \"lines\": [\n    {\n      \"number\": \"I1234\",\n      \"description\": \"Widget\",\n      \"price\": 1.5,\n      \"quantity\": 2,\n      \"type\": \"Item\",\n      \"discount\": 0,\n      \"l3TaxAmount\": 0.53,\n      \"l3CommodityCode\": \"33712\",\n      \"l3UnitOfMeasure\": \"EA\",\n      \"l3ProductCode\": \"I1234\",\n      \"l3DiscountAmount\": 0,\n      \"lineAttributes\": {\n        \"line_attribute1\": \"attribute1value\",\n        \"line_attribute2\": \"attribute2value\"\n      }\n    }\n  ],\n  \"currency\": \"USD\",\n  \"customerNumber\": \"C1234\",\n  \"purchaseOrderNumber\": \"PO1234\",\n  \"shippingAgentNumber\": \"USPS\",\n  \"shippingAgentServiceNumber\": \"PRIORITY\",\n  \"shippingAgentDescription\": \"United States Postal Service\",\n  \"shippingAgentServiceDescription\": \"Priority Mail\",\n  \"orderAttributes\": {\n    \"order_attribute1\": \"attribute1value\",\n    \"order_attribute2\": \"attribute2value\"\n  },\n  \"l3PoNumber\": \"PO1234\",\n  \"l3Tax\": 1.05,\n  \"l3Duty\": 0,\n  \"l3Shipping\": 5.05,\n  \"l3ShipFromZip\": \"55555\",\n  \"l3ShipFromCountry\": \"US\",\n  \"shippingAmount\": 5.05,\n  \"discountAmount\": 2.25,\n  \"taxAmount\": 1.05,\n  \"payment\": {\n    \"type\": \"creditCard\",\n    \"token\": \"1NQGAW7N4S7H\",\n    \"amount\": 6.85,\n    \"capture\": false,\n    \"settlementToken\": \"MA1F8B2E87AM\"\n  },\n  \"payments\": [\n    {\n      \"type\": \"creditCard\",\n      \"token\": \"1NQGAW7N4S7H\",\n      \"amount\": 6.85,\n      \"capture\": false,\n      \"settlementToken\": \"MA1F8B2E87AM\"\n    }\n  ],\n  \"applePayPayment\": {\n    \"payment\": {\n      \"token\": {\n        \"paymentData\": {\n          \"data\": \"encrypted_payment_data_payload\",\n          \"signature\": \"encrypted_signature_for_the_payment_data\",\n          \"header\": {\n            \"publicKeyHash\": \"hash_of_the_public_key\",\n            \"ephemeralPublicKey\": \"ephemeral_key\",\n            \"transactionId\": \"transaction_id\"\n          },\n          \"version\": \"EC_v1\"\n        },\n        \"paymentMethod\": {\n          \"displayName\": \"MasterCard 1234\",\n          \"network\": \"MasterCard\",\n          \"type\": \"credit\"\n        },\n        \"transactionIdentifier\": \"transaction_id\"\n      }\n    },\n    \"amount\": 6.85\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"response_code\": \"999\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"response_code\": \"999\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f198830-a6cc-4d93-8cd7-9f04aab18969",
+              "name": "Session not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  },\n  \"billingAddress\": {\n    \"contactFirstName\": \"Alice\",\n    \"contactLastName\": \"Smith\",\n    \"companyName\": \"My Company\",\n    \"address1\": \"123 Main Street\",\n    \"address2\": \"Apartment 1\",\n    \"city\": \"Anytown\",\n    \"stateOrProvince\": \"CA\",\n    \"postCode\": \"55555\",\n    \"country\": \"US\",\n    \"phone\": \"555-555-5555\",\n    \"email\": \"me@example.com\"\n  },\n  \"shippingAddress\": {\n    \"contactFirstName\": \"Alice\",\n    \"contactLastName\": \"Smith\",\n    \"companyName\": \"My Company\",\n    \"address1\": \"123 Main Street\",\n    \"address2\": \"Apartment 1\",\n    \"city\": \"Anytown\",\n    \"stateOrProvince\": \"CA\",\n    \"postCode\": \"55555\",\n    \"country\": \"US\",\n    \"phone\": \"555-555-5555\",\n    \"email\": \"me@example.com\"\n  },\n  \"orderNumber\": \"SO1234\",\n  \"lines\": [\n    {\n      \"number\": \"I1234\",\n      \"description\": \"Widget\",\n      \"price\": 1.5,\n      \"quantity\": 2,\n      \"type\": \"Item\",\n      \"discount\": 0,\n      \"l3TaxAmount\": 0.53,\n      \"l3CommodityCode\": \"33712\",\n      \"l3UnitOfMeasure\": \"EA\",\n      \"l3ProductCode\": \"I1234\",\n      \"l3DiscountAmount\": 0,\n      \"lineAttributes\": {\n        \"line_attribute1\": \"attribute1value\",\n        \"line_attribute2\": \"attribute2value\"\n      }\n    }\n  ],\n  \"currency\": \"USD\",\n  \"customerNumber\": \"C1234\",\n  \"purchaseOrderNumber\": \"PO1234\",\n  \"shippingAgentNumber\": \"USPS\",\n  \"shippingAgentServiceNumber\": \"PRIORITY\",\n  \"shippingAgentDescription\": \"United States Postal Service\",\n  \"shippingAgentServiceDescription\": \"Priority Mail\",\n  \"orderAttributes\": {\n    \"order_attribute1\": \"attribute1value\",\n    \"order_attribute2\": \"attribute2value\"\n  },\n  \"l3PoNumber\": \"PO1234\",\n  \"l3Tax\": 1.05,\n  \"l3Duty\": 0,\n  \"l3Shipping\": 5.05,\n  \"l3ShipFromZip\": \"55555\",\n  \"l3ShipFromCountry\": \"US\",\n  \"shippingAmount\": 5.05,\n  \"discountAmount\": 2.25,\n  \"taxAmount\": 1.05,\n  \"payment\": {\n    \"type\": \"creditCard\",\n    \"token\": \"1NQGAW7N4S7H\",\n    \"amount\": 6.85,\n    \"capture\": false,\n    \"settlementToken\": \"MA1F8B2E87AM\"\n  },\n  \"payments\": [\n    {\n      \"type\": \"creditCard\",\n      \"token\": \"1NQGAW7N4S7H\",\n      \"amount\": 6.85,\n      \"capture\": false,\n      \"settlementToken\": \"MA1F8B2E87AM\"\n    }\n  ],\n  \"applePayPayment\": {\n    \"payment\": {\n      \"token\": {\n        \"paymentData\": {\n          \"data\": \"encrypted_payment_data_payload\",\n          \"signature\": \"encrypted_signature_for_the_payment_data\",\n          \"header\": {\n            \"publicKeyHash\": \"hash_of_the_public_key\",\n            \"ephemeralPublicKey\": \"ephemeral_key\",\n            \"transactionId\": \"transaction_id\"\n          },\n          \"version\": \"EC_v1\"\n        },\n        \"paymentMethod\": {\n          \"displayName\": \"MasterCard 1234\",\n          \"network\": \"MasterCard\",\n          \"type\": \"credit\"\n        },\n        \"transactionIdentifier\": \"transaction_id\"\n      }\n    },\n    \"amount\": 6.85\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "05a04a93-a953-4a29-93a6-cb8775811f8e",
+          "name": "update a sale",
+          "request": {
+            "name": "update a sale",
+            "description": {
+              "content": "This operation will update an existing order on our server to finalize the order and get it ready for import.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id",
+                "sales",
+                ":saleid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "saleid",
+                  "description": "(Required) Order ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"<string>\",\n    \"apiKey\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c92655ba-21f0-447b-8aff-21429088a3a2",
+              "name": "The order has been updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales",
+                    ":saleid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "saleid",
+                      "description": "(Required) Order ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"orderId\": \"22A4IMSVNN9T\",\n  \"finalized\": true,\n  \"payment\": {\n    \"accountNumberLastFour\": \"1234\",\n    \"accountType\": \"Visa\",\n    \"token\": \"1NQGAW7N4S7H\",\n    \"approvalCode\": \"123456\",\n    \"avsResponseCode\": \"M\",\n    \"fromAccount\": \"Acme Inc.\",\n    \"amount\": 10,\n    \"transactionId\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cf3c151-cc3d-43b6-8fe9-53558370995a",
+              "name": "Bad input parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales",
+                    ":saleid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "saleid",
+                      "description": "(Required) Order ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a6b34ce-807a-423a-9490-acc733fdf132",
+              "name": "Session not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales",
+                    ":saleid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "saleid",
+                      "description": "(Required) Order ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"gatewayAuthorization\": {\n    \"apiToken\": \"1a2B345ZYx0987yYuiTr\",\n    \"apiKey\": \"1a2B345ZYx0987yYuiTr\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9be74f39-a2d7-491a-a594-3499be9d5839",
+          "name": "process a payment",
+          "request": {
+            "name": "process a payment",
+            "description": {
+              "content": "Use this operation to authorize a payment instrument for an existing sale. You must have already created the sale.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id",
+                "sales",
+                ":saleid",
+                "payments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "saleid",
+                  "description": "(Required) Order ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "52da09b1-8cfb-41eb-b661-bb0b3f0534fe",
+              "name": "The payment has been created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales",
+                    ":saleid",
+                    "payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "saleid",
+                      "description": "(Required) Order ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountNumberLastFour\": \"1234\",\n  \"accountType\": \"Visa\",\n  \"token\": \"1NQGAW7N4S7H\",\n  \"approvalCode\": \"123456\",\n  \"avsResponseCode\": \"M\",\n  \"fromAccount\": \"Acme Inc.\",\n  \"amount\": 10,\n  \"transactionId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e0ea1d42-acec-479b-8f02-153780ad1948",
+              "name": "Bad input parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales",
+                    ":saleid",
+                    "payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "saleid",
+                      "description": "(Required) Order ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a2d1299-1e94-428e-bca7-537845a38b38",
+              "name": "Gateway authentication error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales",
+                    ":saleid",
+                    "payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "saleid",
+                      "description": "(Required) Order ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e635ad8d-32e5-4a1d-be4d-688ccfc5596f",
+              "name": "Payment error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales",
+                    ":saleid",
+                    "payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "saleid",
+                      "description": "(Required) Order ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"response_code\": \"999\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"response_code\": \"999\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3bd50c62-ea5b-444b-b52d-1a657083cefa",
+              "name": "Session not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "sales",
+                    ":saleid",
+                    "payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "saleid",
+                      "description": "(Required) Order ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6ac0e34a-0029-4001-8afc-4671ee58e384",
+          "name": "check the balance of a payment method fund token",
+          "request": {
+            "name": "check the balance of a payment method fund token",
+            "description": {
+              "content": "This operation will check the balance of a payment method using the fund token. This will result in an error for payment method types other than gift cards.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id",
+                "balance",
+                ":giftcardid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "giftcardid",
+                  "description": "(Required) Gift Card Token"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "984469c6-58f1-4e0c-bf77-ce755ac46667",
+              "name": "The balance was retrieved.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "balance",
+                    ":giftcardid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "giftcardid",
+                      "description": "(Required) Gift Card Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"balance\": 10.5\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e7737d5-036f-4ef0-9560-6992f1f86b7a",
+              "name": "The balance could not be retrieved.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "balance",
+                    ":giftcardid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "giftcardid",
+                      "description": "(Required) Gift Card Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "09b777a6-5baf-4b13-93ae-a86f20255113",
+          "name": "Validate Apple Pay merchant",
+          "request": {
+            "name": "Validate Apple Pay merchant",
+            "description": {
+              "content": "Validate Apple Pay merchant session for Apple Pay processing.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id",
+                "applepay-validatemerchant"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID for the Apple Pay validation request."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"validationUrl\": \"<uri>\",\n  \"applePayConfig\": {\n    \"merchantIdentifier\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"initiativeContext\": \"<string>\",\n    \"merchantCapabilities\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"supportedNetworks\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"ecommSubdomain\": \"<string>\",\n    \"countryCode\": \"<string>\",\n    \"currencyCode\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "37c31ec8-fd52-48bd-9de5-e9390c91b8af",
+              "name": "Merchant validation successful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "applepay-validatemerchant"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID for the Apple Pay validation request."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"validationUrl\": \"https://apple-pay-gateway.apple.com/paymentservices/startSession\",\n  \"applePayConfig\": {\n    \"merchantIdentifier\": \"merchant.com.example\",\n    \"displayName\": \"Versapay Example Store\",\n    \"initiativeContext\": \"example.com\",\n    \"merchantCapabilities\": [\n      \"supports3DS\"\n    ],\n    \"supportedNetworks\": [\n      \"amex\",\n      \"masterCard\",\n      \"visa\"\n    ],\n    \"ecommSubdomain\": \"ecommerce-api-uat\",\n    \"countryCode\": \"US\",\n    \"currencyCode\": \"USD\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"epochTimestamp\": 1732209660630,\n  \"expiresAt\": 1732209660630,\n  \"merchantSessionIdentifier\": \"SSHF3882F91426C4F868702059B47B0XXX\",\n  \"nonce\": \"5ec8xxxx\",\n  \"merchantIdentifier\": \"8C421777BCD9BEDAB86991B8EXXXX\",\n  \"domainName\": \"example.com\",\n  \"displayName\": \"Versapay Example Store\",\n  \"signature\": \"base64EncodedSignature\",\n  \"operationalAnalyticsIdentifier\": \"identifier\",\n  \"retries\": 0,\n  \"pspId\": \"8C421777BCD9BEDAB86991B8EXXXX\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ebba7dc-7d8d-4f45-812c-b9f5fa53c3cd",
+              "name": "Bad request due to invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "applepay-validatemerchant"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID for the Apple Pay validation request."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"validationUrl\": \"https://apple-pay-gateway.apple.com/paymentservices/startSession\",\n  \"applePayConfig\": {\n    \"merchantIdentifier\": \"merchant.com.example\",\n    \"displayName\": \"Versapay Example Store\",\n    \"initiativeContext\": \"example.com\",\n    \"merchantCapabilities\": [\n      \"supports3DS\"\n    ],\n    \"supportedNetworks\": [\n      \"amex\",\n      \"masterCard\",\n      \"visa\"\n    ],\n    \"ecommSubdomain\": \"ecommerce-api-uat\",\n    \"countryCode\": \"US\",\n    \"currencyCode\": \"USD\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21d31555-e010-4f32-ad42-07937940ca0d",
+              "name": "Session not found or invalid session ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "applepay-validatemerchant"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID for the Apple Pay validation request."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"validationUrl\": \"https://apple-pay-gateway.apple.com/paymentservices/startSession\",\n  \"applePayConfig\": {\n    \"merchantIdentifier\": \"merchant.com.example\",\n    \"displayName\": \"Versapay Example Store\",\n    \"initiativeContext\": \"example.com\",\n    \"merchantCapabilities\": [\n      \"supports3DS\"\n    ],\n    \"supportedNetworks\": [\n      \"amex\",\n      \"masterCard\",\n      \"visa\"\n    ],\n    \"ecommSubdomain\": \"ecommerce-api-uat\",\n    \"countryCode\": \"US\",\n    \"currencyCode\": \"USD\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "4418bd57-e693-4487-9e7a-436a9a12f800",
+      "name": "internal",
+      "description": {
+        "content": "Operations intended only to the iframe front end",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e18b400a-577a-4888-9887-f298224e3c70",
+          "name": "get a session",
+          "request": {
+            "name": "get a session",
+            "description": {
+              "content": "Retrieve a session and its options for constructing an iframe\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2f80e353-8972-4fa6-8dbb-554d64e62663",
+              "name": "The session was found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"wallet\": {\n    \"customerId\": \"CUST12345\",\n    \"tokens\": [\n      \"1NQGAW7N4S7H\"\n    ],\n    \"allowAdd\": true,\n    \"allowEdit\": true,\n    \"allowDelete\": true,\n    \"saveByDefault\": false\n  },\n  \"fields\": [\n    {\n      \"name\": \"expDate\",\n      \"label\": \"Expiration Date\",\n      \"placeholder\": \"MM / YY\",\n      \"errorLabel\": \"Please check the Expiration Date\",\n      \"allowLabelUpdate\": true,\n      \"id\": \"ddlExpDate\"\n    },\n    {\n      \"name\": \"expDate\",\n      \"label\": \"Expiration Date\",\n      \"placeholder\": \"MM / YY\",\n      \"errorLabel\": \"Please check the Expiration Date\",\n      \"allowLabelUpdate\": true,\n      \"id\": \"ddlExpDate\"\n    }\n  ],\n  \"paymentTypes\": [\n    {\n      \"name\": \"creditCard\",\n      \"label\": \"Payment Card\",\n      \"promoted\": false,\n      \"fields\": [\n        {\n          \"name\": \"cardholderName\",\n          \"label\": \"Cardholder Name\",\n          \"errorLabel\": \"Cardholder name\"\n        },\n        {\n          \"name\": \"accountNo\",\n          \"label\": \"Account Number\",\n          \"errorLabel\": \"Credit card number\"\n        },\n        {\n          \"name\": \"expDate\",\n          \"label\": \"Expiration Date\",\n          \"errorLabel\": \"Expiration date\"\n        },\n        {\n          \"name\": \"cvv\",\n          \"label\": \"Security Code\",\n          \"errorLabel\": \"Security code\"\n        }\n      ]\n    },\n    {\n      \"name\": \"ach\",\n      \"label\": \"Bank Account\",\n      \"promoted\": false,\n      \"fields\": [\n        {\n          \"name\": \"accountType\",\n          \"label\": \"Account Type\",\n          \"errorLabel\": \"Account type\"\n        },\n        {\n          \"name\": \"checkType\",\n          \"label\": \"Check Type\",\n          \"errorLabel\": \"Check type\"\n        },\n        {\n          \"name\": \"accountHolder\",\n          \"label\": \"Account Holder\",\n          \"errorLabel\": \"Account holder\"\n        },\n        {\n          \"name\": \"routingNo\",\n          \"label\": \"Routing Number\",\n          \"errorLabel\": \"Routing number\"\n        },\n        {\n          \"name\": \"achAccountNo\",\n          \"label\": \"Account Number\",\n          \"errorLabel\": \"Bank account number\"\n        }\n      ]\n    },\n    {\n      \"name\": \"giftCard\",\n      \"label\": \"Gift Card\",\n      \"promoted\": false,\n      \"fields\": [\n        {\n          \"name\": \"gcAccountNo\",\n          \"label\": \"Account Number\",\n          \"errorLabel\": \"Gift card number\"\n        },\n        {\n          \"name\": \"expDate\",\n          \"label\": \"Expiration Date\",\n          \"errorLabel\": \"Expiration date\"\n        },\n        {\n          \"name\": \"pin\",\n          \"label\": \"PIN\",\n          \"errorLabel\": \"PIN\"\n        }\n      ]\n    },\n    {\n      \"name\": \"applePay\",\n      \"label\": \"ApplePay\",\n      \"promoted\": true,\n      \"fields\": [\n        {\n          \"name\": \"applePay\"\n        },\n        {\n          \"label\": \"applePay\"\n        },\n        {\n          \"errorLabel\": \"applePay\"\n        }\n      ]\n    }\n  ],\n  \"avsRules\": {\n    \"rejectAddressMismatch\": true,\n    \"rejectPostCodeMismatch\": true,\n    \"rejectUnknown\": true\n  },\n  \"key_0\": {},\n  \"key_1\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4548d513-04b9-4e76-aa15-a56960a54a9d",
+              "name": "The sesssion was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a16bfdef-051f-4f4f-80fa-40f45bb5c8a5",
+          "name": "get a token",
+          "request": {
+            "name": "get a token",
+            "description": {
+              "content": "Get the token for a plaintext account number\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id",
+                "tokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountNumber\": \"<string>\",\n  \"expirationMonth\": \"<integer>\",\n  \"expirationYear\": \"<integer>\",\n  \"accountHolder\": \"<string>\",\n  \"cardVerificationValue\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cd29befc-d1bd-4431-a050-b0e9abf23d3c",
+              "name": "The token was created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"4111111111111111\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"accountHolder\": \"Jane Smith\",\n  \"cardVerificationValue\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token\": \"1NQGAW7N4S7H\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e65523c-72be-400d-be2a-68ff23bf4e09",
+              "name": "Bad input parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"4111111111111111\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"accountHolder\": \"Jane Smith\",\n  \"cardVerificationValue\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f2323a67-4c9f-4780-8b53-6fe5f4338c18",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"4111111111111111\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"accountHolder\": \"Jane Smith\",\n  \"cardVerificationValue\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e70d6b93-7eba-44cd-9979-ddf5e9930223",
+              "name": "The session was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"4111111111111111\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"accountHolder\": \"Jane Smith\",\n  \"cardVerificationValue\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91ab810e-13ff-4b81-b506-a6cef6f1a71d",
+              "name": "Payment method verification failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"4111111111111111\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"accountHolder\": \"Jane Smith\",\n  \"cardVerificationValue\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1dc2f86-b9f3-4277-a02f-b9af7367524b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"4111111111111111\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"accountHolder\": \"Jane Smith\",\n  \"cardVerificationValue\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a12755b3-5197-45fd-8dbe-86d33ed8617e",
+          "name": "update a credit card wallet entry",
+          "request": {
+            "name": "update a credit card wallet entry",
+            "description": {
+              "content": "This operation will update an existing credit card wallet entry with information collected from the buyer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id",
+                "wallet",
+                ":walletid",
+                "creditcards",
+                ":creditcardid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletid",
+                  "description": "(Required) Wallet ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "creditcardid",
+                  "description": "(Required) Credit Card Token"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountHolder\": \"<string>\",\n  \"expirationMonth\": \"<integer>\",\n  \"expirationYear\": \"<integer>\",\n  \"cardVerificationValue\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2322a95d-90ff-4cf7-bde1-31db4cc5f87f",
+              "name": "The wallet has been updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "creditcards",
+                    ":creditcardid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "creditcardid",
+                      "description": "(Required) Credit Card Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountHolder\": \"Jane Smith\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"cardVerificationValue\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c8d17aaa-01d6-4c83-9864-a8974942474d",
+              "name": "Bad input parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "creditcards",
+                    ":creditcardid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "creditcardid",
+                      "description": "(Required) Credit Card Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountHolder\": \"Jane Smith\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"cardVerificationValue\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7dc80ace-cc48-446b-9aaa-8277f8e97e61",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "creditcards",
+                    ":creditcardid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "creditcardid",
+                      "description": "(Required) Credit Card Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountHolder\": \"Jane Smith\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"cardVerificationValue\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3675dd1a-3a79-4cef-8ce3-f2ec5da78ee2",
+              "name": "Session or wallet not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "creditcards",
+                    ":creditcardid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "creditcardid",
+                      "description": "(Required) Credit Card Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountHolder\": \"Jane Smith\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"cardVerificationValue\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "89135b27-0ad3-4116-b848-7b39c0f090d6",
+          "name": "remove a credit card wallet entry",
+          "request": {
+            "name": "remove a credit card wallet entry",
+            "description": {
+              "content": "This operation will remove an existing credit card entry from a wallet.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id",
+                "wallet",
+                ":walletid",
+                "creditcards",
+                ":creditcardid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletid",
+                  "description": "(Required) Wallet ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "creditcardid",
+                  "description": "(Required) Credit Card Token"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0eeb7665-883f-480c-87b1-f55b608020ff",
+              "name": "The wallet has been updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "creditcards",
+                    ":creditcardid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "creditcardid",
+                      "description": "(Required) Credit Card Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "28850314-fdfd-4126-a039-d123495dd56a",
+              "name": "Bad input parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "creditcards",
+                    ":creditcardid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "creditcardid",
+                      "description": "(Required) Credit Card Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "055043c0-199b-4df7-8062-999be4b7b1f8",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "creditcards",
+                    ":creditcardid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "creditcardid",
+                      "description": "(Required) Credit Card Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cac1127b-1ea4-4142-b29e-b3ef7197a7eb",
+              "name": "Session or wallet not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "creditcards",
+                    ":creditcardid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "creditcardid",
+                      "description": "(Required) Credit Card Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7001a5ce-79bd-4f2c-9933-891a80e8d1cd",
+          "name": "update a bank account wallet entry",
+          "request": {
+            "name": "update a bank account wallet entry",
+            "description": {
+              "content": "This operation will update an existing bank account wallet entry with information collected from the buyer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id",
+                "wallet",
+                ":walletid",
+                "bankaccounts",
+                ":bankaccountid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletid",
+                  "description": "(Required) Wallet ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bankaccountid",
+                  "description": "(Required) Bank Account Token"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountHolder\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4db37d1d-f03f-4db8-9c6d-45be1e872249",
+              "name": "The wallet has been updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "bankaccounts",
+                    ":bankaccountid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bankaccountid",
+                      "description": "(Required) Bank Account Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountHolder\": \"Jane Smith\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "13ccea35-a013-4003-98aa-d32e89d7aa37",
+              "name": "Bad input parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "bankaccounts",
+                    ":bankaccountid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bankaccountid",
+                      "description": "(Required) Bank Account Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountHolder\": \"Jane Smith\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79369a2d-2bee-4983-820c-f1c4390dcfac",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "bankaccounts",
+                    ":bankaccountid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bankaccountid",
+                      "description": "(Required) Bank Account Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountHolder\": \"Jane Smith\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b500e83-2bfa-457c-93c5-1ce2746c0205",
+              "name": "Session or wallet not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "bankaccounts",
+                    ":bankaccountid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bankaccountid",
+                      "description": "(Required) Bank Account Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountHolder\": \"Jane Smith\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ab0301ec-6919-46bc-807e-9b44492626ff",
+          "name": "remove a bank account wallet entry",
+          "request": {
+            "name": "remove a bank account wallet entry",
+            "description": {
+              "content": "This operation will remove an existing bank account entry from a wallet.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sessions",
+                ":id",
+                "wallet",
+                ":walletid",
+                "bankaccounts",
+                ":bankaccountid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) Session ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletid",
+                  "description": "(Required) Wallet ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bankaccountid",
+                  "description": "(Required) Bank Account Token"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{subdomain}}",
+                  "key": "subdomain"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fdf61a1b-b3db-4f30-b75a-f505b68e62b8",
+              "name": "The wallet has been updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "bankaccounts",
+                    ":bankaccountid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bankaccountid",
+                      "description": "(Required) Bank Account Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8fa66c61-5121-4da3-b06e-08e9785237fc",
+              "name": "Bad input parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "bankaccounts",
+                    ":bankaccountid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bankaccountid",
+                      "description": "(Required) Bank Account Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4585bf13-b767-42c4-983b-1417f50cad75",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "bankaccounts",
+                    ":bankaccountid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bankaccountid",
+                      "description": "(Required) Bank Account Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "edfc0398-27b8-4cea-afe6-e7250af27b28",
+              "name": "Session or wallet not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sessions",
+                    ":id",
+                    "wallet",
+                    ":walletid",
+                    "bankaccounts",
+                    ":bankaccountid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) Session ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletid",
+                      "description": "(Required) Wallet ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bankaccountid",
+                      "description": "(Required) Bank Account Token"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{subdomain}}",
+                      "key": "subdomain"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"not found\",\n  \"errors\": [\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    },\n    {\n      \"path\": \"/foo\",\n      \"message\": \"not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "bbac67c4-2bea-461c-bd69-1afb152399d6",
+      "name": "previous versions",
+      "description": {
+        "content": "[EcommerceV1](https://developers.versapay.com/ecommerceV1)\n",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "ecommerce-api",
+      "key": "subdomain"
+    },
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.versapay.com/api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b39f019e-4948-4207-84ab-f9b8d94a2525",
+    "name": "Versapay Ecommerce API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\n\nThe Versapay e-commerce solution is composed of several components. First, is a server-side API that allows your application to configure a new payment session, manage customer wallets, create orders, and initiate payments. In addition, there is a client-side JavaScript SDK that enables your web applicaiton to accept secure payment data via an iframe hosted by Versapay. Your sensitive payment data will not transit your application when you use the iframe, so your application will have a reduced PCI scope.\n\nIn order to accept a payment, the general flow is to first create a session using the server-side API. Once a session ID has been generated by the Versapay server and returned to your application, your client-side code can use that session ID to initialize the Versapay payment SDK, which will, in turn, render the iframe. Next, the customer will interact with the iframe to specify a payment method. The SDK will return a token representing that payment method to your client-side code. Your client-side code must return the token to your server-side code, which will then use the original session ID and the token to create an order and take a payment. Finally, your ERP or order fulfillment system will query the Versapay cloud platform for new orders so that they may be created and fulfilled via your standard workflow.\n\n# Environments\n\nThe UAT environment is a useful sandbox for integration testing where transaction settlements are simulated using test account numbers and test dollar amounts.\n\nhttps://ecommerce-api-uat.versapay.com\n\nOnce integration testing is complete via the UAT environment, start sending your requests to the production URL to start moving money and/or integrating with Versapay.\n\nhttps://ecommerce-api.versapay.com\n\n# Server-side Setup\n\n## Wallets\n\nIf the customer checking out through your website is a known customer with an authenticated account and you would like the Versapay cloud platform to offer to store payment methods for future use, you can generate a Wallet ID for that customer. To do so, POST to the `/wallets` endpoint to generate a new Wallet ID. Once the Wallet ID has been returned to your application, it is your application's responsibility to associate the Wallet ID with the customer record in your web application so that it can be provided to the API each time the customer checks out.\n\nIf the customer already has a Wallet ID associated with their record in your application, that Wallet ID should be provided in the session creation request.\n\n## Sessions\n\nEach checkout attempt requires that your application request a Session ID from the Versapay API. This is accomplished by POSTing to the `/sessions` endpoint. When creating a new session, you must specify your Versapay gateway credentials, which consist of an API Token and an API Key. These are passed in the http request using an authorization header. In addition, you may pass session options to the API that control the behavior, and verbiage of the checkout experience in the hosted iframe.\n\nSession options also allow you to specify a Wallet ID for the current customer in the `wallet` element. \n\nThe POST request to the `/sessions` endpoint will return a Session ID to your application. That Session ID must be passed to your client-side JavaScript so that it can initialize the Versapay Checkout Client SDK.\n\n# Versapay Checkout Client SDK\n\nThe Versapay Checkout JavaScript SDK can be used to initialize a hosted iframe within your ecommerce website that contains all the fields needed to complete a secure credit card transaction while keeping your website out of scope for PCI compliance.\n\n## Setup\n\n### Install the Versapay library\n\nTo start using the SDK, load the library from the hosting url. This will give you access to functions in the versapay module.\n\n    <!-- Load the client component -->\n    <script src=\"https://ecommerce-api-uat.versapay.com/client.js\"></script>\n\n    <!-- Call functions in the versapay module -->\n    <script>\n        var client = versapay.initClient(sessionId)\n    </script>\n\n### Get a Session ID\n\nThe Versapay SDK requires a Session ID generated by a [server side API request](#serversetup). Once you have a Session ID, you can initialize the client.\n\n### Create a client instance\n\nCreate an instance of the client class using the versapay.initClient function, passing the session key generated on the server side as a parameter.\n\n    <script>\n        var client = versapay.initClient(sessionId)\n    </script>\n\n### Add styles or fonts\n\nAlthough you can use the default styles and fonts of the checkout iframe, it can also be configured with styles and fonts that fit with your ecommerce website. These can be passed as optional parameters to the initClient function.\n\nThe styles parameter should be sent as a json object of CSS selectors and properties. See the CSS Styling section for a list of supported properties and DOM element IDs that can be used in selectors.\n\nThe fontUrls parameter should be an array of urls that point to an embeddable Google Fonts link.\n\n    <script>\n        var styles = {\n            html: {\n                \"font-family\": \"DotGothic16\",\n            },\n            input: {\n                \"font-size\": \"14pt\",\n                \"color\": \"#3A3A3A\",\n            },\n            select: {\n                \"font-size\": \"14pt\",\n                \"color\": \"#3A3A3A\",\n            }\n        };\n\n        var fontUrls = ['https://fonts.googleapis.com/css2?family=DotGothic16&display=swap']\n\n        var client = versapay.initClient(clientSession, styles, fontUrls)\n    </script>\n\n### Create DOM elements\n\nThe hosted iframe requires two DOM elements, a form and an empty DOM element within the form to act as a container for the iframe. You will likely also want to include a way to submit the form, like a Submit or Pay button, and a way to display submission errors.\n\n    <form id='form'>\n        <div id='container'></div>\n        <div>\n            <button id='submit'>Pay</button>\n            <span id='submitError'></span>\n        </div>\n    </form>\n    <script>\n        const form = document.querySelector('#form')\n        const submit = document.querySelector('#submit')\n        const submitError = document.querySelector('#submitError')\n    </script>\n\n### Initialize the iframe and create a frame promise\n\nInitialize the iframe using the client.initFrame async function, passing the empty DOM element and the desired iframe width and height as parameters. Since the iframe will resize its internal elements responsively to fit the width and height specified here, these parameters can be assigned programmatically to ensure that the checkout page displays correctly on all devices. The return value of this function is a promise object that is resolved when the iframe and fields are ready.\n\n    <script>\n        const form = document.querySelector('#form')\n        const submit = document.querySelector('#submit')\n        \n        var containerWidth = document.documentElement.clientWidth > 500 ? '500px' : '400px'\n\n        versapay.initClient(clientSession).then(function(client) {\n            frameReadyPromise = client.initFrame(document.querySelector('#container'), '500px', containerWidth)\n        }\n    </script>\n\n### Listen for payment method approval events <a name=\"approvalevents\"></a>\n\nWhen the selected payment method is approved or rejected by the hosted iframe, an approval promise is fulfilled or rejected in the instance of the client class. Use the client.onApproval(onResolve, onReject) function to return the results of the approval promise, where the parameters are callback functions to execute when the promise is fullfilled or rejected.\n\n    <script>\n        client.onApproval(\n            onResolve = result => {\n                // this is the callback function to use when the payment method is approved\n                console.log(result)\n            }, \n            onReject = error => {\n                // this is the callback function to use when the payment method is rejected\n                console.log(error)\n            }\n        )\n    </script>\n\n### Create the submit event handler\n\nAdd an event handler for the form submit event that calls the client.submitEvents() function. The submitEvents() function triggers a submission on the form in the hosted iFrame, which returns the results of that submission to the [approval event in the client instance.](#approvalevents). Note that the form.then() function is also useful for handling any other code that should be executed once the frame and fields are ready for input, like setting a form submit button to enabled.\n\n    <script>\n        const form = document.querySelector('#form')\n        const submit = document.querySelector('#submit')\n\n        versapay.initClient(clientSession).then(function(client) {\n            frameReadyPromise = client.initFrame(document.querySelector('#container'), '500px', '250px')\n\n            frameReadyPromise.then(function() {\n                submit.removeAttribute('disabled')\n\n                form.addEventListener('submit', function(event) {\n                    event.preventDefault()\n                    var tokenPromise = client.submitEvents()\n                })\n            })\n        }\n    </script>\n\n### Receive the payment method submission results from the iframe\n\nAfter the form is submitted, the results of the payment method submission are passed back to the iframe. The submission results are returned to the client library using the [approval promise](#approvalevents) on the client instance. When the approval promise is fulfilled, the results will return a json object containing the payment type and a token that can be passed back up to the server side code to perform a charge, authorization, etc. If the approval promise is rejected, the error can be used in the callback function.\n    \n    <script>\n        client.onApproval(\n            onResolve = result => {\n                // this is the callback function to use when the payment method is approved\n                // the result.paymentType value can be used to conditionally handle different payment types (creditCard, ach, giftCard)\n                // the result.token value can be passed up to the server-side code to use for other operations\n                console.log(`Payment Type: ${result.paymentType}, Token: ${result.token}`)\n            }, \n            onReject = error => {\n                // this is the callback function to use when the payment method is rejected\n                // the error.paymentType value can be used to conditionally handle different payment types (creditCard, ach, giftCard)\n                // the error.error value will contain more information about the payment method error\n                console.log(`Payment Type: ${error.paymentType}, Error: ${error.error}`)\n                submitError.textContent = error.error\n            }\n        )\n    </script>\n\n## Example HTML Code\n    <!DOCTYPE html>\n    <html lang=\"en\">\n        <head>\n            <meta charset=\"UTF-8\" />\n            <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n            <title>Versapay JS Ecomm Library Demo</title>\n            <style>\n                @import url('https://fonts.googleapis.com/css2?family=Yantramanav&display=swap');\n            </style>\n        </head>\n        <body>\n            <form id='form'>\n                <div id='container' style=\"height:358px; width:500px\"></div>\n                <div style=\"position: relative\">\n                    <button id='submit' style=\n                        \"width:420px; \n                        height:50px; \n                        color:#FFFFFF; \n                        font-size: 18px; \n                        line-height: 20px;\n                        background-color:#002233; \n                        margin: 16px 40px;\n                        font-family: Yantramanav;\n                        padding-left: 20px;\n                        border: 0;\n                        border-radius: 3px;\"\n                    >Pay</button>\n                    <span id='submitError' style=\n                        \"line-height: 14px;\n                        color: red;\n                        font-size: 12px;\n                        font-family: Yantramanav;\n                        position: absolute;\n                        bottom: -5px;\n                        left: 42px;\"\n                    ></span>\n                </div>\n            </form>\n            <script src=\"https://ecommerce-api-uat.versapay.com/client.js\"></script>\n            <script>\n                const form = document.querySelector('#form')\n                const submit = document.querySelector('#submit')\n                const submitError = document.querySelector('#submitError')\n\n                // Get the Session ID from the server side API.\n                var clientSession = '24653110-410a-49f2-9ee3-477f6bfe06b3'\n\n                // Set any custom styles to pass to the iFrame.\n                var styles = {\n                    // html: {\n                    //     \"font-family\": \"DotGothic16\",\n                    // },\n                    // input: {\n                    //     \"font-size\": \"14pt\",\n                    //     \"color\": \"#3A3A3A\",\n                    // },\n                    // select: {\n                    //     \"font-size\": \"14pt\",\n                    //     \"color\": \"#3A3A3A\",\n                    // }\n                };\n\n                // Set custom google font families to display in the iFrame.\n                var fontUrls = ['https://fonts.googleapis.com/css2?family=DotGothic16&display=swap']\n\n                // Initialize the client with the Session ID and any custom styles or fonts.\n                var client = versapay.initClient(clientSession, styles, fontUrls)\n\n                // Instantiate the iFrame from client object using the target dom and set the frame height and width.\n                var frameReadyPromise = client.initFrame(document.querySelector('#container'), '358px', '500px')\n\n                // Initialize approval callbacks to handle success/failure of tokenization or payment in the iframe\n                client.onApproval(\n                    onResolve = result => {\n                        // this is the callback function to use when the payment method is approved\n                        // the result.paymentType value can be used to conditionally handle different payment types (creditCard, ach, giftCard)\n                        // the result.token value can be passed up to the server-side code to use for other operations\n                        console.log(result)\n                    }, \n                    onReject = error => {\n                        // this is the callback function to use when the payment method is rejected\n                        // the error.paymentType value can be used to conditionally handle different payment types (creditCard, ach, giftCard)\n                        // the error.error value will contain more information about the payment method error\n                        console.log(error)\n                    }\n                )\n\n                // The client.initFrame function returns a promise that resolves when the iFrame is ready to be used\n                frameReadyPromise.then(function() {       \n                    // Code that is placed here will run after the iFrame is ready.\n                    // For instance, you can disable your form submit button and \n                    // only allow clicks after the iFrame is ready.\n                    submit.removeAttribute('disabled')\n\n                    // Add an event listener for your form submission.\n                    form.addEventListener('submit', function(event) {\n                        event.preventDefault()\n\n                        // Use submit to trigger the submit event on the form in the iframe\n                        client.submitEvents()\n                    })\n                })\n            </script>\n        </body>\n    </html>    \n\n## CSS Styling\n\n---\n\n### DOM Element IDs\n\nThe following IDs can be used as CSS selectors in the style json that can be passed as a parameter to initClient.\n\n    #accountNoDiv\n    #accountNo\n    #cardholderNameDiv\n    #cardholderName\n    #expDateDiv\n    #expDate\n    #expMonth\n    #expYear\n    #cvvDiv\n    #cvv\n\n### Supported CSS properties\n\n    '-moz-appearance',\n    '-moz-osx-font-smoothing',\n    '-moz-tap-highlight-color',\n    '-moz-transition',\n    '-webkit-appearance',\n    '-webkit-font-smoothing',\n    '-webkit-tap-highlight-color',\n    '-webkit-transition',\n    'appearance',\n    'background-color',\n    'border',\n    'border-radius',\n    'color',\n    'direction',\n    'font',\n    'font-family',\n    'font-size',\n    'font-size-adjust',\n    'font-stretch',\n    'font-style',\n    'font-variant',\n    'font-variant-alternates',\n    'font-variant-caps',\n    'font-variant-east-asian',\n    'font-variant-ligatures',\n    'font-variant-numeric',\n    'font-weight',\n    'letter-spacing',\n    'line-height',\n    'margin',\n    'margin-top',\n    'margin-right',\n    'margin-bottom',\n    'margin-left',\n    'opacity',\n    'outline',\n    'padding',\n    'padding-top',\n    'padding-right',\n    'padding-bottom',\n    'padding-left',\n    'text-align',\n    'text-shadow',\n    'transition',\n    'flex-direction',\n    'flex-flow',\n    'flex-basis',\n    'flex-shrink',\n    'flex-grow',\n    'flex-wrap',\n    'justify-content',\n    'flex',\n    'align-self',\n    'align-items',\n    'align-content'  \n# Server-side Orders and Payments\n\nOnce your client-side script has received the payment token from the Versapay Client SDK and passed it to your server-side application, you need to use the API to create and order and process a payment. Depending on your checkout scenario, this can be done in a single step, or it can be split into multiple steps to support more complex flows. \n\nWhen an order is created, it has a status of either Finalized or Not Finalized. Only Finalized orders will be brought into your ERP or order fulfillment system. If you are attempting to use a single payment method for the order, you can use the one-step process. The one-step process will automatically Finalize the order if the payment is approved. Other scenarios, which may include zero payments (e.g., the order is being paid via a Purchase Order) or multiple payments (e.g., the order payment is being split between two credit cards), require that you:\n1. Create the order without any payments\n2. Request zero or more payments necessary for order completion\n3. If all payments are successful, Finalize the order to signal that it is ready to be retrieved by the ERP or order fulfillment system\n\n## Create an Order\n\nWhen you POST to `/sessions/{sessionId}/sales`, the Versapay system will create an order based on the data that you supply in your request. Your POST can include a `payment` element if the intent is to take exactly one payment for the order.\n\nIf successful, the API will return an Order ID, the Finalization status, and, if a payment was requested, the payment response information.\n\nAlways check the Finalization status of the order. If the payment was approved, but the order was not automatically finalized, you should send a PATCH request to finalize the order yourself.\n\n## Create a Payment\n\nIf your intent is to process multiple payments against an order, and you have already create the order and have an Order ID, you can POST to the `/sessions/{sessionId}/sales/{saleId}/payments` endpoint to request a payment against the order.\n\nOnce all payments are successful, you must finalize the order.\n\n## Order Finalization\n\nWhen you are finished with an order and are ready for the ERP or order fulfillment system to retrieve it, you can finalize the order by sending a PATCH request to the `/sessions/{sessionId}/sales/{saleId}` endpoint. If finalization is successful, the API will return a response indicating that the order has been finalized.\n\n\nContact Support:\n Name: Versapay\n Email: support@versapay.com",
+      "type": "text/plain"
+    }
+  }
+}

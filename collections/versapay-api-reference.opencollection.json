@@ -1,0 +1,2060 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Versapay API Reference",
+    "version": "1.3.35"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Echo identity and account profile settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/whoami",
+            "params": [
+              {
+                "name": "options[jwt_expiry]",
+                "value": "",
+                "type": "query",
+                "description": "Number of days (1-365) until JWT expiration, default 30."
+              }
+            ]
+          },
+          "docs": "Lists key account profile settings configured for the authenticated account\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Onboarding",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves rates and terms for merchant services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/onboarding/v1/terms",
+            "params": [
+              {
+                "name": "locale",
+                "value": "",
+                "type": "query",
+                "description": "pass an optional country and language"
+              }
+            ]
+          },
+          "docs": "The system will return the rates, terms, and conditions for merchant services\n"
+        },
+        {
+          "info": {
+            "name": "Create a new application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/onboarding/v1/applications",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds an application to the system"
+        },
+        {
+          "info": {
+            "name": "Get application status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/onboarding/v1/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Application Token"
+              }
+            ]
+          },
+          "docs": "Get the status of an existing application"
+        },
+        {
+          "info": {
+            "name": "Find the application token of an existing application",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/onboarding/v1/applications/search/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Reference Token"
+              }
+            ]
+          },
+          "docs": "Find the application token of an existing applications using the reference token supplied during the create application process"
+        },
+        {
+          "info": {
+            "name": "Record a Completed Step of a Merchant Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/onboarding/v1/application_steps",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Record a completed step of the merchant application process as an integer value. A value of 99 indicates the submission of the full application."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/imports/order",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an order.<br><br>\nThe set of attributes to send in the request body may vary based on the account configuration. Please contact the implementation specialist for more information.<br><br>\n"
+        },
+        {
+          "info": {
+            "name": "Update an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://secure.versapay.com/api/imports/order",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an order identified by its \"identifier\".<br><br>\nThe set of attributes to send in the request body may vary based on the account configuration. Please contact the implementation specialist for more information.<br><br>\n"
+        },
+        {
+          "info": {
+            "name": "Export Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/orders",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              }
+            ]
+          },
+          "docs": "Orders that have been created since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.\n"
+        },
+        {
+          "info": {
+            "name": "Export Orders Published",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/orders/published",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              },
+              {
+                "name": "options[extended_attributes]",
+                "value": "",
+                "type": "query",
+                "description": "When this option (options[extended_attributes][key1]=value1) is present, e.g options[extended_attributes][ecommerce_indicator]=true then only published matching('ecommerce_indicator=true') orders are returned in the result."
+              }
+            ]
+          },
+          "docs": "Orders that have been published (excluding draft orders) since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.\n"
+        },
+        {
+          "info": {
+            "name": "Export/View an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/order/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The order identifier."
+              }
+            ]
+          },
+          "docs": "View an order and its item details.<br><br>\n\nThe path parameter `identifier` is matched to the order's identifier.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reference Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve list of supported error response codes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/reference_data/v1/response_codes"
+          },
+          "docs": "View the list of possible error response codes that may be returned as part of a `response_code` key (and/or `gateway_error_*` related keys) in Order Transactions API. For instance the following response payload highlights a `211` response code:\n\n```\n{\n  \"success\": false,\n  \"transaction\": \"8ATB...586N\",\n  \"authorization\": \"5dl1...ady5\",\n  \"gateway_token\": \"71...77\",\n  \"order\": \"12345\",\n  \"wallet\": \"2ZW4...8Q6V\",\n  \"credit_card\": \"CC4X...WXGX\",\n  \"transactions\": [\n    {\n      \"token\": \"...\",\n    "
+        },
+        {
+          "info": {
+            "name": "Retrieve list of countries and mapped provinces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/reference_data/v1/country_codes"
+          },
+          "docs": "Get the list of country codes and mapped provinces."
+        },
+        {
+          "info": {
+            "name": "Get Bank Identification Number (BIN) reference data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/reference_data/v1/bin"
+          },
+          "docs": "View the Bank Identification Number (BIN) reference data, including bank names, phone number, URLs, country, brand and card types.\n"
+        },
+        {
+          "info": {
+            "name": "Get Bank Identification Number (BIN) reference data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/reference_data/v1/bin/:bin",
+            "params": [
+              {
+                "name": "bin",
+                "value": "",
+                "type": "path",
+                "description": "Bank Identification Number. It has to have of at least 6 digits."
+              }
+            ]
+          },
+          "docs": "View the Bank Identification Number (BIN) reference data for a given bin number, including bank names, phone number, URLs, and card types.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Wallets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search Accessible Wallets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/gateway/v1/wallets/search",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "The type of search `email|customer|fund|vault`"
+              },
+              {
+                "name": "locator",
+                "value": "",
+                "type": "query",
+                "description": "The value used for search according to the type."
+              }
+            ]
+          },
+          "docs": "Accessible wallets can be searched by contact email, customer identifier, fund token, or vault token."
+        },
+        {
+          "info": {
+            "name": "Create Wallet Empty/Payment Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/wallets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new wallet (empty) and/or a new wallet with a payment method."
+        },
+        {
+          "info": {
+            "name": "View Wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/gateway/v1/wallets/:wallet_token",
+            "params": [
+              {
+                "name": "wallet_token",
+                "value": "",
+                "type": "path",
+                "description": "The wallet identifier/token"
+              }
+            ]
+          },
+          "docs": "View specific wallet given its wallet identifier/token."
+        },
+        {
+          "info": {
+            "name": "Add Payment Methods to Known Wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/wallets/:wallet_token/methods",
+            "params": [
+              {
+                "name": "wallet_token",
+                "value": "",
+                "type": "path",
+                "description": "The wallet identifier/token"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add payment methods to a known wallet given its identifier/token."
+        },
+        {
+          "info": {
+            "name": "Update Payment Method in Wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://secure.versapay.com/api/gateway/v1/wallets/:wallet_token/methods/:fund_token",
+            "params": [
+              {
+                "name": "wallet_token",
+                "value": "",
+                "type": "path",
+                "description": "The wallet identifier/token"
+              },
+              {
+                "name": "fund_token",
+                "value": "",
+                "type": "path",
+                "description": "The fund identifier/token"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a payment method given its wallet and fund identifier/token."
+        },
+        {
+          "info": {
+            "name": "Remove Payment Method From Wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://secure.versapay.com/api/gateway/v1/wallets/:wallet_token/methods/:fund_token",
+            "params": [
+              {
+                "name": "wallet_token",
+                "value": "",
+                "type": "path",
+                "description": "The wallet identifier/token"
+              },
+              {
+                "name": "fund_token",
+                "value": "",
+                "type": "path",
+                "description": "The fund identifier/token"
+              }
+            ]
+          },
+          "docs": "Removes a payment method from wallet given given its wallet and fund identifier/token."
+        },
+        {
+          "info": {
+            "name": "Export Wallets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/wallets",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              }
+            ]
+          },
+          "docs": "Payments made to your supplier account from your customers since watermark, limited to 100 payments at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for a subsequent calls.\n"
+        },
+        {
+          "info": {
+            "name": "Export Wallets Recently Updated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/wallets/recent",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              }
+            ]
+          },
+          "docs": "Payment records that have been updated in the past 7 days, since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Order Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Verify transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/orders/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "A Verify transaction serves two purposes. First, it attempts to validate the provided credit card or bank account information. In the case of credit card Verify transactions, the gateway will run a verification transaction to allow the card issuer to confirm that the account is in good standing and that the provided billing address and card verification value (CVV) is correct. In the case of bank accounts, the gateway may attempt to use a negative database of known bad bank accounts or use other"
+        },
+        {
+          "info": {
+            "name": "Sale/Purchase transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/orders/sale",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "A Sale transaction is a request to initiate the transfer of funds from the buyer to the supplier. For credit card payments, the gateway will first authorize the transaction before adding the transaction to the settlement batch for capture at the end of the processing day. For ACH payments, the gateway will accept the sale request and add the transaction to the batch."
+        },
+        {
+          "info": {
+            "name": "Return Credit transaction (unlinked return/refund)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/orders/credit",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "A Credit transaction is a request to initiate the transfer of funds from the supplier back to the buyer and is the opposite of a sale. For credit card payments, the gateway will first authorize the return transaction before adding the transaction to the settlement batch for transmission at the end of the processing day. For ACH payments, the gateway will accept the credit request and add the transaction to the batch."
+        },
+        {
+          "info": {
+            "name": "Authorization transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/orders/auth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "An Authorize transaction is a non-financial transaction and is used to reserve funds on a buyer’s credit card account. An authorization should be used in scenarios when there will be a delay between taking the order and when the goods or services being purchased will be shipped or delivered to the buyer. In order to collect the funds reserved by an authorization, a subsequent capture request is required. Authorizations, if not captured or voided, will automatically be released by the card issuer"
+        },
+        {
+          "info": {
+            "name": "Capture transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/orders/capture",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "A Capture transaction initiates the transfer of funds reserved by a prior authorization. When the gateway receives the capture request, it adds the capture to the settlement batch for transmission to the payment processing platform at the end of the processing day."
+        },
+        {
+          "info": {
+            "name": "Return refund transaction (linked return/refund)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/orders/refund",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "A Refund transaction is a request to initiate the transfer of funds from the supplier back to the buyer and is based on a prior sale or capture transaction. For credit card payments, the gateway will first authorize the return transaction before adding the transaction to the settlement batch for transmission at the end of the processing day. For ACH payments, the gateway will accept the refund request and add the transaction to the batch."
+        },
+        {
+          "info": {
+            "name": "Void transaction (linked return/refund)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/orders/void",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "A Void transaction reverses the effect of a prior transaction when possible. Financial transactions like sales, captures, credits, and refunds can be voided during the same processing day until the gateway transmits the settlement batch. Once the batch has been transmitted, a void is not possible, and the transaction would need to be reversed using a financial transaction (e.g., a sale would need to be reversed with a refund). Void transactions can also reverse the effect of an authorization, ei"
+        },
+        {
+          "info": {
+            "name": "Export/View a Transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/transaction/:token_or_reference",
+            "params": [
+              {
+                "name": "token_or_reference",
+                "value": "",
+                "type": "path",
+                "description": "The transaction's `token` or `unique_reference`."
+              }
+            ]
+          },
+          "docs": "View an order transaction details.<br><br> The path parameter `reference_or_token` is matched to the transaction's `token` or `unique_reference`, in that order. Alias/see `/api/gateway/v1/transaction/{token_or_reference}`\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Card Present EMV",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Issue a direct command to a POS terminal e.g. DeviceSetup, RequestSignature, Cancel, DeviceStatus",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/terminal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Issue a direct command to a POS terminal e.g. DeviceSetup, RequestSignature, Cancel, DeviceStatus"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Gift Cards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Activate and/or load a gift card balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/gift_card",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Activate and/or load a gift card balance"
+        },
+        {
+          "info": {
+            "name": "Read a gift card balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/gateway/v1/gift_card/read",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read a gift card balance"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Fund Sources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "View Your Fund Sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/funds"
+          },
+          "docs": "View Your Fund Sources"
+        },
+        {
+          "info": {
+            "name": "Vault a Bank Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/vault/bank",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Vault a Bank Account for subsequent Transaction Use/Creation"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "View Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/transactions",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "50 items are displayed per page."
+              }
+            ]
+          },
+          "docs": "View Transactions"
+        },
+        {
+          "info": {
+            "name": "Create Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/transactions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Transactions"
+        },
+        {
+          "info": {
+            "name": "View a Transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/transactions/:token_or_unique_reference",
+            "params": [
+              {
+                "name": "token_or_unique_reference",
+                "value": "",
+                "type": "path",
+                "description": "The transaction identifier (or unique_reference)."
+              }
+            ]
+          },
+          "docs": "View a Transaction"
+        },
+        {
+          "info": {
+            "name": "Approve a Transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/transactions/:token/approve",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "The transaction identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approve a `new` or `wait_for_request_approval` transaction.<br>\nAn API key with administrative access is required to approve a transaction.\n"
+        },
+        {
+          "info": {
+            "name": "Cancel a Transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/transactions/:token/cancel",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "The transaction identifier."
+              }
+            ]
+          },
+          "docs": "Cancel a `new`, `wait_for_request_approval` or `wait_for_bank_account_verification` transaction you created. Transactions cannot be cancelled after they have been sent to the bank and are `in_progress`.<br>\nAn API key with administrative access is required to approve a transaction.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Agreements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create an Agreement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/debit_agreements",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an Agreement"
+        },
+        {
+          "info": {
+            "name": "View Sent Agreements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/debit_agreements/sent",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "50 items are displayed per page."
+              }
+            ]
+          },
+          "docs": "View Sent Agreements"
+        },
+        {
+          "info": {
+            "name": "View Received Agreements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/debit_agreements/received",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "50 items are displayed per page."
+              }
+            ]
+          },
+          "docs": "View Received Agreements"
+        },
+        {
+          "info": {
+            "name": "Approve an Agreement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/debit_agreements/:token/approve",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "The agreement identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approve an Agreement"
+        },
+        {
+          "info": {
+            "name": "Cancel an Agreement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/debit_agreements/:token/cancel",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "The agreement identifier."
+              }
+            ]
+          },
+          "docs": "Cancel an Agreement"
+        },
+        {
+          "info": {
+            "name": "Reject an Agreement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/debit_agreements/:token/reject",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "The agreement identifier."
+              }
+            ]
+          },
+          "docs": "Reject a *pending* agreement by supplying an agreement's *token* attribute and providing a *rejection_reason*.\n"
+        },
+        {
+          "info": {
+            "name": "Revoke an Agreement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/debit_agreements/:token/revoke",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "The agreement identifier."
+              }
+            ]
+          },
+          "docs": "Revoke an *approved* agreement for your account by supplying an agreement's token attribute. The agreement's creator will no longer be able to debit your account using this agreement.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Autopay",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves Autopays",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/autopay",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Gets all the autopay for a customer"
+        },
+        {
+          "info": {
+            "name": "Create an Autopay",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/autopay",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an Autopay"
+        },
+        {
+          "info": {
+            "name": "Updates an Autopay",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://secure.versapay.com/api/autopay",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a autopay fund"
+        },
+        {
+          "info": {
+            "name": "Revoke an Autopay",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/autopay/revoke",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Revoke an *approved* autopay for your account by supplying an agreement's token attribute. The agreement's creator will no longer be able to debit your account using this autopay agreement.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Customers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create and Update Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/imports/customer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a customer using the following attributes (at minimum by providing values for required attributes). If providing an identifier for an existing customer, its information is updated.<br><br>\n*Note: Any additional non-standard attribute will be stored with customer record and available for presentment rendering.*\n"
+        },
+        {
+          "info": {
+            "name": "Export/View a Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/customer/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "`identifier` of the customer record.\n"
+              }
+            ]
+          },
+          "docs": "View a customer based on the `identifier` provided.\n"
+        },
+        {
+          "info": {
+            "name": "Export Customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/customers",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              }
+            ]
+          },
+          "docs": "Customer records that have been created since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.\n"
+        },
+        {
+          "info": {
+            "name": "Export Customers Recently Updated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/customers/recent",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              }
+            ]
+          },
+          "docs": "Customer records that have been updated in the past 7 days, since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.\n"
+        },
+        {
+          "info": {
+            "name": "Export Open Invoices for a Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/customer/:identifier/open_invoices",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "`identifier` of the customer record.\n"
+              },
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              }
+            ]
+          },
+          "docs": "Invoice records with an open balance for the customer based on the `identifier` provided,\nlimited to 100 records at a time.<br><br>A consumer should store the last `watermark` value of each\nresponse and include it as the watermark parameter for subsequent calls.\n"
+        },
+        {
+          "info": {
+            "name": "Issue an invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/invitations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Issue a new contact invitation for the specified customer.  The recipient of the invitation will begin to receive other Collaborative AR notifications, subject to the configuration of the supplier.\n\n*Note:* If the provided email is not an existing contact of the specified customer, a new contact will be created.\n"
+        },
+        {
+          "info": {
+            "name": "Cancel an invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://secure.versapay.com/api/invitations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancel an existing contact invitation for the specified customer.\n\n*Note:* `403` will be returned if the specified customer is closed, or if the specified email was invited by a customer user\n"
+        },
+        {
+          "info": {
+            "name": "Update Customer Identifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/imports/customers/:identifier/update_identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "`identifier` of the customer to be updated.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a customer's identifier and any associations where identifier is being stored. <br><br> *Note:* `412` will be returned if the specified customer cannot be found or the identifier has already been taken.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Invoices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create and Update Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/imports/invoice",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create and update invoices. If the invoice already exists when a request is processed, it will be updated. If attachment is provided, will include the document in the invoice.<br><br>\nThe set of attributes to send in the request body may vary based on the account configuration. Please contact the implementation specialist for more information.<br><br>\n*Note:*\n  * *Customer will be created/updated using the customer_&ast; attributes if necessary at time of invoice import.*\n  * *Any additional non"
+        },
+        {
+          "info": {
+            "name": "Add Invoice Attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/imports/invoice/:invoice_number/attachment",
+            "params": [
+              {
+                "name": "invoice_number",
+                "value": "",
+                "type": "path",
+                "description": "Invoice `number` or `display_number` of the existing invoice, must align with find_by locator.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add or update a PDF attachment to an existing invoice. The attachment will be included with the invoice and available for customer viewing.<br><br>\nThe attachment content must be provided as a base64 encoded string. This endpoint is subject to rate limiting and file size restrictions.<br><br>\n### Size Limit\nThe file cannot exceed 25MB.\n"
+        },
+        {
+          "info": {
+            "name": "Export/View an Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/invoice/:number_or_id",
+            "params": [
+              {
+                "name": "number_or_id",
+                "value": "",
+                "type": "path",
+                "description": "`number` or `display_number` or `id` of the invoice record.\n"
+              },
+              {
+                "name": "options",
+                "value": "",
+                "type": "query",
+                "description": "An array of additional options that determine if extra data should be fetched for the invoice\n"
+              },
+              {
+                "name": "options[payments]",
+                "value": "",
+                "type": "query",
+                "description": "When this option is present: `?options[payments]=true` then an extra attribute is appended to the payload `payments`, this `payments` attribute will contain an array of all the PaymentAmounts associated with the exported invoice. When the supplier is enabled for `line_item_short_pay` then within the payments array there will be a nested structure of `line_item_transactional_amounts` containing the information corresponding to each line item that has been short paid.\n"
+              }
+            ]
+          },
+          "docs": "View an invoice.<br><br>\n\nThe path parameter `number_or_id` is matched to the invoice `number`, `display_number` or `id`, in that order.\n"
+        },
+        {
+          "info": {
+            "name": "Export Invoices Recently Updated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/invoices/recent",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              },
+              {
+                "name": "options[include_deleted_invoices]",
+                "value": "",
+                "type": "query",
+                "description": "When this option is present: `?options[include_deleted_invoices]=true` then an extra attribute (deleted) is appended for each invoice, and invoices payload will contain both deleted and non-deleted invoices. If `?options[include_deleted_invoices]=false` or not set, only non-deleted invoices will be returned and invoice won't contain deleted attribute.\n"
+              }
+            ]
+          },
+          "docs": "Invoice records that have been updated in the past 7 days, since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.\n"
+        },
+        {
+          "info": {
+            "name": "Export Open Invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/open_invoices",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              },
+              {
+                "name": "options[include_deleted_invoices]",
+                "value": "",
+                "type": "query",
+                "description": "When this option is present: `?options[include_deleted_invoices]=true` then an extra attribute (deleted) is appended for each invoice, and invoices payload will contain both deleted and non-deleted invoices. If `?options[include_deleted_invoices]=false` or not set, only non-deleted invoices will be returned and invoice won't contain deleted attribute.\n"
+              }
+            ]
+          },
+          "docs": "Invoice records with an open balance, limited to 100 records at a time.<br><br>\nA supplier should store the last `watermark` value of each\nresponse and include it as the watermark parameter for subsequent calls.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Notifications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Single Invoice Reminder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/notifications/remind/:number_or_id",
+            "params": [
+              {
+                "name": "number_or_id",
+                "value": "",
+                "type": "path",
+                "description": "`number` or `display_number` or `id` of the invoice record.\n"
+              }
+            ]
+          },
+          "docs": "Issue an invoice reminder to the relevant recipients for the specified invoice.\n"
+        },
+        {
+          "info": {
+            "name": "Bulk Invoice Reminder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/notifications/remind",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Issue an invoice reminder to the relevant recipients for the specified invoices.\n"
+        },
+        {
+          "info": {
+            "name": "Direct Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/notifications/direct_message",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Issue a direct message to just the specified email address regarding the declared object.<br><br> **Note: When certain conditions are not met for an `order` the response code `400` will be returned. Conditions are:**\n* must be enabled for supplier\n* must not be a draft\n* owing_cents must be greater than 0\n* deposit_amount_cents must be greater than 0\n* order must belong to a customer\n<br>**Note: When certain conditions are not met for a `payment_method` the response code `400` will be returned. "
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Invoicing Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/imports/payment",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create and update external payments.<br><br>The set of attributes to send in the request body may vary based on the account configuration. Please contact the implementation specialist for more information.<br><br>\nThe request schema for posting a payment for a single invoice is slightly different than that for posting a payment for multiple invoices.\n\nFor instance, sample request for posting payment for a single invoice looks like:\n```\n{\n  \"identifier\": \"PMT0010-05\",\n  \"invoice_number\": \"INV1234"
+        },
+        {
+          "info": {
+            "name": "Export/View a Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/payment/:reference_or_token",
+            "params": [
+              {
+                "name": "reference_or_token",
+                "value": "",
+                "type": "path",
+                "description": "The payment's `payment_reference` or `payment_transaction_token`."
+              },
+              {
+                "name": "options[export_payment_tree]",
+                "value": "",
+                "type": "query",
+                "description": "When present: `?options[export_payment_tree]=true` then the optional `payment_tree` attribute is included in the response payload.\n"
+              },
+              {
+                "name": "options[fx]",
+                "value": "",
+                "type": "query",
+                "description": "When present: `?options[fx]=true` then the optional `fx_rate`, `fx_amount`, and `fx_amount_cents` attributes are included in the response payload.\n"
+              }
+            ]
+          },
+          "docs": "View a payment.<br><br>\n\nThe path parameter `reference_or_token` is matched to the payment's `payment_reference` or `payment_transaction_token`, in that order.\n"
+        },
+        {
+          "info": {
+            "name": "Export Payment Allocations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/payment_amounts",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              },
+              {
+                "name": "options[fx]",
+                "value": "",
+                "type": "query",
+                "description": "When present: `?options[fx]=true` then the optional `fx_rate`, `fx_amount`, and `fx_amount_cents` attributes are included in the response payload.\n"
+              }
+            ]
+          },
+          "docs": "Payments made/recorded to your supplier account from your customers since watermark, limited to 100 payment amounts at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for a subsequent calls.\n"
+        },
+        {
+          "info": {
+            "name": "Export Payments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/payments",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              },
+              {
+                "name": "options[export_payment_tree]",
+                "value": "",
+                "type": "query",
+                "description": "When present: `?options[export_payment_tree]=true` then the optional `payment_tree` attribute is included in the response payload.\n"
+              },
+              {
+                "name": "options[fx]",
+                "value": "",
+                "type": "query",
+                "description": "When present: `?options[fx]=true` then the optional `fx_rate`, `fx_amount`, and `fx_amount_cents` attributes are included in the response payload.\n"
+              }
+            ]
+          },
+          "docs": "Payments made/recorded to your supplier account from your customers since watermark, limited to 100 payments at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for a subsequent calls.\n"
+        },
+        {
+          "info": {
+            "name": "Export Payments Recently Updated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/payments/recent",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              },
+              {
+                "name": "options[export_payment_tree]",
+                "value": "",
+                "type": "query",
+                "description": "When present: `?options[export_payment_tree]=true` then the optional `payment_tree` attribute is included in the response payload.\n"
+              },
+              {
+                "name": "options[fx]",
+                "value": "",
+                "type": "query",
+                "description": "When present: `?options[fx]=true` then the optional `fx_rate`, `fx_amount`, and `fx_amount_cents` attributes are included in the response payload.\n"
+              }
+            ]
+          },
+          "docs": "Payment records that have been updated in the past 7 days, since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Divisions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create and Update Division",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/imports/division",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create and update divisions.  If the division already exists when a request is processed, it will be updated.<br><br>\nNote:\n  * A Division cannot be deleted if it is:\n    * related to any invoices\n    * a parent division\n  * The parent division must exist in order to add a child division to a hierarchy.  Attempting to set an unknown parent code will permit the creation of the new division, but will not create a parent.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Collaboration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Close a Dispute",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/invoices/:invoice_number/disputes/close",
+            "params": [
+              {
+                "name": "invoice_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the invoice whose dispute should be closed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Close the active dispute on the specified invoice.<br><br>\nIf the invoice has no active dispute, the request is treated as a no-op and returns a success response with `\"0 disputes closed\"`.<br><br>\nAn optional `closer` attribute can be provided to record who closed the dispute, and an optional `comment` attribute will create a closing comment on the dispute.\n"
+        },
+        {
+          "info": {
+            "name": "Export Open and Closed Disputes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/disputes",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The date/datetime (yyyy-mm-dd, yyyy-mm-ddThh:mm:ss) value to base a subsequent extract of the next 100 open and the next 100 closed disputes."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure. Note the watermark is a date/datetime, and the response watermark is the dispute.id and is not to be used as the input."
+              }
+            ]
+          },
+          "docs": "Open and closed disputes since watermark, limited to 100 disputes at a time per category (open/closed)."
+        },
+        {
+          "info": {
+            "name": "Export Customer and Invoice Comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/comments",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              }
+            ]
+          },
+          "docs": "Customer and invoice comments (including disputes) since watermark, limited to 100 comments at a time."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "File Imports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "View In-Progress & Completed Batches",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/imports",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "50 items are displayed per page."
+              }
+            ]
+          },
+          "docs": "View recent in-progress and completed import batches."
+        },
+        {
+          "info": {
+            "name": "Import a CSV File",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://secure.versapay.com/api/imports",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "filename",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "When uploading a CSV-formatted file it’s helpful to use your language/framework tooling to simplify the [multipart/form-data](https://www.ietf.org/rfc/rfc2388.txt) file upload.\n### Size Limit\nThe file cannot exceed 25MB.\n### Layouts\nPlease contact support@versapay.com or reach out to your implementation specialist for standard inbound CSV file layouts.\n"
+        },
+        {
+          "info": {
+            "name": "View In-Progress Batches",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/imports/processing",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "50 items are displayed per page."
+              }
+            ]
+          },
+          "docs": "View only recent in-progress import batches."
+        },
+        {
+          "info": {
+            "name": "View Completed Batches",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/imports/completed",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "50 items are displayed per page."
+              }
+            ]
+          },
+          "docs": "View only recent completed import batches."
+        },
+        {
+          "info": {
+            "name": "View Batch Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/imports/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The import batch identifier."
+              }
+            ]
+          },
+          "docs": "View Batch Details"
+        },
+        {
+          "info": {
+            "name": "View Tokenized Results of File Imported Payment Methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/imports/:id/echo",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The import batch identifier."
+              }
+            ]
+          },
+          "docs": "Tokenized results of file imported payment methods are available up to 24hrs following a fund import. This results file echo's the original input lines - absent the original header line, with sensitive field masking - appending the imported items `wallet token`, `fund token`, and `vault token` - i.e. essential references that can be used for subsequent payment/order transactions API usage.\n"
+        },
+        {
+          "info": {
+            "name": "View Batch Errors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/imports/:id/errors",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The import batch identifier."
+              }
+            ]
+          },
+          "docs": "View the error results for a given batch import. This endpoint returns by default a `json` type response. But you can specify the extension in which you want to see the response, the accepted extensions are `json` and `csv`\n"
+        },
+        {
+          "info": {
+            "name": "Export/View Invoice Reconciliation Results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/invoice_recon/:batch_file_id",
+            "params": [
+              {
+                "name": "batch_file_id",
+                "value": "",
+                "type": "path",
+                "description": "Optional, the `id` of the batch file import queued via /api/imports. When not specified the most recent invoice recon results are returned if any."
+              },
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              }
+            ]
+          },
+          "docs": "View the most recent, or for a given batch import, invoice reconciliation results.\n"
+        },
+        {
+          "info": {
+            "name": "Export/View Payment Reconciliation Results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/exports/payment_recon/:batch_file_id",
+            "params": [
+              {
+                "name": "batch_file_id",
+                "value": "",
+                "type": "path",
+                "description": "Optional, the `id` of the batch file import queued via /api/imports. When not specified the most recent invoice recon results are returned if any."
+              },
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              }
+            ]
+          },
+          "docs": "View the most recent, or for a given batch import, payment reconciliation results.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Settlement Reporting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Monthly Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/gateway/v1/settlement/statements",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              },
+              {
+                "name": "sample",
+                "value": "",
+                "type": "query",
+                "description": "Show some sample data"
+              },
+              {
+                "name": "list",
+                "value": "",
+                "type": "query",
+                "description": "See Watermark & Limit for more information on response structure."
+              },
+              {
+                "name": "mid",
+                "value": "",
+                "type": "query",
+                "description": "account filter by mid or merchant account token."
+              },
+              {
+                "name": "enddate_from",
+                "value": "",
+                "type": "query",
+                "description": "start date of range filter for the statement period end date (yyyy-mm-dd)."
+              },
+              {
+                "name": "enddate_to",
+                "value": "",
+                "type": "query",
+                "description": "end date of range filter for the statement period end date  (yyyy-mm-dd)."
+              }
+            ]
+          },
+          "docs": "List of monthly statements added since watermark, limited to 100 (default) at a time."
+        },
+        {
+          "info": {
+            "name": "View Monthly Statement PDF",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/gateway/v1/settlement/statements/:statement_identifier.:format",
+            "params": [
+              {
+                "name": "statement_identifier",
+                "value": "",
+                "type": "path",
+                "description": "Identifier/token of the monthly statement"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "path",
+                "description": "The format of the statement to retrieve, either 'pdf' or 'json'."
+              }
+            ]
+          },
+          "docs": "The generated PDF for a specific monthly statement."
+        },
+        {
+          "info": {
+            "name": "Retrieve Daily Batch Deposits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/gateway/v1/settlement/batches",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              }
+            ]
+          },
+          "docs": "List of daily batch deposits including fees and transactions."
+        },
+        {
+          "info": {
+            "name": "Retrieve Daily Transaction Exceptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/gateway/v1/settlement/exceptions",
+            "params": [
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "The value to base a subsequent extract of the next 100 items."
+              }
+            ]
+          },
+          "docs": "List of exception transactions including ACH return/reject and CC chargeback."
+        },
+        {
+          "info": {
+            "name": "View Transaction Detail",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/gateway/v1/transactions/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "The transaction's `token` or `unique_reference`."
+              }
+            ]
+          },
+          "docs": "Alias `/api/exports/transaction/{token}`, see `Order Transactions` _View a Transaction_"
+        },
+        {
+          "info": {
+            "name": "View Order Detail",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/gateway/v1/orders/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "The order identifier."
+              }
+            ]
+          },
+          "docs": "Alias `/api/exports/order/{token}`, see `Orders` _View an Order_"
+        },
+        {
+          "info": {
+            "name": "View Invoicing Payment Detail",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://secure.versapay.com/api/gateway/v1/payments/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "The payment's `token` or `payment_transaction_token`."
+              }
+            ]
+          },
+          "docs": "Alias `/api/exports/payment/{token}`, see `Invoicing Payments` _View a Payment_"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

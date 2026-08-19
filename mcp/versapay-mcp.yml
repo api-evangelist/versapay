@@ -2,58 +2,62 @@ generated: '2026-07-24'
 method: derived
 status: candidate
 source: openapi/versapay-api-reference.json, openapi/versapay-ecommerce-api.json
-notes: >-
-  No official hosted Versapay MCP server was found (searched docs, npm
-  @modelcontextprotocol, MCP registries — 2026-07-24). This is a DERIVED candidate
-  tool list mapping marquee REST operations to agent tools; each tool inherits its
-  real input contract from the backing operation in the OpenAPI. Not published.
+notes: No official hosted Versapay MCP server was found (searched docs, npm @modelcontextprotocol, MCP
+  registries — 2026-07-24). This is a DERIVED candidate tool list mapping marquee REST operations to agent
+  tools; each tool inherits its real input contract from the backing operation in the OpenAPI. Not published.
 server:
   name: versapay
   transport: http
   url: null
 tools:
-  - name: whoami
-    description: Echo identity and account profile settings.
-    source_operation: openapi/versapay-api-reference.json#whoami
-  - name: create_order
-    description: Create an order (import).
-    source_operation: openapi/versapay-api-reference.json#createOrder
-  - name: update_order
-    description: Update an order (import).
-    source_operation: openapi/versapay-api-reference.json#updateOrder
-  - name: sale_transaction
-    description: Run a sale/purchase order transaction.
-    source_operation: openapi/versapay-api-reference.json#POST /api/gateway/v1/orders/sale
-  - name: auth_transaction
-    description: Authorize an order transaction.
-    source_operation: openapi/versapay-api-reference.json#POST /api/gateway/v1/orders/auth
-  - name: capture_transaction
-    description: Capture a previously authorized transaction.
-    source_operation: openapi/versapay-api-reference.json#POST /api/gateway/v1/orders/capture
-  - name: refund_transaction
-    description: Return/refund a linked transaction.
-    source_operation: openapi/versapay-api-reference.json#POST /api/gateway/v1/orders/refund
-  - name: create_wallet
-    description: Create an empty or payment-method wallet.
-    source_operation: openapi/versapay-api-reference.json#POST /api/gateway/v1/wallets
-  - name: view_wallet
-    description: View a wallet by token.
-    source_operation: openapi/versapay-api-reference.json#GET /api/gateway/v1/wallets/{wallet_token}
-  - name: import_invoice
-    description: Create/update an invoice.
-    source_operation: openapi/versapay-api-reference.json#POST /api/imports/invoice
-  - name: export_open_invoices
-    description: Export open invoices (watermark + limit).
-    source_operation: openapi/versapay-api-reference.json#GET /api/exports/open_invoices
-  - name: create_payment
-    description: Create an invoicing payment.
-    source_operation: openapi/versapay-api-reference.json#POST /api/imports/payment
-  - name: retrieve_settlement_statements
-    description: Retrieve monthly settlement statements.
-    source_operation: openapi/versapay-api-reference.json#GET /api/gateway/v1/settlement/statements
-  - name: create_ecommerce_session
-    description: Create an Ecommerce payment session.
-    source_operation: openapi/versapay-ecommerce-api.json#createSession
-  - name: ecommerce_create_sale
-    description: Process a sale within an Ecommerce session.
-    source_operation: openapi/versapay-ecommerce-api.json#createSale
+- name: whoami
+  description: Echo identity and account profile settings.
+  source_operation: openapi/versapay-api-reference.json#whoami
+- name: create_order
+  description: Create an order (import).
+  source_operation: openapi/versapay-api-reference.json#createOrder
+- name: update_order
+  description: Update an order (import).
+  source_operation: openapi/versapay-api-reference.json#updateOrder
+- name: sale_transaction
+  description: Run a sale/purchase order transaction.
+  source_operation: openapi/versapay-api-reference.json#POST /api/gateway/v1/orders/sale
+- name: auth_transaction
+  description: Authorize an order transaction.
+  source_operation: openapi/versapay-api-reference.json#POST /api/gateway/v1/orders/auth
+- name: capture_transaction
+  description: Capture a previously authorized transaction.
+  source_operation: openapi/versapay-api-reference.json#POST /api/gateway/v1/orders/capture
+- name: refund_transaction
+  description: Return/refund a linked transaction.
+  source_operation: openapi/versapay-api-reference.json#POST /api/gateway/v1/orders/refund
+- name: create_wallet
+  description: Create an empty or payment-method wallet.
+  source_operation: openapi/versapay-api-reference.json#POST /api/gateway/v1/wallets
+- name: view_wallet
+  description: View a wallet by token.
+  source_operation: openapi/versapay-api-reference.json#GET /api/gateway/v1/wallets/{wallet_token}
+- name: import_invoice
+  description: Create/update an invoice.
+  source_operation: openapi/versapay-api-reference.json#POST /api/imports/invoice
+- name: export_open_invoices
+  description: Export open invoices (watermark + limit).
+  source_operation: openapi/versapay-api-reference.json#GET /api/exports/open_invoices
+- name: create_payment
+  description: Create an invoicing payment.
+  source_operation: openapi/versapay-api-reference.json#POST /api/imports/payment
+- name: retrieve_settlement_statements
+  description: Retrieve monthly settlement statements.
+  source_operation: openapi/versapay-api-reference.json#GET /api/gateway/v1/settlement/statements
+- name: create_ecommerce_session
+  description: Create an Ecommerce payment session.
+  source_operation: openapi/versapay-ecommerce-api.json#createSession
+- name: ecommerce_create_sale
+  description: Process a sale within an Ecommerce session.
+  source_operation: openapi/versapay-ecommerce-api.json#createSale
+deployment:
+  mode: none
+  verified: derived
+  tools: 15
+  checked: '2026-08-12'
+  source: catalog MCP census

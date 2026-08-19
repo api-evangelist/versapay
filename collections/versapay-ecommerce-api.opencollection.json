@@ -1,0 +1,359 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Versapay Ecommerce API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "developers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "create a session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "By passing in the appropriate options, you can create an iframe \nsession with options that meet your needs. If successful, this operation will return a session id in the \"id\" property of the response. Your application can then use that session id when initializing our client-side JavaScript library, which will inject an iframe into your page. The iframe will be rendered using the options you specify. When sensitive payment data is entered into the iframe, it will be tokenized by our servers, and"
+        },
+        {
+          "info": {
+            "name": "create a wallet for a known user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.versapay.com/api/v2/wallets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This operation will create a new wallet for a known customer. If the customer is using a guest checkout feature, wallets should not be used until an account is created and the customer becomes known."
+        },
+        {
+          "info": {
+            "name": "process a sale",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id/sales",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This operation will send a new order to our server. You can optionally process a payment transaction in a single operation. However, if you need to process multiple payment transactions, you should use the seperate payment operation. If a payment is included, the order will be finalized if the payment is approved. If a payment is not included, the order will not be finalized, and a PATCH request will be required to finalize the order once all payments have been processed."
+        },
+        {
+          "info": {
+            "name": "update a sale",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id/sales/:saleid",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID"
+              },
+              {
+                "name": "saleid",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This operation will update an existing order on our server to finalize the order and get it ready for import."
+        },
+        {
+          "info": {
+            "name": "process a payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id/sales/:saleid/payments",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID"
+              },
+              {
+                "name": "saleid",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Use this operation to authorize a payment instrument for an existing sale. You must have already created the sale."
+        },
+        {
+          "info": {
+            "name": "check the balance of a payment method fund token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id/balance/:giftcardid",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID"
+              },
+              {
+                "name": "giftcardid",
+                "value": "",
+                "type": "path",
+                "description": "Gift Card Token"
+              }
+            ]
+          },
+          "docs": "This operation will check the balance of a payment method using the fund token. This will result in an error for payment method types other than gift cards."
+        },
+        {
+          "info": {
+            "name": "Validate Apple Pay merchant",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id/applepay-validatemerchant",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID for the Apple Pay validation request."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validate Apple Pay merchant session for Apple Pay processing."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "internal",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "get a session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID"
+              }
+            ]
+          },
+          "docs": "Retrieve a session and its options for constructing an iframe\n"
+        },
+        {
+          "info": {
+            "name": "get a token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id/tokens",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get the token for a plaintext account number\n"
+        },
+        {
+          "info": {
+            "name": "update a credit card wallet entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id/wallet/:walletid/creditcards/:creditcardid",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID"
+              },
+              {
+                "name": "walletid",
+                "value": "",
+                "type": "path",
+                "description": "Wallet ID"
+              },
+              {
+                "name": "creditcardid",
+                "value": "",
+                "type": "path",
+                "description": "Credit Card Token"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This operation will update an existing credit card wallet entry with information collected from the buyer."
+        },
+        {
+          "info": {
+            "name": "remove a credit card wallet entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id/wallet/:walletid/creditcards/:creditcardid",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID"
+              },
+              {
+                "name": "walletid",
+                "value": "",
+                "type": "path",
+                "description": "Wallet ID"
+              },
+              {
+                "name": "creditcardid",
+                "value": "",
+                "type": "path",
+                "description": "Credit Card Token"
+              }
+            ]
+          },
+          "docs": "This operation will remove an existing credit card entry from a wallet."
+        },
+        {
+          "info": {
+            "name": "update a bank account wallet entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id/wallet/:walletid/bankaccounts/:bankaccountid",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID"
+              },
+              {
+                "name": "walletid",
+                "value": "",
+                "type": "path",
+                "description": "Wallet ID"
+              },
+              {
+                "name": "bankaccountid",
+                "value": "",
+                "type": "path",
+                "description": "Bank Account Token"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This operation will update an existing bank account wallet entry with information collected from the buyer."
+        },
+        {
+          "info": {
+            "name": "remove a bank account wallet entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{subdomain}.versapay.com/api/v2/sessions/:id/wallet/:walletid/bankaccounts/:bankaccountid",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Session ID"
+              },
+              {
+                "name": "walletid",
+                "value": "",
+                "type": "path",
+                "description": "Wallet ID"
+              },
+              {
+                "name": "bankaccountid",
+                "value": "",
+                "type": "path",
+                "description": "Bank Account Token"
+              }
+            ]
+          },
+          "docs": "This operation will remove an existing bank account entry from a wallet."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
