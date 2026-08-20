@@ -26,6 +26,19 @@ tags:
 - Canada
 - Accounts Receivable
 - AR Automation
+- Order-to-Cash
+- Payment Acceptance
+- Payment Processing
+- B2B Payments
+- Invoicing
+- E-Commerce
+- Card Present
+- Webhook
+tags_raw:
+- Payments
+- Canada
+- Accounts Receivable
+- AR Automation
 - Order to Cash
 - Payment Acceptance
 - Payment Processing
@@ -55,6 +68,12 @@ apis:
   - Payment Acceptance
   - Invoicing
   - Card Present
+  - Webhook
+  tags_raw:
+  - Accounts Receivable
+  - Payment Acceptance
+  - Invoicing
+  - Card Present
   - Webhooks
   properties:
   - type: OpenAPI
@@ -80,6 +99,11 @@ apis:
   humanURL: https://developers.versapay.com/ecommerce/
   baseURL: https://secure.versapay.com/api/v2
   tags:
+  - E-Commerce
+  - Payment Sessions
+  - Wallets
+  - Hosted Checkout
+  tags_raw:
   - Ecommerce
   - Payment Sessions
   - Wallets
