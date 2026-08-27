@@ -51,73 +51,585 @@ created: '2026-07-24'
 modified: '2026-07-24'
 specificationVersion: '0.23'
 apis:
-- aid: versapay:versapay-api-reference
-  name: Versapay API Reference
-  description: >-
-    The core Versapay platform REST API (v1.3.35, OpenAPI 3.0.0, 86 documented
-    paths) covering the Collaborative AR and payment-acceptance surface:
-    onboarding applications, wallets, orders and order transactions, gift cards,
-    card-present EMV, reference data, settlement reporting, autopay, customers,
-    invoices and invoicing payments, divisions, notifications, collaboration,
-    file imports, and webhooks. Authenticated with HTTPS Basic access
-    authentication (API Token and Key) against a UAT sandbox and production.
+- aid: versapay:versapay-agreements-api
+  name: Versapay Agreements API
+  description: The Agreements API from Versapay — 7 operation(s) for agreements.
   humanURL: https://developers.versapay.com/
   baseURL: https://secure.versapay.com
   tags:
-  - Accounts Receivable
-  - Payment Acceptance
-  - Invoicing
-  - Card Present
-  - Webhook
-  tags_raw:
-  - Accounts Receivable
-  - Payment Acceptance
-  - Invoicing
-  - Card Present
-  - Webhooks
+  - Agreements
   properties:
   - type: OpenAPI
-    url: openapi/versapay-api-reference.json
+    url: openapi/versapay-agreements-api-openapi.yml
   - type: Documentation
     url: https://developers.versapay.com/
   - type: APIReference
     url: https://developers.versapay.com/
-  - type: Overlay
-    url: overlays/versapay-api-reference-overlay.yaml
   - type: ToolCrosswalk
     url: mcp/versapay-tool-crosswalk.yml
-- aid: versapay:versapay-ecommerce-api
-  name: Versapay Ecommerce API
-  description: >-
-    The Versapay Ecommerce server-side API (v2.0.0, OpenAPI 3.0.0, 11 documented
-    paths) that configures payment sessions, manages customer wallets (credit
-    cards and bank accounts), creates and captures order sales and payments,
-    checks gift-card balances, and validates Apple Pay merchants. It pairs with
-    a client-side JavaScript SDK and a Versapay-hosted iframe so sensitive
-    payment data never transits the merchant application, reducing PCI scope.
-    Served from https://{subdomain}.versapay.com/api/v2.
-  humanURL: https://developers.versapay.com/ecommerce/
-  baseURL: https://secure.versapay.com/api/v2
-  tags:
-  - E-Commerce
-  - Payment Sessions
-  - Wallets
-  - Hosted Checkout
-  tags_raw:
-  - Ecommerce
-  - Payment Sessions
-  - Wallets
-  - Hosted Checkout
-  properties:
-  - type: OpenAPI
-    url: openapi/versapay-ecommerce-api.json
   - type: Documentation
     url: https://developers.versapay.com/ecommerce/
   - type: APIReference
     url: https://developers.versapay.com/ecommerce/
-  - type: Overlay
-    url: overlays/versapay-ecommerce-api-overlay.yaml
+- aid: versapay:versapay-authentication-api
+  name: Versapay Authentication API
+  description: >-
+    Visit your account settings in `UAT` (https://uat.versapay.com/account) or `Production` (https://secure.versapay.com/account)
+    to setup API credentials needed for authentication as well as webhooks to receive relevant callbacks
+    from Versapay transaction processing.
+
+
+    You can generate/disable your API credentials as often as necessary for security reasons.
+
+
+    If you do not have an account, please contact Versapay Support for support & setup of AR invoicing
+    integration, hosted checkout and/or payment acceptance for partner and/or API credential setup.
+
+
+    ## API Token and API Key
+
+    API requests are authenticated using `API Token & Key` via [HTTPS Basic Access Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication).
+    <table class="security-details"><tbody><tr><th> Security Scheme Type </th><td> <!-- -->HTTPS<!-- -->
+    </td></tr><tr><th> HTTPS Authorization Scheme </th><td> <!-- -->basic<!-- --> </td></tr></tbody></table>
+
+
+    Simply provide the `API Token & Key` values as the `user` and `password` parameters, using cURL for
+    instance:
+
+
+    `curl -u "Nvax...:UN0I..." -X POST https://secure.versapay.com/api/...`
+
+
+    ## JWT Token
+
+    Alternatively, API requests can also be authenticated using `JWT Token` via [HTTPS Bearer Authentication](https://en.wikipedia.org/wiki/JSON_Web_Token).
+    <table class="security-details"><tbody><tr><th> Security Scheme Type </th><td> <!-- -->HTTPS<!-- -->
+    </td></tr><tr><th> HTTP Authorization Scheme </th><td> <!-- -->bearer JWT<!-- --> </td></tr></tbody></table>
+
+    `JWT Tokens`, automatically generated alongside `API Token & Key`, are displayed along with expiration
+    in account settings as well as via authenticated `/api/whoami`, see `Authentication` _Echo identity
+    and account profile settings_
+
+
+    Simply provide the `JWT Token` in the authorization header, using cURL for instance:
+
+
+    `curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6Im54eDFaSjgzeXRNNmhtb3NGVExCIiwiZXhwIjoxNzEyOTU5NDA5fQ.adV6U1vW69Ypskt61uPL8hZ-4muvtM4FLM48QN6iCc4"
+    -X POST https://secure.versapay.com/api/...`
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-authentication-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-autopay-api
+  name: Versapay Autopay API
+  description: >-
+    Autopays are a digital analog to paper pre-authorized debit agreements that businesses could use,
+    for instance, for monthly billing.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Autopay
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-autopay-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-card-present-emv-api
+  name: Versapay Card Present EMV API
+  description: >-
+    Card Present EMV payment transactions require a Versapay certified point-of-sale terminal. Contact
+    support@versapay.com for support & setup for POS/CP EMV enablement.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Card Present EMV
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-card-present-emv-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-collaboration-api
+  name: Versapay Collaboration API
+  description: >-
+    As a supplier your customers collaborate with you through comments about invoices and/or payments.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Collaboration
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-collaboration-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-customers-api
+  name: Versapay Customers API
+  description: >-
+    As a supplier your customers are the entities that are invoiced.
+
+
+    ## Webhooks
+
+
+    When using Webhooks, your application will be notified when key events are triggered for a customer.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-customers-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-developers-api
+  name: Versapay Developers API
+  description: Operations available to developers
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - developers
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-developers-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-divisions-api
+  name: Versapay Divisions API
+  description: As a supplier divisions are used to group your invoices.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Divisions
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-divisions-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-file-imports-api
+  name: Versapay File Imports API
+  description: As a supplier you can upload customer, invoice, and payment data in CSV file formats.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - File Imports
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-file-imports-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-fund-sources-api
+  name: Versapay Fund Sources API
+  description: The Fund Sources API from Versapay — 2 operation(s) for fund sources.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Fund Sources
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-fund-sources-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-gift-cards-api
+  name: Versapay Gift Cards API
+  description: >-
+    Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances
+    loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Gift Cards
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-gift-cards-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-internal-api
+  name: Versapay Internal API
+  description: Operations intended only to the iframe front end
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - internal
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-internal-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-invoices-api
+  name: Versapay Invoices API
+  description: >-
+    As a supplier invoices are your receivables.
+
+
+    ## Webhooks
+
+
+    When using Webhooks, your application will be notified when key events are triggered for an invoice.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Invoices
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-invoices-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-invoicing-payments-api
+  name: Versapay Invoicing Payments API
+  description: >-
+    As a supplier a payments are made by customers for invoices issued to them.
+
+
+    ## Webhooks
+
+
+    When using Webhooks, your application will be notified when key events are triggered for a payment.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Invoicing Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-invoicing-payments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-notifications-api
+  name: Versapay Notifications API
+  description: As a supplier you can notify customers about their invoices.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-notifications-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-onboarding-api
+  name: Versapay Onboarding API
+  description: >-
+    Onboarding supports the automated process of applying for merchant services. Contact support@versapay.com
+    for support & setup of supplier onboarding partner credentials.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Onboarding
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-onboarding-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-order-transactions-api
+  name: Versapay Order Transactions API
+  description: >-
+    Order-based card/ACH and card present EMV payment transactions include verify, authorize, capture,
+    sale, void, return refund, and return credit transaction types. If participating in a gift card program,
+    gift cards can be used in sale, void, refund transaction types. Contact support@versapay.com for support
+    & setup for Order Transactions enablement.
+
+    ## Credit Card Payments
+
+    There are two types of credit card payments: sale and delayed capture. Sale payments occur when the
+    merchant wishes to accept a payment for goods or services that have already been shipped or provided
+    to the cardholder. A sale is a financial transaction, and the movement of funds will be initiated
+    in response to a sale request. Delayed capture payments are used when there is a separation between
+    accepting an order and fulfilling that order. With delayed capture, the credit card is first authorized
+    for the estimated order total. The authorization reserves funds on the cardholder’s account for the
+    merchant but does not initiate a movement of funds. Once the products or services are ready to be
+    delivered to the cardholder, the authorization is captured for the final amount. The capture request
+    initiates the movement of funds.
+
+    ## ACH Payments
+
+    ACH payments are bank-to-bank transfers of funds. Unlike credit card payments, ACH payments only have
+    one type – sale, and there is no prior authorization. Therefore, sale amounts are final and cannot
+    be adjusted after the fact. ACH payments assume success, and if there is a problem with the funding
+    source, like with a bounced paper check, the originator will be notified of a rejection several days
+    after the payment attempt.
+
+    ## EFT Payments
+
+    EFT payments are bank-to-bank transfers of funds. Unlike credit card payments, EFT payments only have
+    one type – sale, and there is no prior authorization. Therefore, sale amounts are final and cannot
+    be adjusted after the fact. EFT payments assume success, and if there is a problem with the funding
+    source, like with a bounced paper check, the originator will be notified of a rejection several days
+    after the payment attempt.
+
+    ## Gift Card Payments
+
+    Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances
+    loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
+
+    ## Point-of-Sale/Card Present EMV Payments
+
+    Card Present EMV payment transactions require a Versapay certified point-of-sale terminal. In addition
+    to the card not present transaction types, the following payment transaction types are also supported:
+    device setup, request signature, and cancel. Contact support@versapay.com for support & setup for
+    POS/CP EMV enablement.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Order Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-order-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-orders-api
+  name: Versapay Orders API
+  description: >-
+    The Order entity represents the sales document in the ERP system. The fields in the ERP system should
+    be aligned as closely as possible with the fields in the order entity, as the gateway will use these
+    fields for credit card interchange optimization. Contact support@versapay.com for support & setup
+    for Order and/or Order Transactions enablement.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-orders-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-reference-data-api
+  name: Versapay Reference Data API
+  description: >-
+    For convenience purposes only, Versapay can supply third party reference data to its partners and
+    users. This data can be used to implement client-side tooling (e.g., fraud mitigation services), but
+    it may not be redistributed. The accuracy and completeness of this third party data cannot be guaranteed
+    and is for informational and convenience purposes only. Contact support@versapay.com for eligibility
+    for reference data enablement.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Reference Data
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-reference-data-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-settlement-reporting-api
+  name: Versapay Settlement Reporting API
+  description: >-
+    Settlement Reporting includes retrieval of monthly statements, daily deposit amounts (including fee
+    information), transaction exceptions (ACH reject/return & CC chargeback), and transaction details.
+    Contact support@versapay.com for payment acceptance onboarding support & setup and eligibility for
+    Settlement Reporting enablement.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Settlement Reporting
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-settlement-reporting-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-transactions-api
+  name: Versapay Transactions API
+  description: The Transactions API from Versapay — 4 operation(s) for transactions.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
+- aid: versapay:versapay-wallets-api
+  name: Versapay Wallets API
+  description: >-
+    The Wallet entity holds vaulted & secured payment methods owned by a customer (buyer/payor) that can
+    be used to make payments via Collaborative AR (online Portals, AutoPay, Pay Now), Order Transactions
+    (Ecomm & ERP based suppliers), and Invoicing Payments (via Partner buyer networks including Virtual
+    Card Connect). Contact support@versapay.com for support & setup for Wallet access and payment transaction
+    enablement in relation to licensed product components.
+  humanURL: https://developers.versapay.com/
+  baseURL: https://secure.versapay.com
+  tags:
+  - Wallets
+  properties:
+  - type: OpenAPI
+    url: openapi/versapay-wallets-api-openapi.yml
+  - type: Documentation
+    url: https://developers.versapay.com/
+  - type: APIReference
+    url: https://developers.versapay.com/
+  - type: ToolCrosswalk
+    url: mcp/versapay-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developers.versapay.com/ecommerce/
+  - type: APIReference
+    url: https://developers.versapay.com/ecommerce/
 common:
+- type: Overlay
+  url: overlays/versapay-api-reference-overlay.yaml
+- type: Overlay
+  url: overlays/versapay-ecommerce-api-overlay.yaml
 - type: AgenticAccess
   url: agentic-access/versapay-agentic-access.yml
 - type: DomainSecurity
