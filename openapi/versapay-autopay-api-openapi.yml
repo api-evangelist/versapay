@@ -1,0 +1,265 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Autopay API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+  description: '
+
+    Autopays are a digital analog to paper pre-authorized debit agreements that businesses could use, for instance, for monthly billing.
+
+    '
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Autopay
+  description: '
+
+    Autopays are a digital analog to paper pre-authorized debit agreements that businesses could use, for instance, for monthly billing.
+
+    '
+paths:
+  /api/autopay:
+    post:
+      summary: Create an Autopay
+      description: ''
+      tags:
+      - Autopay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - customer_identifier
+              - fund_token
+              properties:
+                autopay_reference:
+                  oneOf:
+                  - type: array
+                    items:
+                      description: Optional parameter that can be used to create a Specific AutoPay. This parameter can include one or more values for AutoPay reference
+                      type: string
+                    example:
+                    - REF123
+                    - REF234
+                  - type: string
+                    description: Optional parameter that can be used to create a Specific AutoPay. This parameter can include one value for AutoPay reference or an array for more than one value
+                    example: REF123
+                customer_identifier:
+                  type: string
+                  description: Customer Identifier.
+                  example: CUS123
+                fund_token:
+                  type: string
+                  description: The fund token to be used for autopay.
+                  example: TOKEN123
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutopayCreated'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+    put:
+      summary: Updates an Autopay
+      description: Updates a autopay fund
+      tags:
+      - Autopay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - customer_identifier
+              - fund_token
+              - token
+              properties:
+                customer_identifier:
+                  type: string
+                  description: Customer Identifier.
+                  example: CUS123
+                fund_token:
+                  type: string
+                  description: New token of the required fund.
+                  example: NEWTOKEN123
+                token:
+                  type: string
+                  description: Old token of the required fund.
+                  example: OLDTOKEN123
+      responses:
+        '201':
+          description: Created
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+    get:
+      summary: Retrieves Autopays
+      description: Gets all the autopay for a customer
+      tags:
+      - Autopay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - customer_identifier
+              properties:
+                customer_identifier:
+                  type: string
+                  description: Customer Identifier.
+                  example: CUS123
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutopayResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+  /api/autopay/revoke:
+    post:
+      summary: Revoke an Autopay
+      description: 'Revoke an *approved* autopay for your account by supplying an agreement''s token attribute. The agreement''s creator will no longer be able to debit your account using this autopay agreement.
+
+        '
+      operationId: revokeAutopay
+      tags:
+      - Autopay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - customer_identifier
+              - token
+              properties:
+                customer_identifier:
+                  type: string
+                  description: Customer Identifier.
+                  example: CUS123
+                token:
+                  type: string
+                  description: The token of the autopay agreement.
+                  example: TOKEN123
+      responses:
+        '200':
+          description: Successful Operation
+components:
+  schemas:
+    AutopayCreated:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The agreement token.
+      example:
+        token: TOKEN123
+    AutopayResponse:
+      type: object
+      properties:
+        agreement_token:
+          type: string
+          description: The agreement token.
+        fund_token:
+          type: string
+          description: The funding source token.
+        timing:
+          type: string
+          description: The payment setup for the autopay config.
+        autopay_limit:
+          type: string
+          description: Autopay configuration for limit.
+        autopay_reference:
+          type: string
+          description: The debit agreement reference.
+        autopay_inherited_from_customer_identifier:
+          type: string
+          description: The customer identifier if the autopay is inherited.
+        can_delete:
+          type: boolean
+          description: Boolean value to indicate if the cautopay can be deleted via api.
+      example:
+        agreement_token: TOKEN123
+        fund_token: TOKEN123
+        timing: AutoPay on Due Date
+        autopay_limit: None
+        autopay_reference: TOKEN123
+        autopay_inherited_from_customer_identifier: CUST123
+        can_delete: true
+  responses:
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

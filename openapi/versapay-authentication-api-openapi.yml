@@ -1,0 +1,992 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Authentication API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+  description: 'Visit your account settings in `UAT` (https://uat.versapay.com/account) or `Production` (https://secure.versapay.com/account) to setup API credentials needed for authentication as well as webhooks to receive relevant callbacks from Versapay transaction processing.
+
+
+    You can generate/disable your API credentials as often as necessary for security reasons.
+
+
+    If you do not have an account, please contact Versapay Support for support & setup of AR invoicing integration, hosted checkout and/or payment acceptance for partner and/or API credential setup.
+
+
+    ## API Token and API Key
+
+    API requests are authenticated using `API Token & Key` via [HTTPS Basic Access Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). <table class="security-details"><tbody><tr><th> Security Scheme Type </th><td> <!-- -->HTTPS<!-- --> </td></tr><tr><th> HTTPS Authorization Scheme </th><td> <!-- -->basic<!-- --> </td></tr></tbody></table>
+
+
+    Simply provide the `API Token & Key` values as the `user` and `password` parameters, using cURL for instance:
+
+
+    `curl -u "Nvax...:UN0I..." -X POST https://secure.versapay.com/api/...`
+
+
+    ## JWT Token
+
+    Alternatively, API requests can also be authenticated using `JWT Token` via [HTTPS Bearer Authentication](https://en.wikipedia.org/wiki/JSON_Web_Token). <table class="security-details"><tbody><tr><th> Security Scheme Type </th><td> <!-- -->HTTPS<!-- --> </td></tr><tr><th> HTTP Authorization Scheme </th><td> <!-- -->bearer JWT<!-- --> </td></tr></tbody></table>
+
+    `JWT Tokens`, automatically generated alongside `API Token & Key`, are displayed along with expiration in account settings as well as via authenticated `/api/whoami`, see `Authentication` _Echo identity and account profile settings_
+
+
+    Simply provide the `JWT Token` in the authorization header, using cURL for instance:
+
+
+    `curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6Im54eDFaSjgzeXRNNmhtb3NGVExCIiwiZXhwIjoxNzEyOTU5NDA5fQ.adV6U1vW69Ypskt61uPL8hZ-4muvtM4FLM48QN6iCc4" -X POST https://secure.versapay.com/api/...`
+
+    '
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Authentication
+  description: 'Visit your account settings in `UAT` (https://uat.versapay.com/account) or `Production` (https://secure.versapay.com/account) to setup API credentials needed for authentication as well as webhooks to receive relevant callbacks from Versapay transaction processing.
+
+
+    You can generate/disable your API credentials as often as necessary for security reasons.
+
+
+    If you do not have an account, please contact Versapay Support for support & setup of AR invoicing integration, hosted checkout and/or payment acceptance for partner and/or API credential setup.
+
+
+    ## API Token and API Key
+
+    API requests are authenticated using `API Token & Key` via [HTTPS Basic Access Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). <table class="security-details"><tbody><tr><th> Security Scheme Type </th><td> <!-- -->HTTPS<!-- --> </td></tr><tr><th> HTTPS Authorization Scheme </th><td> <!-- -->basic<!-- --> </td></tr></tbody></table>
+
+
+    Simply provide the `API Token & Key` values as the `user` and `password` parameters, using cURL for instance:
+
+
+    `curl -u "Nvax...:UN0I..." -X POST https://secure.versapay.com/api/...`
+
+
+    ## JWT Token
+
+    Alternatively, API requests can also be authenticated using `JWT Token` via [HTTPS Bearer Authentication](https://en.wikipedia.org/wiki/JSON_Web_Token). <table class="security-details"><tbody><tr><th> Security Scheme Type </th><td> <!-- -->HTTPS<!-- --> </td></tr><tr><th> HTTP Authorization Scheme </th><td> <!-- -->bearer JWT<!-- --> </td></tr></tbody></table>
+
+    `JWT Tokens`, automatically generated alongside `API Token & Key`, are displayed along with expiration in account settings as well as via authenticated `/api/whoami`, see `Authentication` _Echo identity and account profile settings_
+
+
+    Simply provide the `JWT Token` in the authorization header, using cURL for instance:
+
+
+    `curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6Im54eDFaSjgzeXRNNmhtb3NGVExCIiwiZXhwIjoxNzEyOTU5NDA5fQ.adV6U1vW69Ypskt61uPL8hZ-4muvtM4FLM48QN6iCc4" -X POST https://secure.versapay.com/api/...`
+
+    '
+paths:
+  /api/whoami:
+    get:
+      tags:
+      - Authentication
+      summary: Echo identity and account profile settings
+      description: 'Lists key account profile settings configured for the authenticated account
+
+        '
+      parameters:
+      - name: options[jwt_expiry]
+        in: query
+        description: Number of days (1-365) until JWT expiration, default 30.
+        schema:
+          type: integer
+      operationId: whoami
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  whoami:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/Whoami'
+              examples:
+                whoamis:
+                  value:
+                    whoami:
+                      XbkkoXbkKOXbkKoXBkkOO:
+                        token: 2ABCDEFFF2ABC
+                        name: CDS Client UAT
+                        sender_identifier: cdscliuat
+                        jwt: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6Im54eDFaSjgzeXRNNmhtb3NGVExCIiwiZXhwIjoxNzEyOTU5NDA5fQ.adV6U1vW69Ypskt61uPL8hZ-4muvtM4FLM48QN6iCc4
+                        jwt_exp: 1712959409
+                        currency: usd
+                        preferred_language: en
+                        business_number: 333-222-3000
+                        address_1: PO Box 2840
+                        address_2: ''
+                        postal_code: '76902'
+                        city: San Angelo
+                        province: TX
+                        country: US
+                        branding_partner: null
+                        branding_partner_config: null
+                        external_link: xyz123abc789
+                        divisions:
+                        - division_code: AcmeTX
+                          division_name: Acme Texas
+                          parent_code: Acme Global
+                          company_name: Acme Texas Division
+                          address:
+                            address_1: 123 Main St
+                            address_2: Suite 100
+                            postal_code: '45123'
+                            city: Dallas
+                            province: TX
+                            country: US
+                        - division_code: AcmeON
+                          division_name: Acme Ontario
+                          parent_code: Acme Global
+                          company_name: Acme Ontario Division
+                          address:
+                            address_1: 123 North Ave
+                            address_2: Suite N
+                            postal_code: M4B2J8
+                            city: Toronto
+                            province: 'ON'
+                            country: CA
+                        - division_code: AcmeCO
+                          division_name: Acme Colorado
+                          parent_code: null
+                          company_name: null
+                          address:
+                            address_1: null
+                            address_2: null
+                            postal_code: null
+                            city: null
+                            province: null
+                            country: null
+                        - division_code: AcmeCA
+                          division_name: Acme California
+                          parent_code: null
+                          company_name: Acme Calif Division
+                          address:
+                            address_1: 100 Oak Ave
+                            address_2: null
+                            postal_code: '89001'
+                            city: San Diego
+                            province: CA
+                            country: US
+                        merchant_accounts:
+                        - token: MA28S4KCJLAJ
+                          acceptable_cards:
+                          - master
+                          - visa
+                          - american_express
+                          - discover
+                          deposit_accounts:
+                          - purpose: primary
+                            deposit_account_routing_number: '678'
+                            deposit_account_masked_number: XX7888
+                            deposit_routing_account_hash_function: sha-1
+                            deposit_routing_account_hash: 64984fa69d3aaeb30f77407bb08ada8e6dcfcf41
+                          - purpose: fees
+                            deposit_account_routing_number: '555'
+                            deposit_account_masked_number: XX5555
+                            deposit_routing_account_hash_function: sha-1
+                            deposit_routing_account_hash: 64984fa69d3aaeb30f77407bb08ada8e6dcfcf55
+                          currency: usd
+                          deposit_account_routing_number: '031201360'
+                          nickname: settlement
+                          gl_account: null
+                          reference_token: 1234321:2024-09-01T08:27:45
+                          mid: null
+                          tid: null
+                          is_default: true
+                          deposit_account_masked_number: XXX4567
+                          deposit_routing_account_hash_function: sha-1
+                          deposit_routing_account_hash: cb0f864628972ad90dc08ed44e1099c7005936ca
+                        - token: MA7NLMGDG9F4
+                          acceptable_cards:
+                          - master
+                          - visa
+                          - american_express
+                          - discover
+                          deposit_accounts:
+                          - purpose: primary
+                            deposit_account_routing_number: '678'
+                            deposit_account_masked_number: XX7888
+                            deposit_routing_account_hash_function: sha-1
+                            deposit_routing_account_hash: 64984fa69d3aaeb30f77407bb08ada8e6dcfcf41
+                          - purpose: fees
+                            deposit_account_routing_number: '555'
+                            deposit_account_masked_number: XX5555
+                            deposit_routing_account_hash_function: sha-1
+                            deposit_routing_account_hash: 64984fa69d3aaeb30f77407bb08ada8e6dcfcf55
+                          currency: usd
+                          deposit_account_routing_number: '031201360'
+                          nickname: settlement-2
+                          gl_account: null
+                          reference_token: 1234321:2024-09-02T06:14:33
+                          mid: null
+                          tid: null
+                          is_default: true
+                          deposit_account_masked_number: XXX4568
+                          deposit_routing_account_hash_function: sha-1
+                          deposit_routing_account_hash: 52dfefa6082a07eb1689b40b99686690d1995e58
+                        - token: MA1F8B2E87AM
+                          acceptable_cards:
+                          - master
+                          - visa
+                          - american_express
+                          - discover
+                          deposit_accounts:
+                          - purpose: primary
+                            deposit_account_routing_number: '678'
+                            deposit_account_masked_number: XX7888
+                            deposit_routing_account_hash_function: sha-1
+                            deposit_routing_account_hash: 64984fa69d3aaeb30f77407bb08ada8e6dcfcf41
+                          - purpose: fees
+                            deposit_account_routing_number: '555'
+                            deposit_account_masked_number: XX5555
+                            deposit_routing_account_hash_function: sha-1
+                            deposit_routing_account_hash: 64984fa69d3aaeb30f77407bb08ada8e6dcfcf55
+                          currency: usd
+                          deposit_account_routing_number: null
+                          nickname: null
+                          gl_account: null
+                          reference_token: null
+                          mid: null
+                          tid: null
+                          is_default: false
+                          deposit_account_masked_number: ''
+                          deposit_routing_account_hash_function: sha-1
+                          deposit_routing_account_hash: da39a3ee5e6b4b0d3255bfef95601890afd80709
+                        settlement_bank_accounts:
+                        - routing_number: '122105278'
+                          token: BA9DZBGGJGY1
+                          account_type: checking
+                          currency: usd
+                          nickname: null
+                          reference_token: 1234321:2024-09-01T08:27:45
+                          masked_account_number: XXXXX6789
+                          routing_account_hash_function: sha-1
+                          routing_account_hash: 95d63eb2e03b71d1971884ec9678bcf74623b2bf
+                          is_default: true
+                          address:
+                            address_1: ''
+                            address_2: ''
+                            city: ''
+                            province: null
+                            postal_code: ''
+                            country: US
+                        - routing_number: '122000247'
+                          token: BA7QBIQMUMQB
+                          account_type: checking
+                          currency: usd
+                          nickname: null
+                          reference_token: 1234321:2024-09-02T06:14:33
+                          masked_account_number: XXXXXX1152
+                          routing_account_hash_function: sha-1
+                          routing_account_hash: 384516d914a878c8280b132d22e567dc64e67676
+                          is_default: false
+                          address:
+                            address_1: ''
+                            address_2: ''
+                            city: ''
+                            province: null
+                            postal_code: ''
+                            country: US
+                        - routing_number: '999999999'
+                          token: BA9K62MMRTSS
+                          account_type: checking
+                          currency: usd
+                          nickname: null
+                          reference_token: null
+                          masked_account_number: XXXXX9999
+                          routing_account_hash_function: sha-1
+                          routing_account_hash: 6cbe786bc66848acf8a3e539e0899809059af8a5
+                          is_default: false
+                          address:
+                            address_1: 501 S 8th St
+                            address_2: ''
+                            city: Minneapolis
+                            province: MN
+                            postal_code: '55404'
+                            country: US
+                        terminal_processors:
+                        - currency: usd
+                          token: POS47JAV3VDE
+                          deposit_account_routing_number: '00351234'
+                          nickname: usdnick
+                          gl_account: '76001'
+                          mid: '1452323678'
+                          tid: '4'
+                          is_default: true
+                          deposit_account_masked_number: XXXX4567
+                          deposit_routing_account_hash_function: sha-1
+                          deposit_routing_account_hash: da39a3ee5e6b4b0d3255bfef95601890afd80709
+                        - currency: cad
+                          token: POS47JAV7TGU
+                          deposit_account_routing_number: '00354321'
+                          nickname: cadnick
+                          gl_account: '76003'
+                          mid: '1452343565'
+                          tid: '7'
+                          is_default: true
+                          deposit_account_masked_number: XXXX9876
+                          deposit_routing_account_hash_function: sha-1
+                          deposit_routing_account_hash: eced46533e6abaa907cd125fb91dcf76026fa02c
+                        - currency: eur
+                          token: POS6RPXDYYYU
+                          deposit_account_routing_number: '000000000'
+                          nickname: eurnick
+                          gl_account: '76002'
+                          mid: '1452343564'
+                          tid: '9'
+                          is_default: true
+                          deposit_account_masked_number: XXXX5678
+                          deposit_routing_account_hash_function: sha-1
+                          deposit_routing_account_hash: a8105df0a9f85df19b125f4a8b4d4ea282f706af
+                        gift_cards:
+                        - currency: eur
+                          token: GCP8IGHJIWM8
+                          deposit_account_routing_number: '000000000'
+                          nickname: ''
+                          gl_account: ''
+                          mid: ''
+                          tid: ''
+                          is_default: true
+                          deposit_account_masked_number: ''
+                          deposit_routing_account_hash_function: sha-1
+                          deposit_routing_account_hash: ''
+                        - currency: usd
+                          token: GCP2I57ZLEDY
+                          deposit_account_routing_number: ''
+                          nickname: ''
+                          gl_account: ''
+                          mid: ''
+                          tid: ''
+                          is_default: true
+                          deposit_account_masked_number: ''
+                          deposit_routing_account_hash_function: sha-1
+                          deposit_routing_account_hash: ''
+                        - currency: cad
+                          token: GCP2I57Z3ZSB
+                          deposit_account_routing_number: ''
+                          nickname: ''
+                          gl_account: ''
+                          mid: ''
+                          tid: ''
+                          is_default: true
+                          deposit_account_masked_number: ''
+                          deposit_routing_account_hash_function: sha-1
+                          deposit_routing_account_hash: ''
+                        autopay_api_enabled: false
+                        arc_payment_match_mode: 'off'
+                        erp_payment_match_mode: 'on'
+                        external_payment_match_mode: 'off'
+                        erp_payment_auto_match_mode: false
+                        external_payment_auto_match_mode: false
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+components:
+  schemas:
+    BankProcessor:
+      type: object
+      properties:
+        token:
+          type: string
+          description: the bank account token
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        account_type:
+          description: checking or savings, defaults checking (required country = US)
+          type: string
+          example: checking
+        routing_number:
+          description: "Financial institution branch/location. If USD, it is the routing number.\n  If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits),\n  If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.\n"
+          type: string
+          example: ''
+        masked_account_number:
+          type: string
+          description: a masked version of the account number
+        routing_account_hash_function:
+          type: string
+          description: the hash function used to mask the routing number and account number
+        routing_account_hash:
+          type: string
+          description: the hash value used to mask the routing number and account number.
+        nickname:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the bank account
+
+            '
+        reference_token:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the reference token provided by the source of the merchant application that resulted in this settlement bank account
+
+            '
+        gl_number:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that is the general ledger account number that is associated with the merchant account deposits
+
+            '
+        external_name:
+          type:
+          - string
+          - 'null'
+        external_number:
+          type:
+          - string
+          - 'null'
+        is_default:
+          type: boolean
+          description: 'Default account for the account type for the specified currency
+
+            '
+        address:
+          type:
+          - object
+          - 'null'
+          properties:
+            address_1:
+              type:
+              - string
+              - 'null'
+            address_2:
+              type:
+              - string
+              - 'null'
+            city:
+              type:
+              - string
+              - 'null'
+            province:
+              type:
+              - string
+              - 'null'
+              description: US state or CA province code
+            postal_code:
+              type:
+              - string
+              - 'null'
+              description: US zip code or CA postal code
+            country:
+              type:
+              - string
+              - 'null'
+              enum:
+              - US
+              - CA
+    TerminalProcessor:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        token:
+          type: string
+          description: The terminal processor token
+        deposit_account_masked_number:
+          type:
+          - string
+          - 'null'
+          description: 'A masked version of the deposit account number associated with the terminal processor
+
+            '
+        deposit_routing_account_hash:
+          type: string
+          description: 'A hash of the deposit routing number and deposit account number
+
+            '
+        deposit_routing_account_hash_function:
+          type: string
+          description: 'The hash function used to mask the routing number and account number
+
+            '
+        deposit_account_routing_number:
+          type:
+          - string
+          - 'null'
+          description: 'The routing number (if USD) of the deposit account associated with the terminal processor. If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits), If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.
+
+            '
+        nickname:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the terminal processor
+
+            '
+        gl_account:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that is the general ledger account number that is associated with the terminal processor deposits
+
+            '
+        mid:
+          type:
+          - string
+          - 'null'
+          description: 'The merchant id of the terminal processor
+
+            '
+        tid:
+          type:
+          - string
+          - 'null'
+          description: 'The terminal id of the terminal processor
+
+            '
+        is_default:
+          type: boolean
+          description: 'Default account for the account type for the specified currency
+
+            '
+    Divisions:
+      type: object
+      properties:
+        division_code:
+          type: string
+          description: The division code
+        division_name:
+          type: string
+          description: The division name
+        parent_code:
+          type:
+          - string
+          - 'null'
+          description: The parent division code of the division
+        company_name:
+          type:
+          - string
+          - 'null'
+          description: The division-specific company_name of the division
+        address_1:
+          type:
+          - string
+          - 'null'
+          description: The division-specific address_1 of the division
+        address_2:
+          type:
+          - string
+          - 'null'
+          description: The division-specific address_2 of the division
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The division-specific postal_code of the division
+        city:
+          type:
+          - string
+          - 'null'
+          description: The division-specific city of the division
+        province:
+          type:
+          - string
+          - 'null'
+          description: The division-specific state or province of the division
+        country:
+          type:
+          - string
+          - 'null'
+          description: The division-specific country of the division
+    DepositAccount:
+      type: object
+      description: A deposit account
+      properties:
+        purpose:
+          type: string
+          description: The purpose of the deposit account
+        deposit_account_routing_number:
+          type: string
+          description: The routing number (if USD) of the deposit account associated with the merchant account
+        deposit_account_masked_number:
+          type: string
+          description: A masked version of the deposit account number associated with the merchant account
+        deposit_routing_account_hash_function:
+          type: string
+          description: The hash function used to mask the routing number and account number
+        deposit_routing_account_hash:
+          type: string
+          description: A hash of the deposit routing number and deposit account number
+    Whoami:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Owing account token
+          example: 1UFLSWHF2HAK
+        jwt:
+          type: string
+          description: Token that can be used for `Authorization Bearer` based JWT authentication
+          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6Im54eDFaSjgzeXRNNmhtb3NGVExCIiwiZXhwIjoxNzEyOTU5NDA5fQ.adV6U1vW69Ypskt61uPL8hZ-4muvtM4FLM48QN6iCc4
+        jwt_exp:
+          type: integer
+          description: Expiration date/time of the JWT token in seconds since 1970-01-01T00:00:00Z UTC ignoring leap seconds
+          example: 1712959409
+        name:
+          type: string
+          description: Owning account name
+          example: CDS Netsuite UAT
+        sender_identifier:
+          type: string
+          description: Supplier identifier
+          example: cdsnsat
+        currency:
+          type: string
+          description: Account default/base currency
+          enum:
+          - usd
+          - eur
+          - gbp
+          - cad
+          - aud
+          example: usd
+        preferred_language:
+          type: string
+          description: Account default/preferred language
+          enum:
+          - en
+          - fr
+          - es
+          example: en
+        external_link:
+          type:
+          - string
+          - 'null'
+          description: An external reference provided by the the ERP/partner originating the merchant application associated with this supplier
+        business_number:
+          type:
+          - string
+          - 'null'
+          description: Tax/business number provided during account onboarding
+          example: 325-223-3000
+        address_1:
+          type:
+          - string
+          - 'null'
+        address_2:
+          type:
+          - string
+          - 'null'
+        postal_code:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        province:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+        branding_partner:
+          type:
+          - string
+          - 'null'
+          description: The ERP/partner originating branding identifier
+        branding_partner_config:
+          type:
+          - string
+          - 'null'
+          description: ERP/partner associated configuration settings
+        merchant_accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantAccount'
+        settlement_bank_accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankProcessor'
+        terminal_processors:
+          type: array
+          items:
+            $ref: '#/components/schemas/TerminalProcessor'
+        gift_card_processors:
+          type: array
+          items:
+            $ref: '#/components/schemas/GiftCardProcessor'
+        divisions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Divisions'
+        autopay_api_enabled:
+          type: boolean
+          description: If `true`, you are eligible to create AutoPay agreements via API
+        arc_payment_match_mode:
+          type: string
+          description: C-AR Payment Manual Matching Mode (Off, On - Prepayments Only, On - All Payments)
+        erp_payment_match_mode:
+          type: string
+          description: ERP Payments Manual Matching Mode (Off, On, Always Ask Customer)
+        external_payment_match_mode:
+          type: string
+          description: External Payments Manual Matching Mode (Off, On, Always Ask Customer)
+        erp_payment_auto_match_mode:
+          type: boolean
+          description: ERP Payments Auto Match Mode
+        external_payment_auto_match_mode:
+          type: boolean
+          description: External Payments Auto Match Mode
+    MerchantAccount:
+      type: object
+      properties:
+        acceptable_cards:
+          type: string
+          description: An array of accepted credit cards
+        deposit_accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepositAccount'
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        token:
+          type: string
+          description: The merchant account token
+        deposit_account_masked_number:
+          type:
+          - string
+          - 'null'
+          description: 'A masked version of the deposit account number associated with the merchant account
+
+            '
+        deposit_routing_account_hash:
+          type: string
+          description: 'A hash of the deposit routing number and deposit account number
+
+            '
+        deposit_routing_account_hash_function:
+          type: string
+          description: 'The hash function used to mask the routing number and account number
+
+            '
+        deposit_account_routing_number:
+          type:
+          - string
+          - 'null'
+          description: 'The routing number (if USD) of the deposit account associated with the merchant account
+
+            '
+        nickname:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the merchant account
+
+            '
+        gl_account:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that is the general ledger account number that is associated with the merchant account deposits
+
+            '
+        reference_token:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the reference token provided by the source of the merchant application that resulted in this merchant account
+
+            '
+        mid:
+          type:
+          - string
+          - 'null'
+          description: 'The merchant id of the merchant account
+
+            '
+        tid:
+          type:
+          - string
+          - 'null'
+          description: 'The terminal id of the merchant account
+
+            '
+        is_default:
+          type: boolean
+          description: 'Default account for the account type for the specified currency
+
+            '
+        address:
+          type:
+          - object
+          - 'null'
+          properties:
+            address_1:
+              type:
+              - string
+              - 'null'
+            address_2:
+              type:
+              - string
+              - 'null'
+            city:
+              type:
+              - string
+              - 'null'
+            province:
+              type:
+              - string
+              - 'null'
+              description: US state or CA province code
+            postal_code:
+              type:
+              - string
+              - 'null'
+              description: US zip code or CA postal code
+            country:
+              type:
+              - string
+              - 'null'
+              enum:
+              - US
+              - CA
+    GiftCardProcessor:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        token:
+          type: string
+          description: The gift card processor token
+        deposit_account_masked_number:
+          type:
+          - string
+          - 'null'
+          description: 'A masked version of the deposit account number associated with the gift card processor
+
+            '
+        deposit_routing_account_hash:
+          type: string
+          description: 'A hash of the deposit routing number and deposit account number
+
+            '
+        deposit_routing_account_hash_function:
+          type: string
+          description: 'The hash function used to mask the routing number and account number
+
+            '
+        deposit_account_routing_number:
+          type:
+          - string
+          - 'null'
+          description: 'The routing number (if USD) of the deposit account associated with the gift card processor. If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits), If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.
+
+            '
+        nickname:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the gift card processor
+
+            '
+        gl_account:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that is the general ledger account number that is associated with the gift card processor deposits
+
+            '
+        mid:
+          type:
+          - string
+          - 'null'
+          description: 'The merchant id of the gift card processor
+
+            '
+        tid:
+          type:
+          - string
+          - 'null'
+          description: 'The terminal id of the gift card processor
+
+            '
+        is_default:
+          type: boolean
+          description: 'Default account for the account type for the specified currency
+
+            '
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

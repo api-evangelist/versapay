@@ -1,0 +1,242 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Fund Sources API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Fund Sources
+paths:
+  /api/funds:
+    get:
+      summary: View Your Fund Sources
+      tags:
+      - Fund Sources
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FundSource'
+                example:
+                - type: bank_account
+                  token: BA7YQ5881W8Q
+                  name: TD Canada Trust (2929)
+                  state: verified
+                - type: credit_card
+                  token: CC7HPKMIUP2D
+                  name: VISA **2224
+                - type: balance
+                  token: VPB2VJ7W9UVW
+                  name: Versapay Account
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/vault/bank:
+    post:
+      summary: Vault a Bank Account
+      description: Vault a Bank Account for subsequent Transaction Use/Creation
+      tags:
+      - Fund Sources
+      requestBody:
+        description: Bank account to vault.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankAccount'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+components:
+  schemas:
+    VaultResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: ''
+        token:
+          type: string
+          description: Token of the funding source which can be used as fund_token when creating a transaction, see 'Create Transactions'.
+        name:
+          type: string
+          description: Display name of funding source.
+        state:
+          type: string
+          description: ''
+      example:
+        token: 79VMZNLXCBL9
+        name: TD Canada Trust (1234)
+        type: bank_account
+    BankAccount:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        business_name:
+          description: Name of account holder.
+          type: string
+          example: John Doe
+        country:
+          description: CA (default), US, AU
+          type: string
+          example: CA
+        account_number:
+          description: Bank account number.
+          type: string
+          example: '10101234'
+        account_type:
+          description: checking or savings, defaults checking (required country = US)
+          type: string
+          example: checking
+        institution_number:
+          description: Financial institution number (required country = CA).
+          type: string
+          example: '001'
+        branch_number:
+          description: Financial institution branch/transit (required country = CA).
+          type: string
+          example: '03662'
+        routing_number:
+          description: Financial institution branch/location (required country = US, AU).
+          type: string
+          example: ''
+        token:
+          type: string
+          description: the bank account token
+        nickname:
+          type: string
+          description: optional value that describes the bank account
+        masked_account_number:
+          type: string
+          description: a masked version of the account number
+        routing_account_hash_function:
+          type: string
+          description: the hash function used to mask the routing number and account number
+        routing_account_hash:
+          type: string
+          description: the hash value used to mask the routing number and account number.
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    FundSource:
+      type: object
+      properties:
+        type:
+          type: string
+          description: "Type of fund:\n  * `bank_account` - Bank Account\n  * `credit_card` - Credit Card\n  * `balance` - Versapay Account\n"
+          enum:
+          - bank_account
+          - credit_card
+          - balance
+        token:
+          type: string
+          description: Fund's unique identifier used to identify fund when using other API calls.
+        name:
+          type: string
+          description: Masked display name of the fund source.
+        state:
+          type: string
+          enum:
+          - verified
+          - unverified
+          - invalid
+          description: Returned for bank accounts only.
+  responses:
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

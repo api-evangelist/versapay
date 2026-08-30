@@ -1,0 +1,1307 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Invoices API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+  description: 'As a supplier invoices are your receivables.
+
+
+    ## Webhooks
+
+
+    When using Webhooks, your application will be notified when key events are triggered for an invoice.
+
+    '
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Invoices
+  description: 'As a supplier invoices are your receivables.
+
+
+    ## Webhooks
+
+
+    When using Webhooks, your application will be notified when key events are triggered for an invoice.
+
+    '
+paths:
+  /api/imports/invoice:
+    post:
+      summary: Create and Update Invoice
+      description: "Create and update invoices. If the invoice already exists when a request is processed, it will be updated. If attachment is provided, will include the document in the invoice.<br><br>\nThe set of attributes to send in the request body may vary based on the account configuration. Please contact the implementation specialist for more information.<br><br>\n*Note:*\n  * *Customer will be created/updated using the customer_&ast; attributes if necessary at time of invoice import.*\n  * *Any additional non-standard attribute will be stored with invoice record and available for presentment rendering.*\n"
+      tags:
+      - Invoices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  identifier:
+                    type: string
+                    example: INV002
+                  message:
+                    type: string
+                    example: 1 invoice 1 line items
+                  pay_url:
+                    type: string
+                    example: https://secure.versapay.com/pay/a25f5d86-552a-4868-907e-e3a5932cff36
+                  pay_urls:
+                    $ref: '#/components/schemas/PaymentUrls'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+  /api/imports/invoice/{invoice_number}/attachment:
+    post:
+      summary: Add Invoice Attachment
+      description: 'Add or update a PDF attachment to an existing invoice. The attachment will be included with the invoice and available for customer viewing.<br><br>
+
+        The attachment content must be provided as a base64 encoded string. This endpoint is subject to rate limiting and file size restrictions.<br><br>
+
+        ### Size Limit
+
+        The file cannot exceed 25MB.
+
+        '
+      tags:
+      - Invoices
+      parameters:
+      - name: invoice_number
+        in: path
+        required: true
+        description: 'Invoice `number` or `display_number` of the existing invoice, must align with find_by locator.
+
+          '
+        schema:
+          type: string
+          example: INV-NUMBER-1234
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - find_by
+              - file_name
+              - content
+              properties:
+                find_by:
+                  type: string
+                  description: 'Specifies how to match the invoice identifier in the path parameter.
+
+                    '
+                  enum:
+                  - number
+                  - display_number
+                  example: number
+                invoice_display:
+                  type: boolean
+                  description: 'When `true`, the attachment will be displayed as the primary invoice document. When `false` or omitted, the attachment will be included as a supplementary document.
+
+                    '
+                  default: true
+                  example: true
+                file_name:
+                  type: string
+                  description: 'Name of the attachment file. Should include the file extension (e.g., .pdf).
+
+                    '
+                  example: INV-NUMBER-1234.pdf
+                  maxLength: 255
+                content:
+                  type: string
+                  description: 'Base64 encoded content of the PDF attachment. The decoded content cannot exceed 25MB.
+
+                    '
+                  example: JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovUmVzb3VyY2VzIDw8Ci9Gb250IDw8Ci9GMSA0IDAgUgo+Pgo+PgovQ29udGVudHMgNSAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL1R5cGUgL0ZvbnQKL1N1YnR5cGUgL1R5cGUxCi9CYXNlRm9udCAvSGVsdmV0aWNhCj4+CmVuZG9iago1IDAgb2JqCjw8Ci9MZW5ndGggNDQKPj4Kc3RyZWFtCkJUCi9GMSA4IFRmCjEwIDcwIFRkCihIZWxsbyBXb3JsZCkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago=
+            examples:
+              add_primary_attachment:
+                summary: Add attachment as primary invoice display using invoice number as the basis for lookup/matching
+                value:
+                  find_by: number
+                  invoice_display: true
+                  file_name: INV-NUMBER-1234.pdf
+                  content: JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovUmVzb3VyY2VzIDw8Ci9Gb250IDw8Ci9GMSA0IDAgUgo+Pgo+PgovQ29udGVudHMgNSAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL1R5cGUgL0ZvbnQKL1N1YnR5cGUgL1R5cGUxCi9CYXNlRm9udCAvSGVsdmV0aWNhCj4+CmVuZG9iago1IDAgb2JqCjw8Ci9MZW5ndGggNDQKPj4Kc3RyZWFtCkJUCi9GMSA4IFRmCjEwIDcwIFRkCihIZWxsbyBXb3JsZCkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago=
+              add_supplementary_attachment:
+                summary: Add attachment as supplementary document using invoice display number as the basis for lookup/matching
+                value:
+                  find_by: display_number
+                  invoice_display: false
+                  file_name: supporting_docs.pdf
+                  content: JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovUmVzb3VyY2VzIDw8Ci9Gb250IDw8Ci9GMSA0IDAgUgo+Pgo+PgovQ29udGVudHMgNSAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL1R5cGUgL0ZvbnQKL1N1YnR5cGUgL1R5cGUxCi9CYXNlRm9udCAvSGVsdmV0aWNhCj4+CmVuZG9iago1IDAgb2JqCjw8Ci9MZW5ndGggNDQKPj4Kc3RyZWFtCkJUCi9GMSA4IFRmCjEwIDcwIFRkCihIZWxsbyBXb3JsZCkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago=
+      responses:
+        '200':
+          description: Attachment successfully added/updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation message indicating successful attachment operation
+                    example: 1 attachment for invoice INV-NUMBER-1234
+                  identifier:
+                    type: string
+                    description: The file name of the added attachment
+                    example: INV-NUMBER-1234.pdf
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /api/exports/invoice/{number_or_id}:
+    get:
+      summary: Export/View an Invoice
+      description: 'View an invoice.<br><br>
+
+
+        The path parameter `number_or_id` is matched to the invoice `number`, `display_number` or `id`, in that order.
+
+        '
+      tags:
+      - Invoices
+      parameters:
+      - name: number_or_id
+        in: path
+        required: true
+        description: '`number` or `display_number` or `id` of the invoice record.
+
+          '
+        schema:
+          type: string
+      - name: options
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+        required: false
+        description: 'An array of additional options that determine if extra data should be fetched for the invoice
+
+          '
+      - name: options[payments]
+        in: query
+        schema:
+          type: boolean
+        required: false
+        description: 'When this option is present: `?options[payments]=true` then an extra attribute is appended to the payload `payments`, this `payments` attribute will contain an array of all the PaymentAmounts associated with the exported invoice. When the supplier is enabled for `line_item_short_pay` then within the payments array there will be a nested structure of `line_item_transactional_amounts` containing the information corresponding to each line item that has been short paid.
+
+          '
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /api/exports/invoices/recent:
+    get:
+      summary: Export Invoices Recently Updated
+      description: 'Invoice records that have been updated in the past 7 days, since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.
+
+        '
+      tags:
+      - Invoices
+      parameters:
+      - name: watermark
+        in: query
+        description: The value to base a subsequent extract of the next 100 items.
+        schema:
+          $ref: '#/components/schemas/Watermark'
+      - name: list
+        in: query
+        description: See Watermark & Limit for more information on response structure.
+        schema:
+          type: boolean
+          example: true
+      - name: options[include_deleted_invoices]
+        in: query
+        schema:
+          type: boolean
+        required: false
+        description: 'When this option is present: `?options[include_deleted_invoices]=true` then an extra attribute (deleted) is appended for each invoice, and invoices payload will contain both deleted and non-deleted invoices. If `?options[include_deleted_invoices]=false` or not set, only non-deleted invoices will be returned and invoice won''t contain deleted attribute.
+
+          '
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  invoices:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/InvoiceResponse'
+              examples:
+                invoice:
+                  value:
+                    invoices:
+                      '13207501':
+                        number: sh763-h3454-dh3432
+                        display_number: INV1234
+                        customer_identifier: CUS001
+                        amount_cents: 40000
+                        owing_cents: 30000
+                        subtotal_tax1: $0.00
+                        subtotal_tax2: $0.00
+                        currency: usd
+                        date: '2017-11-01'
+                        due_date: '2017-12-15'
+                        order_date: null
+                        purchase_order_number: PO-3847
+                        notes_text: Thank you for your business
+                        shipping_name: Acme Inc.
+                        shipping_address:
+                          address_1: 1 Main Street
+                          address_2: Suite 600
+                          city: New York
+                          state: NY
+                          zip: '90210'
+                          country: US
+                          country_name: United States
+                          line_1: 1 Main Street, Suite 600
+                          line_2: New York, NY 90210
+                        line_item_attributes:
+                        - number: '001'
+                          description: Modems
+                          amount_cents: 40000
+                          balance_cents: 40000
+                          quantity: 40
+                          unit_cost_cents: 1000
+                          id: 6935660
+                          identifier: acme|sh763-h3454-dh3432|001
+                          invoice_id: 4344538
+                          order_key: null
+                          purchase_order_number: null
+                          recurring_invoice_id: null
+                          extended_attributes:
+                            item_number: A3947C9878
+                        auto_debit: true
+                        division: '770'
+                        auto_pay_reference: null
+                        ref1: null
+                        ref2: null
+                        ref3: null
+                        adjustments_attributes:
+                        - label: Surcharge
+                          amount_cents: 2000
+                          id: 2212
+                          invoice_id: 4344538
+                          recurring_invoice_id: null
+                        plan_identifier: null
+                        plan_start_date: null
+                        plan_end_date: null
+                        plan_payment_cents: null
+                        annualized_amount_cents: null
+                        annualized_effective_date: null
+                        annualized_expiry_date: null
+                        external_id: null
+                        status: CURRENT
+                        delivery_status: not_sent
+                        extended_attributes:
+                          lease_type: LS
+                          currency_mode: D
+                        summary_invoice_parent: 0
+                        summary_invoice_number: null
+                        service_rep_email: john.doe@supplier.com;jane.doe@supplier.com
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/exports/open_invoices:
+    get:
+      summary: Export Open Invoices
+      description: 'Invoice records with an open balance, limited to 100 records at a time.<br><br>
+
+        A supplier should store the last `watermark` value of each
+
+        response and include it as the watermark parameter for subsequent calls.
+
+        '
+      tags:
+      - Invoices
+      parameters:
+      - name: watermark
+        in: query
+        description: The value to base a subsequent extract of the next 100 items.
+        schema:
+          $ref: '#/components/schemas/Watermark'
+      - name: list
+        in: query
+        description: See Watermark & Limit for more information on response structure.
+        schema:
+          type: boolean
+          example: true
+      - name: options[include_deleted_invoices]
+        in: query
+        schema:
+          type: boolean
+        required: false
+        description: 'When this option is present: `?options[include_deleted_invoices]=true` then an extra attribute (deleted) is appended for each invoice, and invoices payload will contain both deleted and non-deleted invoices. If `?options[include_deleted_invoices]=false` or not set, only non-deleted invoices will be returned and invoice won''t contain deleted attribute.
+
+          '
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  invoices:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/InvoiceResponse'
+              example:
+                invoices:
+                  '13207501':
+                    identifier: example|invoice1SZTYMS
+                    number: invoice1SZTYMS
+                    display_number: invoice1SZTYMS
+                    amount_cents: 249530
+                    currency: usd
+                    subtotal_cents: 249530
+                    subtotal1_tax_cents: null
+                    subtotal2_tax_cents: null
+                    customer_identifier: CUS001
+                    date: '2022-08-29'
+                    due_date: '2022-08-29'
+                    purchase_order_number: PO-BZMGNZIZ
+                    notes_text: null
+                    shipping_name: null
+                    shipping_address_1: null
+                    shipping_address_2: null
+                    shipping_city: null
+                    shipping_state: null
+                    shipping_zip: null
+                    auto_debit: 1
+                    division: ATL
+                    auto_debit_reference: null
+                    auto_pay_reference: null
+                    owing_cents: 249530
+                    ref1: null
+                    ref2: null
+                    ref3: null
+                    ref4: null
+                    external_id: null
+                    delivery_status: not_sent
+                    payment_date: null
+                    receivables_url: https://versapay.com/receivables/invoices/13207501
+                    discount_expiry_date: null
+                    discount_rate: null
+                    discount_amount_cents: 0
+                  '13207502':
+                    identifier: example|invoice2TRVEPE
+                    number: invoice2TRVEPE
+                    display_number: invoice2TRVEPE
+                    amount_cents: -158088
+                    currency: usd
+                    subtotal_cents: -158088
+                    subtotal1_tax_cents: null
+                    subtotal2_tax_cents: null
+                    customer_identifier: CUS002
+                    date: '2022-11-05'
+                    due_date: '2022-12-05'
+                    purchase_order_number: PO-SWGHBBRN
+                    notes_text: null
+                    shipping_name: null
+                    shipping_address_1: null
+                    shipping_address_2: null
+                    shipping_city: null
+                    shipping_state: null
+                    shipping_zip: null
+                    auto_debit: 1
+                    division: CTL
+                    auto_debit_reference: null
+                    auto_pay_reference: null
+                    owing_cents: -158088
+                    ref1: null
+                    ref2: null
+                    ref3: null
+                    ref4: null
+                    external_id: null
+                    delivery_status: not_sent
+                    payment_date: null
+                    receivables_url: https://versapay.com/receivables/invoices/13207502
+                    discount_expiry_date: null
+                    discount_rate: null
+                    discount_amount_cents: 0
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+components:
+  schemas:
+    InvoiceResponse:
+      type: object
+      properties:
+        number:
+          type: string
+          description: Invoice number, unique within a supplier.
+        display_number:
+          type: string
+          description: Invoice number as displayed to customers.
+        currency:
+          type: string
+          description: Currency code, based on ISO-4217, in lowercase. E.g. `cad`, `usd`, `aud`
+        amount_cents:
+          type: integer
+          description: The invoice amount in cents.
+        subtotal_tax1:
+          type: string
+          description: Tax amount, in dollars.
+        subtotal_tax2:
+          type: string
+          description: Additional field to carry tax amount, in dollars. For example, when invoice shows state (provincial) and federal taxes.
+        customer_identifier:
+          type: string
+          description: Unique identifier for customer.
+        date:
+          type: string
+          format: date
+          description: Invoice date, YYYY-MM-DD, based on ISO-8601.
+        order_date:
+          type: string
+          format: date
+          description: Order date, YYYY-MM-DD.
+        due_date:
+          type: string
+          format: date
+          description: Invoice due date, YYYY-MM-DD.
+        purchase_order_number:
+          type: string
+          description: Purchase order number.
+        notes_text:
+          type: string
+          description: Optional text field up to 64K.
+        shipping_name:
+          type: string
+          description: 'Shipping address: recipient name'
+        shipping_address:
+          type: object
+          description: Shipping address
+          properties:
+            address_1:
+              type: string
+              description: Shipping address, line 1
+            address_2:
+              type: string
+              description: Shipping address, line 2
+            city:
+              type: string
+              description: 'Shipping address: city'
+            state:
+              type: string
+              description: 'Shipping address: state or province. Based on the second part (after hyphen) of codes in ISO 3166-2 standard. E.g. "ON" for Ontario, "CA" for California'
+            country:
+              type: string
+              description: Shipping country code. E.g. "US" for USA.
+            country_name:
+              type: string
+              description: Shipping country name.
+            zip:
+              type: string
+              description: 'Shipping address: zip or postal code'
+            line_1:
+              type: string
+              description: 'Single line combining shipping `address_1` and `address_2`.
+
+                '
+            line_2:
+              type: string
+              description: 'Single line combining shipping `city`, `state` and `zip`.
+
+                '
+        line_item_attributes:
+          type: array
+          description: Details of each line-item for the invoice.
+          items:
+            $ref: '#/components/schemas/LineItemResponse'
+        auto_debit:
+          type: boolean
+          description: '`true` (invoice is to be auto-paid if customer has pre-authorized payment) or `false` (invoice is to be paid manually by customer)
+
+            '
+        division:
+          type: string
+          description: Division code, applicable when supplier supports divisions.
+        auto_pay_reference:
+          type: string
+          description: Reference number associated to the invoice, used in AutoPay agreements.
+        owing_cents:
+          type: integer
+          description: Balance remaining on this invoice or credit memo.
+        status:
+          type: string
+          description: 'The status of the invoice. Can be one of `DRAFT`, `CURRENT`, `OVERDUE`, `PARTIAL`, `PAID`, `CREDIT` or `CLOSED`.
+
+            '
+          enum:
+          - DRAFT
+          - CURRENT
+          - OVERDUE
+          - PARTIAL
+          - PAID
+          - CREDIT
+          - CLOSED
+        delivery_status:
+          type: string
+          description: 'The delivery status of the invoice. Statuses in the API map to those in the UI as follows:<br>
+
+
+            The email delivery statuses in the API reflect the following statuses from UI:
+
+
+            |API Status|Status in the UI|
+
+            |:--|:--|
+
+            |`new`|"Not Tracked"|
+
+            |`not_sent`|"Available"|
+
+            |`sent`|"Email Sent"|
+
+            |`delivery_unknown`|"Delivery Unknown"|
+
+            |`not_delivered`|"Not Delivered"|
+
+            |`delivered`|"Email Delivered"|
+
+            |`opened`|"Email Opened"|
+
+            |`clicked`|"Viewed"|
+
+            '
+          enum:
+          - new
+          - not_sent
+          - sent
+          - delivery_unknown
+          - not_delivered
+          - opened
+          - clicked
+        ref1:
+          type: string
+          description: A reference that is meaningful to the customer, e.g. Policy number, contract number, etc.
+        ref2:
+          type: string
+          description: As above.
+        ref3:
+          type: string
+          description: As above.
+        adjustments_attributes:
+          type: array
+          description: Adjustments such as Fuel Surcharge or Discount on the invoice.
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                description: Label for adjustment amount.
+              amount_cents:
+                type: integer
+                description: Adjustment amount in cents.
+              id:
+                type: integer
+                description: Internal id of the adjustment.
+              invoice_id:
+                type: integer
+                description: Internal id of the invoice.
+              recurring_invoice_id:
+                type: integer
+                description: Internal id of the recurring invoice. Applicable when supplier is configured to create recurring invoices.
+        plan_identifier:
+          type: string
+          description: Payment plan template identifier. Applicable when supplier is configured for payment plans.
+        plan_start_date:
+          type: string
+          format: date
+          description: Payment plan start date. Applicable when supplier is configured for payment plans.
+        plan_end_date:
+          type: string
+          format: date
+          description: Payment plan end date. Applicable when supplier is configured for payment plans.
+        plan_payment_cents:
+          type: integer
+          description: Payment plan recurring payment amount in cents. Applicable when supplier is configured for payment plan.
+        annualized_amount_cents:
+          type: integer
+          description: The annual invoice amount in cents. Applicable if the supplier is configured for payment plans.
+        annualized_effective_date:
+          type: string
+          format: date
+          description: The date that the annualized_amount takes effect. Applicable if the supplier is configured for payment plans.
+        annualized_expiry_date:
+          type: string
+          format: date
+          description: The end date of the period for which the annualized_amount is in effect. Applicable if the supplier is configured for payment plans.
+        external_id:
+          type: string
+          description: Optional external identifier for the invoice to be included in payment exports.
+        extended_attributes:
+          type: object
+          description: Additional non-standard attribute stored with the invoice record for presentment rendering.
+          properties:
+            key:
+              type: string
+              description: Key-value pair of the extended attribute on the invoice.
+        summary_invoice_parent:
+          type: string
+          description: Flag that indicates if the invoice is a summary invoice. Default is 0 (invoice is not a summary invoice).
+        summary_invoice_number:
+          type: string
+          description: If the invoice in the row is a child of a summary invoice, that summary invoice's identifier appears here.
+        service_rep_email:
+          type: string
+          description: One or more supplier user email addresses (semi-colon delimited) that will be used for notification routing eg when in dispute each specified rep is notified only.
+        pay_url:
+          type: string
+          description: The URL to the anonymous click-to-pay page.  This value is provided only for open invoices in an owing position.
+        pay_urls:
+          type: object
+          description: Context sensitive URLs to click-to-pay page, keyed by recipient email addresses. These values are only provided for open invoices in an owing position.
+          properties:
+            key:
+              type: string
+              description: Key-value pair of the context sensitive click-to-pay URLs.
+        deleted:
+          type: boolean
+          description: Indicates if the invoice has been deleted, this is optional and only present based on request parameter.
+      example:
+        number: sh763-h3454-dh3432
+        display_number: INV1234
+        customer_identifier: CUS001
+        amount_cents: 40000
+        owing_cents: 30000
+        subtotal_tax1: $0.00
+        subtotal_tax2: $0.00
+        currency: usd
+        date: '2017-11-01'
+        due_date: '2017-12-15'
+        order_date: null
+        purchase_order_number: PO-3847
+        notes_text: Thank you for your business
+        shipping_name: Acme Inc.
+        shipping_address:
+          address_1: 1 Main Street
+          address_2: Suite 600
+          city: New York
+          state: NY
+          zip: '90210'
+          country: US
+          country_name: United States
+          line_1: 1 Main Street, Suite 600
+          line_2: New York, NY 90210
+        line_item_attributes:
+        - number: '001'
+          description: Modems
+          amount_cents: 40000
+          balance_cents: 40000
+          quantity: 40
+          unit_cost_cents: 1000
+          id: 6935660
+          identifier: acme|sh763-h3454-dh3432|001
+          invoice_id: 4344538
+          order_key: null
+          purchase_order_number: null
+          recurring_invoice_id: null
+          extended_attributes:
+            item_number: A3947C9878
+        auto_debit: true
+        division: '770'
+        auto_pay_reference: null
+        ref1: null
+        ref2: null
+        ref3: null
+        adjustments_attributes:
+        - label: Surcharge
+          amount_cents: 2000
+          id: 2212
+          invoice_id: 4344538
+          recurring_invoice_id: null
+        plan_identifier: null
+        plan_start_date: null
+        plan_end_date: null
+        plan_payment_cents: null
+        annualized_amount_cents: null
+        annualized_effective_date: null
+        annualized_expiry_date: null
+        external_id: null
+        status: CURRENT
+        delivery_status: not_sent
+        extended_attributes:
+          lease_type: LS
+          currency_mode: D
+        summary_invoice_parent: 0
+        summary_invoice_number: null
+        service_rep_email: john.doe@supplier.com;jane.doe@supplier.com
+        pay_url: https://secure.versapay.com/pay/a25f5d86-552a-4868-907e-e3a5932cff36
+        pay_urls:
+          CUS001@example.com: https://secure.versapay.com/pay/198e7073-53d0-435a-baff-87ce390581c5G
+        payments:
+        - payment_reference: 959YTHNMESPV
+          invoice_number: 1
+          date: '2022-10-26'
+          amount: 870
+          plan_fee: 0
+          payment_amount: 870
+          payment_transaction_amount: 870
+          payment_transaction_token: 9559NENM23SK
+          payment_method: (0013)
+          payment_from_bank_account: true
+          payment_from_credit_card: false
+          payment_institution_name: null
+          payment_credit_card_brand: null
+          short_pay_indicator: Y
+          payment_note: null
+          auto_debit_indicator: N
+          invoice_balance: 5030
+          payment_timestamp: '2022-10-26T12:40:36-04:00'
+          invoice_division: CTL
+          invoice_division_number: null
+          invoice_division_name: Central
+          pay_to_bank_account: 100007
+          pay_to_bank_account_name: (0007)
+          settlement_token: BA7G777DNABC
+          customer_identifier: C10
+          customer_name: Customer 10 Williamson
+          status: PAID
+          payment_source: ARC
+          payment_code: null
+          payment_description: null
+          gateway_authorization_code: TM37E6
+          purchase_order_number: null
+          ref1: null
+          ref2: null
+          ref3: null
+          short_pay_reason_identifier: null
+          short_pay_reason: null
+          dispute_reason_identifier: null
+          dispute_reason: null
+          invoice_amount_paid: 870
+          invoice_amount: 5900
+          invoice_identifier: global|1
+          invoice_date: '2022-10-26'
+          invoice_external_id: null
+          invoice_currency: usd
+          invoice_purchase_order_number: new_line_item_short_pay_invoice_1
+          invoice_ref1: null
+          invoice_ref2: null
+          invoice_ref3: null
+          cumulative_customer_amount: 870
+          checkout_token: 6JQSRWISTPA4
+          status_reason: null
+          payment_transaction_fee: 0
+          settlement_date: null
+          customer_address: null
+          payor_name: null
+          payor_phone: null
+          payor_email: multi@example.com
+          cardholder_name: null
+          fund_token: BA1WYKRYHLLS
+          card_expiry_year: null
+          card_expiry_month: null
+          order_identifier: null
+          order_number: null
+          order_document_type: null
+          external_payment_number: null
+          external_payment_type: null
+          ref4: null
+          invoice_ref4: null
+          watermark: 1888
+          line_item_transactional_amounts:
+          - line_item_number: 8cc21f8a-ddcd-4bfe-915f-3e7480068444
+            line_item_payment_amount: 20
+            line_item_balance: 0
+            line_item_short_pay_indicator: N
+            line_item_payment_note: will pay later
+            line_item_short_pay_reason_identifier: null
+            line_item_short_pay_reason: null
+            line_item_dispute_reason_identifier: null
+            line_item_dispute_reason: null
+            line_item_extended_attributes: {}
+          - line_item_number: 214db37e-3b92-4705-960f-ccb585bc0fce
+            line_item_payment_amount: 210
+            line_item_balance: 0
+            line_item_short_pay_indicator: N
+            line_item_payment_note: will pay later
+            line_item_short_pay_reason_identifier: null
+            line_item_short_pay_reason: null
+            line_item_dispute_reason_identifier: null
+            line_item_dispute_reason: null
+            line_item_extended_attributes: {}
+          - line_item_number: a32a21c0-01f0-43b7-be2e-8f45504e5800
+            line_item_payment_amount: 640
+            line_item_balance: 0
+            line_item_short_pay_indicator: N
+            line_item_payment_note: sorry
+            line_item_short_pay_reason_identifier: null
+            line_item_short_pay_reason: null
+            line_item_dispute_reason_identifier: null
+            line_item_dispute_reason: null
+            line_item_extended_attributes: {}
+    Invoice:
+      type: object
+      required:
+      - number
+      - customer_identifier
+      properties:
+        number:
+          type: string
+          description: Invoice number, must be unique within supplier.
+        display_number:
+          type: string
+          description: 'Invoice number as displayed to customers. Optional if this is the same as `number`.
+
+            '
+        currency:
+          type: string
+          description: Currency code, based on ISO-4217. E.g. `CAD`, `USD`, `AUD`
+        amount:
+          type: integer
+          description: The invoice amount in cents.
+        replace_line_items:
+          type: boolean
+          description: When provided and True, line items in the DB that are not in the input file will be deleted.
+        amount_override:
+          type: boolean
+          description: When provided and True, the amount provided in an update import will overwrite the amount that would normally be calculated from line items.
+        suppress_notifications:
+          type: boolean
+          description: When provided and True, invoice-related notifications will not be sent to the customer or the subscribed supplier user for this invoice. The default is False
+        attachment:
+          description: When provided, it uses the provided inline pdf (as base64) as the invoice template/rendering.
+          type: object
+          properties:
+            content:
+              description: Base64 encoded pdf string
+              type: string
+              example: SSBhbSBhIGJhYnkgc2hhcms=
+            file_name:
+              description: File name
+              type: string
+              example: test211.pdf
+        subtotal_tax1:
+          type: integer
+          description: Tax amount in cents.
+        subtotal_tax2:
+          type: integer
+          description: Additional field to carry tax amount (in cents). For example, when invoice shows state (provincial) and federal taxes.
+        customer_identifier:
+          type: string
+          description: Unique identifier for customer.
+        date:
+          type: string
+          format: date
+          description: Invoice date, YYYY-MM-DD, based on ISO-8601.
+        order_date:
+          type: string
+          format: date
+          description: Order date, YYYY-MM-DD.
+        due_date:
+          type: string
+          format: date
+          description: Invoice due date, YYYY-MM-DD.
+        purchase_order_number:
+          type: string
+          description: Purchase order number.
+        notes_text:
+          type: string
+          description: Optional text field up to 64K.
+        shipping_name:
+          type: string
+          description: 'Shipping address: recipient name'
+        shipping_address_1:
+          type: string
+          description: 'Shipping address: line 1'
+        shipping_address_2:
+          type: string
+          description: 'Shipping address: line 2'
+        shipping_city:
+          type: string
+          description: 'Shipping address: city'
+        shipping_province:
+          type: string
+          description: 'Shipping address: state or province. Based on the second part (after hyphen) of codes in ISO 3166-2 standard. E.g. "ON" for Ontario, "CA" for California'
+        shipping_postal_code:
+          type: string
+          description: 'Shipping address: zip or postal code'
+        shipping_country:
+          type: string
+          description: 'Shipping address: country'
+        line_item_attributes:
+          type: array
+          description: Details of each line-item for the invoice. Any additional non-standard attribute will be stored with the line-item record and available for presentment rendering.
+          items:
+            $ref: '#/components/schemas/LineItem'
+        auto_debit:
+          type: string
+          description: 'Explicitly states whether an invoice, having an owing/open balance, `Y` would be auto-paid via its customer pre-authorized agreement or `N` to be paid manually by customer. With integrations managing daily invoice synchronization, this attribute is normally excluded altogether - unless explicitly intending to mark `N` for manual customer payment consideration - since the Collaborative AR platform may also manage this invoice flag in conjunction with customer AutoPay profile settings. For more information contact support@versapay.com
+
+            '
+          enum:
+          - Y
+          - N
+        division:
+          type: string
+          description: 'Division Code. Required only if supplier supports divisions.
+
+
+            If supplier supports divisions and is configured for dynamic division creation, this value is used to create a new division if one does not already exist.
+
+            '
+        division_name:
+          type: string
+          description: 'Division Name.  Optional value.  Relevant only if supplier supports divisions and is configured for dynamic division creation, otherwise ignored.
+
+
+            This value is assigned to the name of a newly created division.  Existing divisions will not be updated by this value.
+
+            '
+        auto_debit_reference:
+          type: string
+          description: For AutoPay agreements that reference a policy# or contract#, etc., specify that number.
+        owing_cents:
+          type: integer
+          description: 'Balance remaining on this invoice or credit memo.
+
+
+            Required if supplier is configured for Balance Sync, otherwise ignored.
+
+            '
+        ref1:
+          type: string
+          description: A reference that is meaningful to the customer, e.g. Policy number, contract number, etc.
+        ref2:
+          type: string
+          description: As above.
+        ref3:
+          type: string
+          description: As above.
+        adjustments_attributes:
+          type: array
+          description: Adjustments such as Fuel Surcharge.
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                description: Label for adjustment amount.
+              amount:
+                type: integer
+                description: Adjustment amount in cents.
+        plan_identifier:
+          type: string
+          description: 'Payment plan template identifier. If populated, this puts the invoice on a payment plan.
+
+
+            Required if supplier is configured for payment plans.
+
+            '
+        plan_start_date:
+          type: string
+          format: date
+          description: Payment plan start date. Required if supplier is configured for payment plans.
+        plan_end_date:
+          type: string
+          format: date
+          description: Payment plan end date. Required if supplier is configured for payment plans.
+        plan_payment_cents:
+          type: integer
+          description: Payment plan recurring payment amount. Required if supplier is configured for payment plans.
+        annualized_amount_cents:
+          type: integer
+          description: 'The annual invoice amount. When this is populated, the importer will calculate a pro-rated invoice amount based on the next two dates.
+
+
+            Required if the supplier is configured for payment plans.
+
+            '
+        annualized_effective_date:
+          type: string
+          format: date
+          description: The date that the annualized_amount takes effect. Mandatory if annualized_amount is populated.
+        annualized_expiry_date:
+          type: string
+          format: date
+          description: 'The end date of the period for which the annualized_amount is in effect.
+
+
+            Mandatory if annualized_amount is populated. The difference between this date and the effective date (inclusive) is used to pro-rate the invoice amount or any adjustments to the amount.
+
+            '
+        external_id:
+          type: string
+          description: Optional external identifier for the invoice to be included in payment exports.
+        summary_invoice_parent:
+          type: string
+          description: Flag that indicates if the invoice is a summary invoice. Default is 0 (invoice is not a summary invoice).
+        summary_invoice_number:
+          type: string
+          description: If the invoice in the row is a child of a summary invoice, that summary invoice's identifier appears here.
+        service_rep_email:
+          type: string
+          description: One or more supplier user email addresses (semi-colon delimited) that will be used for notification routing eg when in dispute each specified rep is notified only.
+        discount_amount_cents:
+          type: integer
+          description: Amount in cents of already computed discount. Requires supplier discount configuration to be enabled.
+        discount_rate:
+          type: number
+          format: float
+          description: 'Floating point rate of discount. For example, .05 represents 5%. The importer will calculate discount_amount_cents based on this field and the invoice amount. Note: if this field is provided, the amount will always be calculated, even if discount_amount_cents is provided. Therefore only include this field if the intention is to have the importer calculate. Requires supplier discount configuration to be enabled.'
+        discount_expiry_date:
+          type: string
+          format: date
+          description: The date by which the discount should expire. Requires supplier discount configuration to be enabled.
+        echo:
+          type: string
+          description: Optional setting.  When set to `pay_urls` it ensures pay_url and pay_urls are echoed in the response.
+        L3_po_number:
+          type: string
+          description: Purchase order number.
+          example: PO12345
+        L3_tax:
+          type: string
+          description: Total tax amount.
+          example: '5.00'
+        L3_duty:
+          type: string
+          description: Duty amount (if applicable).
+          example: '2.00'
+        L3_shipping:
+          type: string
+          description: Shipping amount.
+          example: '1.50'
+        L3_ship_from_zip:
+          type: string
+          description: Origin ZIP code.
+          example: '90210'
+        L3_ship_from_country:
+          type: string
+          description: Origin country code (ISO-2).
+          example: US
+      example:
+        number: sh763-h3454-dh3432
+        display_number: INV1234
+        customer_identifier: CUS001
+        purchase_order_number: PO-3847
+        amount: 40000
+        currency: usd
+        date: '2017-11-01'
+        due_date: '2017-12-15'
+        notes_text: Thank you for your business
+        shipping_name: Acme Inc.
+        shipping_address_1: 1 Main Street
+        shipping_address_2: Suite 600
+        shipping_postal_code: '90210'
+        shipping_city: New York
+        shipping_province: NY
+        owing_cents: 30000
+        discount_amount_cents: 39999
+        discount_expiry_date: '2017-11-15'
+        replace_line_items: false
+        amount_override: false
+        line_item_attributes:
+        - number: '1'
+          item_number: A3947C9878
+          description: Modems
+          quantity: 40
+          unit_cost_cents: 1000
+          amount: 40000
+        echo: pay_urls
+    PaymentUrls:
+      type: object
+      description: 'A map of payment URLs mapped to customer email addressed.
+
+        '
+      additionalProperties:
+        type: string
+        format: uri
+      example:
+        CUS001@example.com: https://secure.versapay.com/pay/198e7073-53d0-435a-baff-87ce390581c5G
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
+    LineItem:
+      type: object
+      properties:
+        number:
+          type: string
+          description: Invoice line-item number
+        description:
+          type: string
+          description: Invoice line-item description
+        order_key:
+          type: string
+          description: Sequence number for the line-item to order-by when rendering on the invoice.
+        purchase_order_number:
+          type: string
+          description: Purchase order number at the line-item level.
+        quantity:
+          type: number
+          description: Invoice line-item quantity
+        unit_cost_cents:
+          type: integer
+          description: Invoice line-item unit price in cents.
+        amount:
+          type: integer
+          description: Invoice line-item total in cents.
+        balance_cents:
+          type: integer
+          description: Line-item balance in cents. Applicable if accepting short payments at line-item level.
+        L3_commodity_code:
+          type: string
+          description: Product commodity code (UNSPSC).
+          example: '12345678'
+        L3_unit_of_measure:
+          type: string
+          description: Unit of measure (EA, KG, L).
+          example: EA
+        L3_discount_amount:
+          type: string
+          description: Discount amount.
+          example: '1.00'
+        L3_tax_amount:
+          type: string
+          description: Tax amount.
+          example: '0.50'
+        L3_product_code:
+          type: string
+          description: Product SKU or internal code.
+          example: SKU-001
+    LineItemResponse:
+      type: object
+      properties:
+        number:
+          type: string
+          description: Invoice line-item number.
+        description:
+          type: string
+          description: Invoice line-item description
+        quantity:
+          type: number
+          description: Invoice line-item quantity.
+        unit_cost_cents:
+          type: integer
+          description: Invoice line-item unit price in cents.
+        amount_cents:
+          type: integer
+          description: Invoice line-item total in cents.
+        balance_cents:
+          type: integer
+          description: Line-item balance in cents. Applicable if accepting short payments at line-item level.
+        id:
+          type: number
+          description: Internal id of the line-item record.
+        identifier:
+          type: string
+          description: Unique internal identifier for the line-item. Applicable if accepting short payments at line-item level.
+        invoice_id:
+          type: number
+          description: Internal id of the invoice.
+        purchase_order_number:
+          type: string
+          description: Purchase order number at the line-item level.
+        order_key:
+          type: string
+          description: Sequence number for the line-item to order-by when rendering on the invoice.
+        recurring_invoice_id:
+          type: string
+          description: Internal id of the recurring invoice. Applicable if using recurring invoices.
+        extended_attributes:
+          type: object
+          description: Additional non-standard attribute stored with the line-item record for presentment rendering.
+          properties:
+            key:
+              type: string
+              description: Key-value pair of the extended attribute on the line-item.
+  responses:
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: ActiveRecord::RecordNotFound
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

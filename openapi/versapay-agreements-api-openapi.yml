@@ -1,0 +1,309 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Agreements API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Agreements
+paths:
+  /api/debit_agreements:
+    post:
+      summary: Create an Agreement
+      description: ''
+      tags:
+      - Agreements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                  description: Recipient email address.
+                  example: bob.smith@example.com
+                reference:
+                  type: string
+                  description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
+                  example: '87769089'
+                message:
+                  type: string
+                  description: A message describing what the agreement is for.
+                  example: Debit agreement for order number - 87769089
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agreement'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+  /api/debit_agreements/sent:
+    get:
+      summary: View Sent Agreements
+      tags:
+      - Agreements
+      parameters:
+      - name: page
+        in: query
+        description: 50 items are displayed per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agreement'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/debit_agreements/received:
+    get:
+      summary: View Received Agreements
+      tags:
+      - Agreements
+      parameters:
+      - name: page
+        in: query
+        description: 50 items are displayed per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agreement'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/debit_agreements/{token}/approve:
+    post:
+      summary: Approve an Agreement
+      tags:
+      - Agreements
+      parameters:
+      - in: path
+        name: token
+        description: The agreement identifier.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fund_token:
+                  type: string
+                  description: 'Your bank account or balance''s token attribute. Omitting this option will approve the agreement using your default bank account.
+
+                    '
+                  example: 5TH3ACC3AU21
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agreement'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+  /api/debit_agreements/{token}/cancel:
+    post:
+      summary: Cancel an Agreement
+      tags:
+      - Agreements
+      parameters:
+      - in: path
+        name: token
+        description: The agreement identifier.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agreement'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/debit_agreements/{token}/reject:
+    post:
+      summary: Reject an Agreement
+      description: 'Reject a *pending* agreement by supplying an agreement''s *token* attribute and providing a *rejection_reason*.
+
+        '
+      tags:
+      - Agreements
+      parameters:
+      - in: path
+        name: token
+        description: The agreement identifier.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agreement'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/debit_agreements/{token}/revoke:
+    post:
+      summary: Revoke an Agreement
+      description: 'Revoke an *approved* agreement for your account by supplying an agreement''s token attribute. The agreement''s creator will no longer be able to debit your account using this agreement.
+
+        '
+      operationId: revokeAgreement
+      tags:
+      - Agreements
+      parameters:
+      - name: token
+        in: path
+        required: true
+        description: The agreement identifier.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agreement'
+components:
+  responses:
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+  schemas:
+    Agreement:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The agreement identifier.
+        state:
+          type: string
+          description: Transaction's current state, see Transaction Lifecycle.
+        email:
+          type: string
+          description: Recipient email address.
+        name:
+          type: string
+          description: Recipient name.
+        created_by_user:
+          type: string
+          description: Name of the user otherwise the API token appears if the transaction was created with the api.
+        created_by_account:
+          type: string
+          description: Account name of the user otherwise the API token appears if the transaction was created with the api.
+        reference:
+          type: string
+          description: An optional reference.
+        message:
+          type: string
+          description: A message describing the agreement.
+        rejection_reason:
+          type: string
+          description: 'Message for the creator of an agreement. Set when state is `rejected`.
+
+            '
+        type:
+          type: string
+          description: 'Type of agreement - `debit_agreement`.
+
+            '
+      example:
+        token: 3TJWJB36M973
+        state: pending
+        name: John Doe
+        email: user@example.com
+        reference: Ad 123
+        message: Thank you for your business
+        type: debit_agreement
+        created_by_user: Uf6TaxzBMBBT_rXjsrN7
+        created_by_account: Central Media News
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

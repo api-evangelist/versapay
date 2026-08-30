@@ -1,0 +1,869 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Onboarding API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+  description: 'Onboarding supports the automated process of applying for merchant services. Contact support@versapay.com for support & setup of supplier onboarding partner credentials.
+
+    '
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Onboarding
+  description: 'Onboarding supports the automated process of applying for merchant services. Contact support@versapay.com for support & setup of supplier onboarding partner credentials.
+
+    '
+paths:
+  /api/onboarding/v1/terms:
+    get:
+      tags:
+      - Onboarding
+      summary: Retrieves rates and terms for merchant services
+      operationId: getTerms
+      description: 'The system will return the rates, terms, and conditions for merchant services
+
+        '
+      parameters:
+      - in: query
+        name: locale
+        description: pass an optional country and language
+        required: false
+        schema:
+          $ref: '#/components/schemas/Locale'
+      responses:
+        '200':
+          description: terms parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationParameters'
+        '400':
+          description: bad input parameter
+  /api/onboarding/v1/applications:
+    post:
+      tags:
+      - Onboarding
+      summary: Create a new application
+      operationId: addApplication
+      description: Adds an application to the system
+      responses:
+        '201':
+          description: application created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationCreatedResponse'
+        '400':
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationErrorResponse'
+        '409':
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+        description: Inventory item to add
+  /api/onboarding/v1/applications/{id}:
+    get:
+      tags:
+      - Onboarding
+      summary: Get application status
+      operationId: getApplicationStatus
+      description: Get the status of an existing application
+      parameters:
+      - name: id
+        in: path
+        description: Application Token
+        required: true
+        schema:
+          $ref: '#/components/schemas/ApplicationToken'
+      responses:
+        '200':
+          description: application status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationStatusResponse'
+        '404':
+          description: application not found
+  /api/onboarding/v1/applications/search/{id}:
+    get:
+      tags:
+      - Onboarding
+      summary: Find the application token of an existing application
+      operationId: getApplicationToken
+      description: Find the application token of an existing applications using the reference token supplied during the create application process
+      parameters:
+      - name: id
+        in: path
+        description: Reference Token
+        required: true
+        schema:
+          $ref: '#/components/schemas/ReferenceToken'
+      responses:
+        '200':
+          description: application token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationCreatedResponse'
+        '404':
+          description: application not found
+  /api/onboarding/v1/application_steps:
+    post:
+      tags:
+      - Onboarding
+      summary: Record a Completed Step of a Merchant Application
+      operationId: addApplicationSteps
+      description: Record a completed step of the merchant application process as an integer value. A value of 99 indicates the submission of the full application.
+      responses:
+        '201':
+          description: Created (record was inserted successfully)
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - reference_token
+              - step_number
+              - message
+              properties:
+                reference_token:
+                  type: string
+                  format: guid
+                  example: 7654321:2023-10-04T14:52:37
+                  description: Specify a unique GUID as a client reference to the application. This same reference_token is used for all steps of the same application.
+                  maxLength: 36
+                step_number:
+                  type: integer
+                  description: Use values 1,2,3… to indicate steps of the process; 99 indicates the final step of the application
+                  example: '1'
+                message:
+                  type: string
+                  description: Description of the step
+                  example: Step 1 Completed
+                  maxLength: 255
+components:
+  schemas:
+    BirthDate:
+      type: string
+      format: date
+      example: '1972-01-15'
+    AccountFees:
+      type: object
+      required:
+      - per_month_amount
+      properties:
+        per_month_amount:
+          type: number
+          format: float
+          example: 5.05
+          minimum: 0
+    DemandDepositAccountNumber:
+      type: string
+      example: '9876543299'
+      pattern: ^\d+$
+    RoutingNumber:
+      type: string
+      example: '021100361'
+      pattern: ^\d{9}$
+      description: Must be a valid US Bank ABA Number
+    ApplicationTaxIDError:
+      type: object
+      required:
+      - field
+      - error_message
+      properties:
+        field:
+          type: string
+          enum:
+          - Owner 1
+          - Owner 2
+          - Owner 3
+          - Owner 4
+          - Business
+          example: Owner 1
+        error_message:
+          $ref: '#/components/schemas/ErrorMessage'
+    Range:
+      type: object
+      properties:
+        from:
+          type: number
+          example: 1000000
+        to:
+          type: number
+          example: 1999999
+          description: values are retrieved from GET Terms
+    PaymentMethodFees:
+      type: object
+      required:
+      - description
+      - per_transaction_amount
+      - per_transaction_percent
+      - per_month_amount
+      properties:
+        description:
+          type: string
+          example: Credit Card
+        per_transaction_amount:
+          type: number
+          format: float
+          example: 5.05
+          minimum: 0
+        per_transaction_percent:
+          type: number
+          format: float
+          example: 5.05
+          minimum: 0
+        per_month_amount:
+          type: number
+          format: float
+          example: 5.05
+          minimum: 0
+    ServiceEstablishment:
+      type: object
+      required:
+      - over_se_minimum
+      properties:
+        over_se_minimum:
+          $ref: '#/components/schemas/OverSEMinimum'
+        se_number:
+          $ref: '#/components/schemas/SENumber'
+    ReferenceToken:
+      type: string
+      format: guid
+      example: 1c47dece-489b-4521-89db-0a940ac58235
+      description: Specify a unique GUID as a client reference to the application
+      maxLength: 36
+    APICredentials:
+      type: object
+      required:
+      - api_token
+      - api_key
+      properties:
+        api_token:
+          $ref: '#/components/schemas/APIToken'
+        api_key:
+          $ref: '#/components/schemas/APIKey'
+    OverrideValidation:
+      type: boolean
+      example: true
+    LinkToExisting:
+      type: string
+      description: Must match the value of an existing application entry that has previously been submitted
+      example: 1cb9ca4b-6596-4bac-a24b-8864222cf95d
+    ApplicationToken:
+      type: string
+      format: guid
+      example: 1c47dece-489b-4521-89db-0a940ac58235
+    SENumber:
+      type: string
+      example: '123456789'
+      pattern: ^\d+
+      maxLength: 10
+      description: must be <= 10 characters
+    APIToken:
+      type: string
+      example: 6ySjc8LfeRwqciWK8owT
+    OverSEMinimum:
+      type: boolean
+      example: false
+    AmountRanges:
+      type: object
+      properties:
+        currency_code:
+          $ref: '#/components/schemas/Currency'
+        annual_volumes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Range'
+        average_ticket_amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Range'
+        high_ticket_amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Range'
+    BusinessTaxIdentifier:
+      type: object
+      required:
+      - tin
+      properties:
+        tin:
+          $ref: '#/components/schemas/TIN'
+        override_validation:
+          $ref: '#/components/schemas/OverrideValidation'
+    ApplicationAddressError:
+      type: object
+      required:
+      - field
+      - error_message
+      properties:
+        field:
+          type: string
+          enum:
+          - Owner 1
+          - Owner 2
+          - Owner 3
+          - Owner 4
+          - Business Physical Address
+          - Business Billing Address
+          example: Owner 1
+        error_message:
+          $ref: '#/components/schemas/ErrorMessage'
+        address_candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+    ProhibitedProduct:
+      type: string
+      example: Firearms
+    NAICSCode:
+      type: string
+      pattern: ^[0-9]{6}$
+      example: '221111'
+    Address:
+      type: object
+      required:
+      - address1
+      - city
+      - post_code
+      - country
+      properties:
+        address1:
+          type: string
+          example: 1314 NW GLISAN ST
+          minLength: 1
+          maxLength: 25
+        address2:
+          type: string
+          example: Apartment 1
+          maxLength: 25
+        city:
+          type: string
+          example: Portland
+          minLength: 1
+          maxLength: 20
+        state_province:
+          type: string
+          example: OR
+          pattern: ^[a-z]{2}$
+          maxLength: 2
+          minLength: 2
+        post_code:
+          type: string
+          example: '97209'
+          maxLength: 5
+        country:
+          type: string
+          pattern: ^[a-z]{2}$
+          example: us
+          maxLength: 2
+          minLength: 2
+        override_validation:
+          $ref: '#/components/schemas/OverrideValidation'
+    TermsAndConditions:
+      type: object
+      properties:
+        url:
+          $ref: '#/components/schemas/URL'
+        terms_and_conditions_text:
+          $ref: '#/components/schemas/TermsAndConditionsText'
+    IndividualTaxIdentifier:
+      type: object
+      required:
+      - itin
+      properties:
+        itin:
+          $ref: '#/components/schemas/ITIN'
+        override_validation:
+          $ref: '#/components/schemas/OverrideValidation'
+    BusinessName:
+      type: string
+      example: Acme Corporation
+    Email:
+      type: string
+      format: email
+      example: me@example.com
+    OwnershipType:
+      type: string
+      enum:
+      - Financial Institution
+      - Government
+      - LLC
+      - Non-Profit
+      - Partnership/Gen. Ltd.
+      - Private Corporation
+      - Public Corporation
+      - SEC Regulated Corporation
+      - Sole Proprietorship
+      - Trust
+      example: Limited Liability Company
+    APIKey:
+      type: string
+      example: Bl5cgjTnysXxyNyysXiw
+    URL:
+      type: string
+      format: url
+      example: https://www.example.com
+    ExternalLink:
+      type: string
+      description: An external reference provided by the the ERP/partner originating the merchant application associated with this supplier
+      example: xyz123abc789
+    BusinessOwner:
+      type: object
+      required:
+      - name
+      - ownership_percentage
+      - individual_tax_id_number
+      - birth_date
+      - home_address
+      - home_phone
+      - email
+      properties:
+        name:
+          $ref: '#/components/schemas/Person'
+        ownership_percentage:
+          type: number
+          format: float
+          example: 25
+          minimum: 25
+          maximum: 100
+        individual_tax_id_number:
+          $ref: '#/components/schemas/IndividualTaxIdentifier'
+        birth_date:
+          $ref: '#/components/schemas/BirthDate'
+        home_address:
+          $ref: '#/components/schemas/Address'
+        home_phone:
+          $ref: '#/components/schemas/Phone'
+        email:
+          $ref: '#/components/schemas/Email'
+    Rate:
+      type: object
+      required:
+      - description
+      - currency_code
+      - url
+      - monthly_account_fees
+      - payment_methods
+      properties:
+        description:
+          type: string
+          example: Versapay Payment Services
+        currency_code:
+          $ref: '#/components/schemas/Currency'
+        url:
+          type: string
+          format: url
+          example: https://www.versapay.com/merchant-services
+        monthly_account_fees:
+          $ref: '#/components/schemas/AccountFees'
+        payment_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethodFees'
+    ApplicationStatusResponse:
+      type: object
+      required:
+      - application_status
+      properties:
+        application_status:
+          $ref: '#/components/schemas/ApplicationStatus'
+        api_credentials:
+          $ref: '#/components/schemas/APICredentials'
+    Document:
+      type: object
+      required:
+      - filename
+      - base64
+      properties:
+        filename:
+          type: string
+          example: example.pdf
+        base64:
+          type: string
+          format: base64
+          example: ZXhhbXBsZQ==
+        type:
+          type: string
+          enum:
+          - Bank Statement
+          - Merchant Statement
+          - Financial Statement
+          - Tax ID Number Verification
+          example: Bank Statement
+    ProhibitedProducts:
+      type: object
+      properties:
+        url:
+          $ref: '#/components/schemas/URL'
+        prohibited_product_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProhibitedProduct'
+    ApplicationErrorResponse:
+      type: object
+      properties:
+        address_errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationAddressError'
+        tax_id_errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationTaxIDError'
+        field_errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationError'
+    ITIN:
+      type: string
+      example: 325-98-1975
+      pattern: ^\d{3}\-?\d{2}\-?\d{4}$
+    TermsAndConditionsText:
+      type: string
+      example: This Merchant Services Agreement (this "Agreement") is entered into between...
+    Currency:
+      type: string
+      pattern: ^[a-z]{3}$
+      example: usd
+      maxLength: 3
+      minLength: 3
+    DDA:
+      type: object
+      required:
+      - routing_number
+      - account_number
+      properties:
+        routing_number:
+          $ref: '#/components/schemas/RoutingNumber'
+        account_number:
+          $ref: '#/components/schemas/DemandDepositAccountNumber'
+    Application:
+      type: object
+      required:
+      - business_legal_name
+      - business_dba_name
+      - business_tax_id_number
+      - business_physical_address
+      - business_billing_address
+      - ownership_type
+      - business_type
+      - naics_code
+      - business_phone
+      - business_email
+      - business_website
+      - business_established_date
+      - annual_card_volume
+      - annual_direct_debit_volume
+      - average_ticket_amount
+      - high_ticket_amount
+      - american_express_service_establishment
+      - primary_contact
+      - control_prong
+      - deposit_account
+      - reference_token
+      - sells_prohibited_products
+      - agrees_terms_and_conditions
+      - terms_and_conditions
+      properties:
+        business_legal_name:
+          $ref: '#/components/schemas/BusinessName'
+        business_dba_name:
+          $ref: '#/components/schemas/BusinessName'
+        business_tax_id_number:
+          $ref: '#/components/schemas/BusinessTaxIdentifier'
+        business_physical_address:
+          $ref: '#/components/schemas/Address'
+        business_billing_address:
+          $ref: '#/components/schemas/Address'
+        ownership_type:
+          $ref: '#/components/schemas/OwnershipType'
+        stock_ticker_symbol:
+          $ref: '#/components/schemas/StockTickerSymbol'
+        business_type:
+          $ref: '#/components/schemas/BusinessType'
+        naics_code:
+          $ref: '#/components/schemas/NAICSCode'
+        business_phone:
+          $ref: '#/components/schemas/Phone'
+        business_email:
+          $ref: '#/components/schemas/Email'
+        business_website:
+          $ref: '#/components/schemas/URL'
+        business_established_date:
+          $ref: '#/components/schemas/Date'
+        annual_card_volume:
+          $ref: '#/components/schemas/Range'
+        annual_direct_debit_volume:
+          $ref: '#/components/schemas/RangeAnualDirectDebitVolume'
+        average_ticket_amount:
+          $ref: '#/components/schemas/RangeAverageTicketAmount'
+        high_ticket_amount:
+          $ref: '#/components/schemas/RangeHightTicketAmount'
+        american_express_service_establishment:
+          $ref: '#/components/schemas/ServiceEstablishment'
+        business_owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessOwner'
+          maxItems: 4
+        non_business_owner_control_prong:
+          $ref: '#/components/schemas/NonBusinessOwnerControlProng'
+        primary_contact:
+          $ref: '#/components/schemas/ApplicationContact'
+        control_prong:
+          $ref: '#/components/schemas/ControlProng'
+        deposit_account:
+          $ref: '#/components/schemas/DDA'
+        reference_token:
+          $ref: '#/components/schemas/ReferenceToken'
+        sells_prohibited_products:
+          $ref: '#/components/schemas/Boolean'
+        agrees_terms_and_conditions:
+          $ref: '#/components/schemas/Boolean'
+        terms_and_conditions:
+          $ref: '#/components/schemas/TermsAndConditions'
+        supporting_documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+        locale:
+          $ref: '#/components/schemas/Locale'
+        external_link:
+          $ref: '#/components/schemas/ExternalLink'
+        link_to_existing:
+          $ref: '#/components/schemas/LinkToExisting'
+    TIN:
+      type: string
+      example: 77-7654567
+      pattern: ^\d{2}\-?\d{7}$
+    ApplicationError:
+      type: object
+      required:
+      - field
+      - error_message
+      properties:
+        field:
+          type: string
+        error_message:
+          $ref: '#/components/schemas/ErrorMessage'
+    NonBusinessOwnerControlProng:
+      description: 'This is a required object when the control_prong is set to Non-Owner
+
+        '
+      type: object
+      required:
+      - name
+      - individual_tax_id_number
+      - birth_date
+      - home_address
+      - home_phone
+      - email
+      properties:
+        name:
+          $ref: '#/components/schemas/Person'
+        individual_tax_id_number:
+          $ref: '#/components/schemas/IndividualTaxIdentifier'
+        birth_date:
+          $ref: '#/components/schemas/Date'
+        home_address:
+          $ref: '#/components/schemas/Address'
+        home_phone:
+          $ref: '#/components/schemas/Phone'
+        email:
+          $ref: '#/components/schemas/Email'
+    RangeHightTicketAmount:
+      type: object
+      properties:
+        from:
+          type: number
+          example: 1000
+        to:
+          type: number
+          example: 4999
+    Locale:
+      type: string
+      pattern: ^[a-z]{2}-[a-z]{2}$
+      example: en-us
+    RangeAnualDirectDebitVolume:
+      type: object
+      properties:
+        from:
+          type: number
+          example: 500000
+        to:
+          type: number
+          example: 999999
+    StockTickerSymbol:
+      type: string
+      example: EXMPL
+      description: required only if ownership_type = "Public Corporation", must be <= 10 characters
+    ApplicationCreatedResponse:
+      type: object
+      required:
+      - application_token
+      properties:
+        application_token:
+          $ref: '#/components/schemas/ApplicationToken'
+    ErrorMessage:
+      type: string
+      example: Please specify a valid value
+    RangeAverageTicketAmount:
+      type: object
+      properties:
+        from:
+          type: number
+          example: 100
+        to:
+          type: number
+          example: 249
+    ApplicationContact:
+      type: object
+      required:
+      - name
+      - phone
+      - email
+      properties:
+        name:
+          $ref: '#/components/schemas/Person'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        email:
+          $ref: '#/components/schemas/Email'
+    Boolean:
+      type: boolean
+      example: false
+    Date:
+      type: string
+      format: date
+      example: '2022-01-15'
+    ApplicationParameters:
+      type: object
+      required:
+      - rates
+      - prohibited_products
+      - terms_and_conditions
+      properties:
+        rates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rate'
+        prohibited_products:
+          $ref: '#/components/schemas/ProhibitedProducts'
+        terms_and_conditions:
+          $ref: '#/components/schemas/TermsAndConditions'
+        ranges:
+          $ref: '#/components/schemas/AmountRanges'
+    ApplicationStatus:
+      type: string
+      enum:
+      - Received
+      - Processing
+      - Provisionally Approved
+      - Approved
+      - On Hold
+      - Closed
+      example: Received
+    Phone:
+      type: string
+      example: 503-685-4116
+      description: cannot begin with 1 or 0
+    Person:
+      type: object
+      required:
+      - first_name
+      - last_name
+      - title
+      properties:
+        first_name:
+          type: string
+          example: Alice
+          maxLength: 25
+        middle_initial:
+          type: string
+          example: B
+          minLength: 1
+          maxLength: 1
+        last_name:
+          type: string
+          example: Smith
+          maxLength: 25
+        title:
+          type: string
+          example: CFO
+          maxLength: 20
+    BusinessType:
+      type: string
+      enum:
+      - AutoRental
+      - MOTO
+      - ECommerce
+      - Restaurant
+      - Lodging
+      - Retail
+      example: Restaurant
+    ControlProng:
+      type: string
+      enum:
+      - Owner 1
+      - Owner 2
+      - Owner 3
+      - Owner 4
+      - Non-Owner
+      example: Non-Owner
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

@@ -1,0 +1,372 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Collaboration API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+  description: 'As a supplier your customers collaborate with you through comments about invoices and/or payments.
+
+    '
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Collaboration
+  description: 'As a supplier your customers collaborate with you through comments about invoices and/or payments.
+
+    '
+paths:
+  /api/invoices/{invoice_number}/disputes/close:
+    post:
+      summary: Close a Dispute
+      description: 'Close the active dispute on the specified invoice.<br><br>
+
+        If the invoice has no active dispute, the request is treated as a no-op and returns a success response with `"0 disputes closed"`.<br><br>
+
+        An optional `closer` attribute can be provided to record who closed the dispute, and an optional `comment` attribute will create a closing comment on the dispute.
+
+        '
+      tags:
+      - Collaboration
+      parameters:
+      - name: invoice_number
+        in: path
+        required: true
+        description: The number of the invoice whose dispute should be closed.
+        schema:
+          type: string
+          example: INV1234-01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                closer:
+                  type: string
+                  description: Name or email address of the person closing the dispute.
+                  example: supplier@example.com
+                comment:
+                  type: string
+                  description: Closing comment text. If provided, a closing comment will be created and attached to the dispute.
+                  example: Invoice will be credited. Please pay the rest.
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  identifier:
+                    type: string
+                    example: INV1234-01
+                  message:
+                    type: string
+                    example: 1 dispute closed
+              examples:
+                dispute_closed:
+                  summary: Dispute successfully closed
+                  value:
+                    identifier: INV1234-01
+                    message: 1 dispute closed
+                no_active_dispute:
+                  summary: No active dispute on the invoice
+                  value:
+                    identifier: INV1234-01
+                    message: 0 disputes closed
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+  /api/exports/disputes:
+    get:
+      summary: Export Open and Closed Disputes
+      description: Open and closed disputes since watermark, limited to 100 disputes at a time per category (open/closed).
+      tags:
+      - Collaboration
+      parameters:
+      - name: watermark
+        in: query
+        description: The date/datetime (yyyy-mm-dd, yyyy-mm-ddThh:mm:ss) value to base a subsequent extract of the next 100 open and the next 100 closed disputes.
+        schema:
+          type: string
+          example: '2017-12-16T20:44:37'
+      - name: list
+        in: query
+        description: See Watermark & Limit for more information on response structure. Note the watermark is a date/datetime, and the response watermark is the dispute.id and is not to be used as the input.
+        schema:
+          type: boolean
+          example: true
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  disputes:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/Dispute'
+              examples:
+                disputes:
+                  value:
+                    disputes:
+                      '518':
+                        closed_at: '2018-01-01T13:06:56-05:00'
+                        opened_at: '2017-12-16T20:44:37-05:00'
+                        opener: customer@example.com
+                        closer: supplier@example.com
+                        opening_comment_text: Damaged goods. Please correct the amount.
+                        closing_comment_text: Invoice will be credited. Please pay the rest.
+                        invoice_number: INV001
+                        invoice_balance:
+                          usd: 12000
+                        dispute_reason_identifier: null
+                        dispute_reason_label_en: ''
+                        dispute_reason_label_fr: ''
+                        opening_comment_users_notified: []
+                        closing_comment_user_notified: []
+                        creator_business_name: Acme Inc.
+                        closer_business_name: Supplier Corp.
+                        invoice_amount_paid: '30.00'
+                        invoice_identifier: supplier|INV001
+                        invoice_external_id: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/exports/comments:
+    get:
+      summary: Export Customer and Invoice Comments
+      description: Customer and invoice comments (including disputes) since watermark, limited to 100 comments at a time.
+      tags:
+      - Collaboration
+      parameters:
+      - name: watermark
+        in: query
+        description: The value to base a subsequent extract of the next 100 items.
+        schema:
+          $ref: '#/components/schemas/Watermark'
+      - name: list
+        in: query
+        description: See Watermark & Limit for more information on response structure.
+        schema:
+          type: boolean
+          example: true
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comments:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/Comment'
+              examples:
+                comments:
+                  value:
+                    comments:
+                      '1568':
+                        identifier: '1568'
+                        customer_identifier: '13666'
+                        customer_name: Acme Inc.
+                        comment: This is a comment
+                        regarding: Invoice INV-0001
+                        target_users: ''
+                        dispute: N
+                        internal: Y
+                        timestamp: '2017-09-20T15:09:05-04:00'
+                        user: Bob Smith
+                        email: bob.smith@example.com
+                        organization: Acme Inc.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+components:
+  schemas:
+    Dispute:
+      type: object
+      properties:
+        closed_at:
+          type: string
+          format: date-time
+          description: Date and time when dispute was closed.
+        opened_at:
+          type: string
+          format: date-time
+          description: Date and time when dispute was opened.
+        opener:
+          type: string
+          description: Name or email address of the user who opened the dispute.
+        closer:
+          type: string
+          description: Name or email address of the user who closed the dispute.
+        opening_comment_text:
+          type: string
+          description: Comment text when the dispute was opened.
+        closing_comment_text:
+          type: string
+          description: Comment text when the dispute was closed.
+        invoice_number:
+          type: string
+          description: Invoice number against which dispute was opened.
+        invoice_amount_paid:
+          type: string
+          description: The total amount of payments, in dollars and cents, made to date via Collaborative AR towards this invoice.
+        invoice_balance:
+          type: object
+          description: Invoice balance, in cents.
+          additionalProperties:
+            type: integer
+        dispute_reason_identifier:
+          type: string
+          description: Dispute reason code, if set up.
+        dispute_reason_label_en:
+          type: string
+          description: Dispute reason label in English. Applicable when dispute reason codes are set up in the account.
+        dispute_reason_label_fr:
+          type: string
+          description: Dispute reason label in French. Applicable when dispute reason codes are set up in the account.
+        opening_comment_users_notified:
+          type: array
+          items:
+            type: string
+          description: Names or email addresses of users notified when opening dispute.
+        closing_comment_user_notified:
+          type: array
+          items:
+            type: string
+          description: 'Name or email addresses of users notified when closing dispute.
+
+
+            _Note: When the dispute is still open, `closing_comment_user_notified` is an empty string (`""`), not an array._
+
+            '
+        creator_business_name:
+          type: string
+          description: Business name of the organization that `opener` represents.
+        closer_business_name:
+          type: string
+          description: Business name of the organization that `closer` represents.
+        invoice_identifier:
+          type: string
+          description: Internal unique identifier for the invoice record.
+        invoice_external_id:
+          type: string
+          description: External identifier for the invoice record.
+    Comment:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for comment
+        customer_identifier:
+          type: string
+          description: Customer number
+        customer_name:
+          type: string
+          description: Customer name
+        regarding:
+          type: string
+          description: Invoice number (if applicable) associated to the comment.
+        target_users:
+          type: string
+          description: List of users that the comment specifically targets, separated by semi-colons.
+        dispute:
+          type: string
+          description: '`Y` if the comment opened is a dispute. `N` otherwise.
+
+            '
+        internal:
+          type: string
+          description: '`Y` if the comment is internal. `N` otherwise.
+
+            '
+        timestamp:
+          type: string
+          format: date-time
+          description: '''Date and time when the comment was created, based on ISO 8601 standard. Format: YYYY-MM-DDTHH:MM:SS+HH:MM''
+
+            '
+        user:
+          type: string
+          description: Name of the user who create the comment. First and last name, if available. Otherwise, email address.
+        email:
+          type: string
+          description: Email of the user who created the comment.
+        organization:
+          type: string
+          description: 'Name of the user''s organization – supplier''s name or the customer''s name. <br><br>Note that for comments made by customers, the customer_name and organization will have the same value. When the supplier made the comment, this field will hold the supplier business name.
+
+            '
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
+  responses:
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

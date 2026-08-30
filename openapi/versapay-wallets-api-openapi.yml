@@ -1,0 +1,1819 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Wallets API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+  description: 'The Wallet entity holds vaulted & secured payment methods owned by a customer (buyer/payor) that can be used to make payments via Collaborative AR (online Portals, AutoPay, Pay Now), Order Transactions (Ecomm & ERP based suppliers), and Invoicing Payments (via Partner buyer networks including Virtual Card Connect). Contact support@versapay.com for support & setup for Wallet access and payment transaction enablement in relation to licensed product components.
+
+    '
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Wallets
+  description: 'The Wallet entity holds vaulted & secured payment methods owned by a customer (buyer/payor) that can be used to make payments via Collaborative AR (online Portals, AutoPay, Pay Now), Order Transactions (Ecomm & ERP based suppliers), and Invoicing Payments (via Partner buyer networks including Virtual Card Connect). Contact support@versapay.com for support & setup for Wallet access and payment transaction enablement in relation to licensed product components.
+
+    '
+paths:
+  /api/gateway/v1/wallets/search:
+    get:
+      tags:
+      - Wallets
+      summary: Search Accessible Wallets
+      description: Accessible wallets can be searched by contact email, customer identifier, fund token, or vault token.
+      parameters:
+      - name: type
+        in: query
+        required: true
+        description: The type of search `email|customer|fund|vault`
+        schema:
+          type: string
+          example: email
+      - name: locator
+        in: query
+        required: true
+        description: The value used for search according to the type.
+        schema:
+          type: string
+          example: salesdemo@versapay.com
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  wallets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Wallet'
+              examples:
+                list_of_wallets:
+                  $ref: '#/components/examples/list_of_wallets'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/gateway/v1/wallets:
+    post:
+      tags:
+      - Wallets
+      summary: Create Wallet Empty/Payment Method
+      description: Create a new wallet (empty) and/or a new wallet with a payment method.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletRequest'
+            examples:
+              wallet_empty_ghost:
+                summary: Create empty wallet (ghost customer)
+                value: {}
+              wallet_empty_contact:
+                summary: Create empty wallet (ghost customer and contact)
+                value:
+                  contact:
+                    first_name: Carey
+                    last_name: Price
+                    email: price@habs.com
+              wallet_empty_customer1:
+                summary: Create empty wallet w/ new invoicing customer
+                value:
+                  customer:
+                    name: Montreal Canadiens
+              wallet_empty_customer2:
+                summary: Create empty wallet w/ existing invoicing customer reference
+                value:
+                  customer:
+                    identifier: C1234
+              wallet_empty_customer3:
+                summary: Create empty wallet w/ existing invoicing customer reference (short form)
+                value:
+                  customer: C1234
+              wallet_empty_customer_contact:
+                summary: Create empty wallet w/ existing invoicing customer and contact
+                value:
+                  customer:
+                    identifier: C1234
+                  contact:
+                    first_name: Carey
+                    last_name: Price
+                    email: price@habs.com
+              wallet_new_ghost_card:
+                summary: New wallet (ghost) with credit card
+                value:
+                  credit_card:
+                    name: FRANK SMITH
+                    expiry_month: 8
+                    expiry_year: 2020
+                    card_number: '5420923878724339'
+                    cvv: '123'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              wallet_new_ghost_bank:
+                summary: New wallet (ghost) with bank account
+                value:
+                  bank_account:
+                    currency: USD
+                    account_type: checking
+                    account_holder: Tim Coffee Ltd
+                    account_number: '144155167'
+                    routing_number: '121000248'
+                    external_name: BANK
+                    external_number: '777'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              wallet_new_contact_card:
+                summary: New wallet (ghost customer and contact) with credit card
+                value:
+                  contact:
+                    email: frank@smith.com
+                    first_name: Frank
+                    last_name: Smith
+                  credit_card:
+                    name: FRANK SMITH
+                    expiry_month: 8
+                    expiry_year: 2020
+                    card_number: '5420923878724339'
+                    cvv: '123'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              wallet_new_contact_bank:
+                summary: New wallet (ghost customer and contact) with bank account
+                value:
+                  contact:
+                    email: frank@smith.com
+                    first_name: Frank
+                    last_name: Smith
+                  bank_account:
+                    currency: USD
+                    account_type: checking
+                    account_holder: Tim Coffee Ltd
+                    account_number: '144155167'
+                    routing_number: '121000248'
+                    external_name: BANK
+                    external_number: '777'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              wallet_new_customer_contact_card:
+                summary: New wallet existing invoicing customer and contact with credit card
+                value:
+                  customer:
+                    identifier: C1234
+                    name: Starblux
+                  contact:
+                    email: frank@smith.com
+                    first_name: Frank
+                    last_name: Smith
+                  credit_card:
+                    name: FRANK SMITH
+                    expiry_month: 8
+                    expiry_year: 2020
+                    card_number: '5420923878724339'
+                    cvv: '123'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              wallet_new_customer_contact_bank:
+                summary: New wallet existing invoicing customer and contact with bank account
+                value:
+                  customer:
+                    identifier: C1234
+                    name: Starblux
+                  contact:
+                    email: frank@smith.com
+                    first_name: Frank
+                    last_name: Smith
+                  bank_account:
+                    currency: USD
+                    account_type: checking
+                    account_holder: Tim Coffee Ltd
+                    account_number: '144155167'
+                    routing_number: '121000248'
+                    external_name: BANK
+                    external_number: '777'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              wallet_known_customer_contact_card1:
+                summary: Add credit card to a known wallet via reference (short form)
+                value:
+                  wallet: 77A81025AC3A
+                  customer:
+                    identifier: C1234
+                    name: Starblux
+                  contact:
+                    email: frank@smith.com
+                    first_name: Frank
+                    last_name: Smith
+                  credit_card:
+                    name: FRANK SMITH
+                    expiry_month: 8
+                    expiry_year: 2020
+                    card_number: '5420923878724339'
+                    cvv: '123'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              wallet_known_customer_contact_card2:
+                summary: Add credit card to a known wallet via reference (long form)
+                value:
+                  wallet:
+                    token: 77A81025AC3A
+                  customer:
+                    identifier: C1234
+                    name: Starblux
+                  contact:
+                    email: frank@smith.com
+                    first_name: Frank
+                    last_name: Smith
+                  credit_card:
+                    name: FRANK SMITH
+                    expiry_month: 8
+                    expiry_year: 2020
+                    card_number: '5420923878724339'
+                    cvv: '123'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletResponse'
+              examples:
+                new_wallet_empty:
+                  $ref: '#/components/examples/new_wallet_empty'
+                new_wallet_fund:
+                  $ref: '#/components/examples/new_wallet_fund'
+        '412':
+          $ref: '#/components/responses/WalletErrors'
+  /api/gateway/v1/wallets/{wallet_token}:
+    get:
+      tags:
+      - Wallets
+      summary: View Wallet
+      description: View specific wallet given its wallet identifier/token.
+      parameters:
+      - name: wallet_token
+        in: path
+        required: true
+        description: The wallet identifier/token
+        schema:
+          type: string
+          example: 77A81025AC3A
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  wallets:
+                    type: array
+                    description: List of wallets.
+                    items:
+                      $ref: '#/components/schemas/Wallet'
+        '412':
+          $ref: '#/components/responses/WalletErrors'
+  /api/gateway/v1/wallets/{wallet_token}/methods:
+    post:
+      tags:
+      - Wallets
+      summary: Add Payment Methods to Known Wallet
+      description: Add payment methods to a known wallet given its identifier/token.
+      parameters:
+      - name: wallet_token
+        in: path
+        required: true
+        description: The wallet identifier/token
+        schema:
+          type: string
+          example: 77A81025AC3A
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletPaymentMethodRequest'
+            examples:
+              wallet_known_new_card:
+                summary: Add credit card
+                value:
+                  credit_card:
+                    name: FRANK SMITH
+                    expiry_month: 8
+                    expiry_year: 2020
+                    card_number: '5420923878724339'
+                    cvv: '123'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              wallet_known_import_card:
+                summary: Add credit card (importing from prior Vault tokenized card number)
+                value:
+                  credit_card:
+                    name: FRANK SMITH
+                    expiry_month: 8
+                    expiry_year: 2020
+                    brand: mastercard
+                    last_4_digits: '4339'
+                    gateway_token: 4f7b9f2c-20f8-4265-a26c-ff0e4dadeec7
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              wallet_known_new_bank:
+                summary: Add bank account
+                value:
+                  bank_account:
+                    currency: USD
+                    account_type: checking
+                    account_holder: Tim Coffee Ltd
+                    account_number: '144155167'
+                    routing_number: '121000248'
+                    external_name: BANK
+                    external_number: '777'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              wallet_known_import_bank:
+                summary: Add bank account (importing from prior Vault tokenized account number)
+                value:
+                  bank_account:
+                    currency: USD
+                    account_type: checking
+                    account_holder: Tim Coffee Ltd
+                    gateway_token: 8f8b8f2c-20f8-4265-a26c-ff0e8dadeec8
+                    routing_number: '121000248'
+                    external_name: BANK
+                    external_number: '777'
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletResponse'
+        '412':
+          $ref: '#/components/responses/WalletErrors'
+  /api/gateway/v1/wallets/{wallet_token}/methods/{fund_token}:
+    patch:
+      tags:
+      - Wallets
+      summary: Update Payment Method in Wallet
+      description: Updates a payment method given its wallet and fund identifier/token.
+      parameters:
+      - name: wallet_token
+        in: path
+        required: true
+        description: The wallet identifier/token
+        schema:
+          type: string
+          example: 77A81025AC3A
+      - name: fund_token
+        in: path
+        required: true
+        description: The fund identifier/token
+        schema:
+          type: string
+          example: CC98U7LI8H91
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletPaymentMethodPatch'
+            examples:
+              patch_card0:
+                summary: Update credit card nickname
+                value:
+                  credit_card:
+                    nickname: Dividend Platinum
+              patch_card1:
+                summary: Lock credit card from future use
+                value:
+                  credit_card:
+                    locked: true
+              patch_card2:
+                summary: Update credit card expiry
+                value:
+                  credit_card:
+                    expiry_month: 8
+                    expiry_year: 2020
+              patch_card3:
+                summary: Update credit card expiry and address
+                value:
+                  credit_card:
+                    expiry_month: 8
+                    expiry_year: 2020
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+              patch_bank0:
+                summary: Update bank account nickname and external information
+                value:
+                  bank_account:
+                    external_name: BANK
+                    external_number: '777'
+                    nickname: Bank of America - Spending
+              patch_bank1:
+                summary: Lock bank account from future use
+                value:
+                  bank_account:
+                    locked: true
+              patch_bank2:
+                summary: Update bank account address
+                value:
+                  bank_account:
+                    address:
+                      address_1: 123 Abc St
+                      city: Beverly Hills
+                      province: CA
+                      postal_code: '90210'
+                      country: US
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fund_token:
+                    type: string
+                    example: CC98U7LI8H91
+        '412':
+          $ref: '#/components/responses/WalletMethodErrors'
+    delete:
+      tags:
+      - Wallets
+      summary: Remove Payment Method From Wallet
+      description: Removes a payment method from wallet given given its wallet and fund identifier/token.
+      parameters:
+      - name: wallet_token
+        in: path
+        required: true
+        description: The wallet identifier/token
+        schema:
+          type: string
+          example: 77A81025AC3A
+      - name: fund_token
+        in: path
+        required: true
+        description: The fund identifier/token
+        schema:
+          type: string
+          example: CC98U7LI8H91
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fund_token:
+                    type: string
+                    example: CC98U7LI8H91
+        '412':
+          $ref: '#/components/responses/WalletMethodErrors'
+  /api/exports/wallets:
+    get:
+      tags:
+      - Wallets
+      summary: Export Wallets
+      description: 'Payments made to your supplier account from your customers since watermark, limited to 100 payments at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for a subsequent calls.
+
+        '
+      parameters:
+      - name: watermark
+        in: query
+        description: The value to base a subsequent extract of the next 100 items.
+        schema:
+          $ref: '#/components/schemas/Watermark'
+      - name: list
+        in: query
+        description: See Watermark & Limit for more information on response structure.
+        schema:
+          type: boolean
+          example: true
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  wallets:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/Wallet'
+              examples:
+                export_wallets:
+                  $ref: '#/components/examples/export_wallets'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/exports/wallets/recent:
+    get:
+      tags:
+      - Wallets
+      summary: Export Wallets Recently Updated
+      description: 'Payment records that have been updated in the past 7 days, since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.
+
+        '
+      parameters:
+      - name: watermark
+        in: query
+        description: The value to base a subsequent extract of the next 100 items.
+        schema:
+          $ref: '#/components/schemas/Watermark'
+      - name: list
+        in: query
+        description: See Watermark & Limit for more information on response structure.
+        schema:
+          type: boolean
+          example: true
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  wallets:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/Wallet'
+              examples:
+                export_wallets:
+                  $ref: '#/components/examples/export_wallets'
+components:
+  examples:
+    fund_protected:
+      summary: fund_protected
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: fund_protected
+    name_unspecified:
+      summary: name_unspecified
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: name_unspecified
+    fund_address_unspecified:
+      summary: fund_address_unspecified
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: fund_address_unspecified
+    new_wallet_empty:
+      summary: New empty wallet
+      value:
+        wallet_token: 5EJQM2RL4K2G
+        fund_token: null
+        wallets:
+        - token: 5EJQM2RL4K2G
+          credit_cards: []
+          bank_accounts: []
+          customers:
+          - identifier: API-PTwDRl1PoialcnEHGv54V7Nj
+            contacts: []
+    new_wallet_fund:
+      summary: New wallet with payment method added
+      value:
+        wallet_token: 5EJQM2RL4K2G
+        fund_token: CC54QRN1CLDX
+        wallets:
+        - token: 5EJQM2RL4K2G
+          credit_cards:
+          - token: CC54QRN1CLDX
+            gateway_token: k8oz6mz8w0ma
+            cardholder: John Adam
+            card_number: Visa **1111
+            display_name: Visa **1111
+            nickname: null
+            expiry_month: 12
+            expiry_year: 2025
+            is_debit: false
+            is_default: false
+            brand: visa
+            created: '2020-09-02T10:50:54.000-04:00'
+            locked: false
+            inactive: false
+            last_transaction_date: null
+            last_transaction: null
+            last_payment: null
+            address:
+              address_1: null
+              address_2: null
+              city: null
+              state: null
+              province: null
+              country: null
+              country_name: null
+              zip: ''
+              postal_code: ''
+              line_1: ''
+              line_2: ''
+              created_at: '2020-09-02T10:50:54.000-04:00'
+              updated_at: '2020-09-02T10:50:54.000-04:00'
+          bank_accounts: []
+          customers:
+          - identifier: API-PTwDRl1PoialcnEHGv54V7Nj
+            contacts: []
+    buyer_account_not_found:
+      summary: buyer_account_not_found
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: buyer_account_not_found
+    fund_not_authorized:
+      summary: fund_not_authorized
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: fund_not_authorized
+    export_wallets:
+      summary: Export wallets
+      value:
+        wallets:
+          '33196':
+            token: E38B7566FE90
+            credit_cards:
+            - token: CC7ELZ3ZIRHC
+              gateway_token: k8oz6mz8w0ma
+              cardholder: Eric Tatum
+              card_number: Visa **1111
+              display_name: Visa **1111
+              nickname: null
+              expiry_month: 12
+              expiry_year: 2025
+              is_debit: false
+              is_default: false
+              brand: visa
+              created: '2020-11-16T14:15:12.000-05:00'
+              locked: false
+              inactive: false
+              last_transaction_date: '2020-11-16T14:15:28.000-05:00'
+              last_transaction: 8QK4BYC5468S
+              last_payment: 4SZR1ZB2GGFU
+              address:
+                address_1: null
+                address_2: null
+                city: null
+                state: null
+                province: null
+                country: null
+                country_name: null
+                zip: ''
+                postal_code: ''
+                line_1: ''
+                line_2: ''
+                created_at: '2020-11-16T14:15:12.000-05:00'
+                updated_at: '2020-11-16T14:15:12.000-05:00'
+            bank_accounts: []
+            customers:
+            - identifier: '3106'
+              contacts:
+              - email: eric@solupay.com
+              - email: pm@versapay.com
+            watermark: 33196
+          '41383':
+            token: 3K8ZJ4G663LL
+            credit_cards:
+            - token: CC2I5LZZ71TG
+              gateway_token: ejia1yr1zbht
+              cardholder: Candy Cane
+              card_number: Visa **1111
+              display_name: Visa **1111
+              nickname: null
+              expiry_month: 1
+              expiry_year: 2024
+              is_debit: false
+              is_default: false
+              brand: visa
+              created: '2021-02-25T11:45:46.000-05:00'
+              locked: false
+              inactive: false
+              last_transaction_date: '2021-02-25T11:46:08.000-05:00'
+              last_transaction: 1TTNG7U92AAD
+              last_payment: 3553VC71RQIE
+              address:
+                address_1: null
+                address_2: null
+                city: null
+                state: null
+                province: null
+                country: null
+                country_name: null
+                zip: '12345'
+                postal_code: '12345'
+                line_1: ''
+                line_2: '12345'
+                created_at: '2021-02-25T11:45:46.000-05:00'
+                updated_at: '2021-02-25T11:45:46.000-05:00'
+            bank_accounts: []
+            customers:
+            - identifier: '3569'
+              contacts:
+              - email: abcxyz@abc.com
+              - email: abcxyz123@abc.com
+            watermark: 41383
+          '42327':
+            token: 6D99F9JX9NJB
+            credit_cards:
+            - token: CC1F3BSBLQC1
+              gateway_token: ns4gzxbvq1ch
+              cardholder: Demo3 NS1
+              card_number: Visa **1111
+              display_name: Visa **1111
+              nickname: null
+              expiry_month: 10
+              expiry_year: 2025
+              is_debit: false
+              is_default: false
+              brand: visa
+              created: '2021-03-03T22:11:21.000-05:00'
+              locked: false
+              inactive: false
+              last_transaction_date: '2021-03-03T22:26:01.000-05:00'
+              last_transaction: 2ZIMJMFVRG8L
+              last_payment: 14ZIYYXYEZ38
+              address:
+                address_1: null
+                address_2: null
+                city: null
+                state: null
+                province: null
+                country: null
+                country_name: null
+                zip: ''
+                postal_code: ''
+                line_1: ''
+                line_2: ''
+                created_at: '2021-03-03T22:11:21.000-05:00'
+                updated_at: '2021-03-03T22:11:21.000-05:00'
+            bank_accounts: []
+            customers:
+            - identifier: '3580'
+              contacts:
+              - email: demo3ns1@abc.com
+            watermark: 42327
+          '42328':
+            token: 2GX14AMUHU2B
+            credit_cards:
+            - token: CC5CGT99ZIU5
+              gateway_token: 92g1xpkeocne
+              cardholder: Jose Parent
+              card_number: Visa **1111
+              display_name: Visa **1111
+              nickname: null
+              expiry_month: 1
+              expiry_year: 2025
+              is_debit: false
+              is_default: false
+              brand: visa
+              created: '2021-03-04T00:31:44.000-05:00'
+              locked: false
+              inactive: false
+              last_transaction_date: '2021-03-04T00:34:57.000-05:00'
+              last_transaction: 4VV82VHNI6JC
+              last_payment: 1JBVEQR17U35
+              address:
+                address_1: null
+                address_2: null
+                city: null
+                state: null
+                province: null
+                country: null
+                country_name: null
+                zip: '44087'
+                postal_code: '44087'
+                line_1: ''
+                line_2: '44087'
+                created_at: '2021-03-04T00:31:44.000-05:00'
+                updated_at: '2021-03-04T00:31:44.000-05:00'
+            bank_accounts: []
+            customers:
+            - identifier: '3589'
+              contacts:
+              - email: joseparent@solupay.com
+            watermark: 42328
+          '42329':
+            token: 1XMJTMUGISGI
+            credit_cards: []
+            bank_accounts: []
+            customers:
+            - identifier: '3590'
+              contacts:
+              - email: josechild@solupay.com
+            watermark: 42329
+    customer_not_found:
+      summary: customer_not_found
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: customer_not_found
+    buyer_account_protected:
+      summary: buyer_account_protected
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: buyer_account_protected
+    payment_method_not_found:
+      summary: payment_method_not_found
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: payment_method_not_found
+    payment_method_inactive:
+      summary: payment_method_inactive
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: payment_method_inactive
+    payment_method_conflict:
+      summary: payment_method_conflict
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: payment_method_conflict
+    gift_card_not_found:
+      summary: gift_card_not_found
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: gift_card_not_found
+    credit_card_not_found:
+      summary: credit_card_not_found
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: credit_card_not_found
+    buyer_customer_not_found:
+      summary: buyer_customer_not_found
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: buyer_customer_not_found
+    list_of_wallets:
+      summary: List of wallets
+      value:
+        wallets:
+        - token: 77A81025AC3A
+          credit_cards:
+          - token: CC54QRN1CLDX
+            gateway_token: k8oz6mz8w0ma
+            cardholder: John Adam
+            card_number: Visa **1111
+            display_name: Visa **1111
+            nickname: null
+            expiry_month: 12
+            expiry_year: 2025
+            is_debit: false
+            is_default: false
+            brand: visa
+            created: '2020-09-02T10:50:54.000-04:00'
+            locked: false
+            inactive: false
+            last_transaction_date: '2021-03-31T16:48:33.000-04:00'
+            last_transaction: 2SWW4NXAQGEX
+            last_payment: 3EHSHYGJKK3C
+            address:
+              address_1: null
+              address_2: null
+              city: null
+              state: null
+              province: null
+              country: null
+              country_name: null
+              zip: ''
+              postal_code: ''
+              line_1: ''
+              line_2: ''
+              created_at: '2020-09-02T10:50:54.000-04:00'
+              updated_at: '2020-09-02T10:50:54.000-04:00'
+          bank_accounts:
+          - account_holder: Solupay
+            branch_number: ''
+            institution_number: ''
+            routing_number: '122000247'
+            sort_code: null
+            iban: null
+            account_number: ' (1156)'
+            nickname: null
+            state: verified
+            verification_attempts: 0
+            token: BA25BVH5HCRI
+            gateway_token: null
+            account_type: checking
+            external_name: null
+            external_number: null
+            display_name: ' (1156)'
+            usage: ap
+            currency: usd
+            domicile: US
+            created: '2020-09-02T10:50:02.000-04:00'
+            is_default: false
+            locked: false
+            check_type: null
+            inactive: false
+            last_transaction_date: '2021-03-28T18:13:01.000-04:00'
+            last_transaction: 9BY2J2JK5JK3
+            last_payment: 246X11DST8WL
+            address:
+              address_1: ''
+              address_2: ''
+              city: ''
+              state: null
+              province: null
+              country: US
+              country_name: USA
+              zip: ''
+              postal_code: ''
+              line_1: ''
+              line_2: US
+              created_at: '2020-09-02T10:50:02.000-04:00'
+              updated_at: '2020-09-02T10:50:02.000-04:00'
+          customers:
+          - identifier: '1715'
+            contacts:
+            - email: jdoe@versapay.com
+          - identifier: '1764'
+            contacts:
+            - email: smith@versapay.com
+            - email: jdoe@versapay.com
+        - token: 7EVZCIY25G9L
+          credit_cards:
+          - token: CC3PTIFL9AEI
+            gateway_token: 92g1xpkeocne
+            cardholder: John A. Appseed
+            card_number: Visa **1111
+            display_name: Visa **1111
+            nickname: null
+            expiry_month: 1
+            expiry_year: 2025
+            is_debit: false
+            is_default: false
+            brand: visa
+            created: '2021-05-10T09:27:38.000-04:00'
+            locked: false
+            inactive: false
+            last_transaction_date: '2021-09-20T11:59:51.000-04:00'
+            last_transaction: 2FUSRN7VMZU9
+            last_payment: 1QC8WS1GRHMC
+            address:
+              address_1: null
+              address_2: null
+              city: null
+              state: null
+              province: null
+              country: null
+              country_name: null
+              zip: ''
+              postal_code: ''
+              line_1: ''
+              line_2: ''
+              created_at: '2021-05-10T09:27:38.000-04:00'
+              updated_at: '2021-05-10T09:27:38.000-04:00'
+          bank_accounts: []
+          customers:
+          - identifier: ARC Customer
+            contacts:
+            - email: salesdemo@versapay.com
+            - email: jdoe@versapay.com
+        - token: 96CYTUXCHRWV
+          credit_cards:
+          - token: CC7E7XD59YQC
+            gateway_token: ns4gzxbvq1ch
+            cardholder: test customer
+            card_number: Visa **1111
+            display_name: Visa **1111
+            nickname: null
+            expiry_month: 10
+            expiry_year: 2025
+            is_debit: false
+            is_default: false
+            brand: visa
+            created: '2021-04-23T16:51:43.000-04:00'
+            locked: false
+            inactive: false
+            last_transaction_date: '2021-04-28T09:16:59.000-04:00'
+            last_transaction: 7BUQR4UZC85V
+            last_payment: 3TVZ9UF5L7J5
+            address:
+              address_1: null
+              address_2: null
+              city: null
+              state: null
+              province: null
+              country: null
+              country_name: null
+              zip: L6X 0V4
+              postal_code: L6X 0V4
+              line_1: ''
+              line_2: L6X 0V4
+              created_at: '2021-04-23T16:51:43.000-04:00'
+              updated_at: '2021-04-23T16:51:43.000-04:00'
+          bank_accounts: []
+          customers:
+          - identifier: ARC Test
+            contacts:
+            - email: email@gmail.com
+            - email: salesdemo@versapay.com
+            - email: jdoe@versapay.com
+        - token: 3SGYEEUSTLTA
+          credit_cards:
+          - token: CC66UIZD7MH7
+            gateway_token: jhrciteuh7hx
+            cardholder: Pam Beesly
+            card_number: Visa **1111
+            display_name: Visa **1111
+            nickname: null
+            expiry_month: 4
+            expiry_year: 2023
+            is_debit: false
+            is_default: false
+            brand: visa
+            created: '2021-04-13T09:24:22.000-04:00'
+            locked: false
+            inactive: true
+            last_transaction_date: '2021-04-13T09:25:08.000-04:00'
+            last_transaction: 46Y315K2URPR
+            last_payment: 3D5DESMMYF1P
+            address:
+              address_1: null
+              address_2: null
+              city: null
+              state: null
+              province: null
+              country: null
+              country_name: null
+              zip: ''
+              postal_code: ''
+              line_1: ''
+              line_2: ''
+              created_at: '2021-04-13T09:24:22.000-04:00'
+              updated_at: '2021-04-13T09:24:22.000-04:00'
+          - token: CC1AS2CXH1AX
+            gateway_token: 531u115q27ms
+            cardholder: CBOE Holdings Inc
+            card_number: Visa **1111
+            display_name: Visa **1111
+            nickname: null
+            expiry_month: 3
+            expiry_year: 2023
+            is_debit: false
+            is_default: false
+            brand: visa
+            created: '2021-04-13T09:27:42.000-04:00'
+            locked: false
+            inactive: false
+            last_transaction_date: '2021-06-03T13:29:05.000-04:00'
+            last_transaction: 8M3SFE1PN7VT
+            last_payment: 3UVNF2VPVADL
+            address:
+              address_1: null
+              address_2: null
+              city: null
+              state: null
+              province: null
+              country: null
+              country_name: null
+              zip: ''
+              postal_code: ''
+              line_1: ''
+              line_2: ''
+              created_at: '2021-04-13T09:27:42.000-04:00'
+              updated_at: '2021-04-13T09:27:42.000-04:00'
+          bank_accounts: []
+          customers:
+          - identifier: Bubba Hoss
+            contacts:
+            - email: versapayinvoices@gmail.com
+            - email: jdoe@versapay.com
+  schemas:
+    BankAccount:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        business_name:
+          description: Name of account holder.
+          type: string
+          example: John Doe
+        country:
+          description: CA (default), US, AU
+          type: string
+          example: CA
+        account_number:
+          description: Bank account number.
+          type: string
+          example: '10101234'
+        account_type:
+          description: checking or savings, defaults checking (required country = US)
+          type: string
+          example: checking
+        institution_number:
+          description: Financial institution number (required country = CA).
+          type: string
+          example: '001'
+        branch_number:
+          description: Financial institution branch/transit (required country = CA).
+          type: string
+          example: '03662'
+        routing_number:
+          description: Financial institution branch/location (required country = US, AU).
+          type: string
+          example: ''
+        token:
+          type: string
+          description: the bank account token
+        nickname:
+          type: string
+          description: optional value that describes the bank account
+        masked_account_number:
+          type: string
+          description: a masked version of the account number
+        routing_account_hash_function:
+          type: string
+          description: the hash function used to mask the routing number and account number
+        routing_account_hash:
+          type: string
+          description: the hash value used to mask the routing number and account number.
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    OverrideValidation:
+      type: boolean
+      example: true
+    WalletPaymentMethodPatch:
+      type: object
+      properties:
+        credit_card:
+          $ref: '#/components/schemas/WalletCreditCardPatch'
+        bank_account:
+          $ref: '#/components/schemas/WalletBankAccountPatch'
+    Address:
+      type: object
+      required:
+      - address1
+      - city
+      - post_code
+      - country
+      properties:
+        address1:
+          type: string
+          example: 1314 NW GLISAN ST
+          minLength: 1
+          maxLength: 25
+        address2:
+          type: string
+          example: Apartment 1
+          maxLength: 25
+        city:
+          type: string
+          example: Portland
+          minLength: 1
+          maxLength: 20
+        state_province:
+          type: string
+          example: OR
+          pattern: ^[a-z]{2}$
+          maxLength: 2
+          minLength: 2
+        post_code:
+          type: string
+          example: '97209'
+          maxLength: 5
+        country:
+          type: string
+          pattern: ^[a-z]{2}$
+          example: us
+          maxLength: 2
+          minLength: 2
+        override_validation:
+          $ref: '#/components/schemas/OverrideValidation'
+    WalletCreditCard:
+      type: object
+      description: Alternative to fund_token, a credit card object or token reference to an existing credit card
+      required:
+      - name
+      - expiry_month
+      - expiry_year
+      - card_number
+      - cvv
+      - address
+      properties:
+        name:
+          type: string
+          description: Cardholder name
+        expiry_month:
+          type: string
+          description: 2 digit month
+        expiry_year:
+          type: string
+          description: 4 digit year
+        card_number:
+          type: string
+          description: Credit card number
+        cvv:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    ContactReference:
+      type: object
+      properties:
+        email:
+          type: string
+    WalletBankAccountPatch:
+      type: object
+      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
+      properties:
+        account_type:
+          type: string
+          enum:
+          - checking
+          - savings
+        account_holder:
+          type: string
+          description: Account holder name
+        check_type:
+          type: string
+          enum:
+          - personal
+          - business
+        external_name:
+          type: string
+        external_number:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    WalletPaymentMethodRequest:
+      type: object
+      properties:
+        credit_card:
+          $ref: '#/components/schemas/WalletCreditCard'
+        bank_account:
+          $ref: '#/components/schemas/WalletBankAccount'
+    WalletCustomer:
+      type: object
+      description: Invoicing customer reference
+      required:
+      - identifier
+      properties:
+        identifier:
+          type: string
+          description: Customer number, must be unique within supplier. Alphanumeric.
+          example: C1234
+        name:
+          type: string
+          description: Customer name.
+          example: Acme Inc.
+    Wallet:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token identifying the wallet
+          example: 77A81025AC3A
+        credit_cards:
+          description: Credit card payment methods in wallet
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditCard'
+        bank_accounts:
+          description: Bank account payment methods in wallet
+          type: array
+          items:
+            $ref: '#/components/schemas/BankAccount'
+        customers:
+          description: Invoicing customers associated linked/using this wallet
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerReference'
+    WalletResponse:
+      type: object
+      properties:
+        wallet_token:
+          type: string
+          description: The token representing the wallet.
+        fund_token:
+          type:
+          - string
+          - 'null'
+          description: The token representing the fund, if a payment method was added.
+        wallets:
+          type: array
+          description: List of wallets.
+          items:
+            $ref: '#/components/schemas/Wallet'
+    CreditCard:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Fund token identifying the credit card
+          example: CC54QRN1CLDX
+        gateway_token:
+          type: string
+          description: Vault token representing the underlying secured/tokenized primary account number (PAN)
+        cardholder:
+          type: string
+        card_number:
+          type: string
+          description: Display name of payment method
+        display_name:
+          type: string
+          description: Display name of payment method
+        nickname:
+          type: string
+        expiry_month:
+          type: integer
+        expiry_year:
+          type: integer
+        is_debit:
+          type: boolean
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        brand:
+          type: string
+        created:
+          type: string
+          format: date-time
+        locked:
+          type: boolean
+          description: Indicates if the payment method is visible but locked from being used
+        inactive:
+          type: boolean
+          description: Indicates if the payment method is deleted
+        last_transaction_date:
+          type: string
+          format: date-time
+        last_transaction:
+          type: string
+          description: Transaction token of the last payment transaction made with this payment method
+        last_payment:
+          type: string
+          description: Payment identifier of the last payment transaction made with this payment method
+        address:
+          $ref: '#/components/schemas/Address'
+    WalletBankAccount:
+      type: object
+      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
+      required:
+      - currency
+      - account_type
+      - account_holder
+      - account_number
+      - routing_number
+      - institution_number
+      - branch_number
+      - check_type
+      - address
+      properties:
+        currency:
+          type: string
+          enum:
+          - USD
+          - CAD
+          - AUD
+          - EUR
+          - GBP
+        account_type:
+          type: string
+          enum:
+          - checking
+          - savings
+        account_holder:
+          type: string
+          description: Account holder name
+        account_number:
+          type: string
+          description: Bank account number
+        routing_number:
+          type: string
+          description: For non-CA financial institutions, ABA/bank routing number
+        institution_number:
+          type: string
+          description: For CA financial institutions, 3 digit institution code
+        branch_number:
+          type: string
+          description: For CA financial institutions, transit/branch number
+        check_type:
+          type: string
+          enum:
+          - personal
+          - business
+        external_name:
+          type: string
+        external_number:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
+    WalletContact:
+      type: object
+      description: Billing contact
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Email address
+        first_name:
+          type: string
+        last_name:
+          type: string
+    WalletCreditCardPatch:
+      type: object
+      description: Alternative to fund_token, a credit card object or token reference to an existing credit card
+      properties:
+        name:
+          type: string
+          description: Cardholder name
+        expiry_month:
+          type: string
+          description: 2 digit month
+        expiry_year:
+          type: string
+          description: 4 digit year
+        cvv:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    CustomerReference:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Customer number, must be unique within supplier. Alphanumeric.
+          example: C1234
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactReference'
+    WalletRequest:
+      type: object
+      properties:
+        customer:
+          $ref: '#/components/schemas/WalletCustomer'
+        contact:
+          $ref: '#/components/schemas/WalletContact'
+        credit_card:
+          $ref: '#/components/schemas/WalletCreditCard'
+        bank_account:
+          $ref: '#/components/schemas/WalletBankAccount'
+  responses:
+    WalletMethodErrors:
+      description: Precondition Failed - Wallet payment method related errors
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+          examples:
+            buyer_account_not_found:
+              summary: buyer_account_not_found
+              value:
+                error: buyer_account_not_found
+            buyer_account_protected:
+              summary: buyer_account_protected
+              value:
+                error: buyer_account_protected
+            buyer_customer_not_found:
+              summary: buyer_customer_not_found
+              value:
+                error: buyer_customer_not_found
+            customer_not_found:
+              summary: customer_not_found
+              value:
+                error: customer_not_found
+            name_unspecified:
+              summary: name_unspecified
+              value:
+                error: name_unspecified
+            fund_address_unspecified:
+              summary: fund_address_unspecified
+              value:
+                error: fund_address_unspecified
+            payment_method_not_found:
+              summary: payment_method_not_found
+              value:
+                error: payment_method_not_found
+            fund_protected:
+              summary: fund_protected
+              value:
+                error: fund_protected
+            fund_not_authorized:
+              summary: fund_not_authorized
+              value:
+                error: fund_not_authorized
+            payment_method_inactive:
+              summary: payment_method_inactive
+              value:
+                error: payment_method_inactive
+            credit_card_not_found:
+              summary: credit_card_not_found
+              value:
+                error: credit_card_not_found
+            gift_card_not_found:
+              summary: gift_card_not_found
+              value:
+                error: gift_card_not_found
+            payment_method_conflict:
+              summary: payment_method_conflict
+              value:
+                error: payment_method_conflict
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+    WalletErrors:
+      description: Precondition Failed - Wallet related errors
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              wallet_token:
+                type: string
+              fund_token:
+                type: string
+              wallets:
+                type: object
+                properties:
+                  error:
+                    type: string
+          examples:
+            buyer_account_not_found:
+              $ref: '#/components/examples/buyer_account_not_found'
+            buyer_account_protected:
+              $ref: '#/components/examples/buyer_account_protected'
+            buyer_customer_not_found:
+              $ref: '#/components/examples/buyer_customer_not_found'
+            customer_not_found:
+              $ref: '#/components/examples/customer_not_found'
+            name_unspecified:
+              $ref: '#/components/examples/name_unspecified'
+            fund_address_unspecified:
+              $ref: '#/components/examples/fund_address_unspecified'
+            payment_method_not_found:
+              $ref: '#/components/examples/payment_method_not_found'
+            fund_protected:
+              $ref: '#/components/examples/fund_protected'
+            fund_not_authorized:
+              $ref: '#/components/examples/fund_not_authorized'
+            payment_method_inactive:
+              $ref: '#/components/examples/payment_method_inactive'
+            credit_card_not_found:
+              $ref: '#/components/examples/credit_card_not_found'
+            gift_card_not_found:
+              $ref: '#/components/examples/gift_card_not_found'
+            payment_method_conflict:
+              $ref: '#/components/examples/payment_method_conflict'
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

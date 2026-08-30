@@ -1,0 +1,293 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Gift Cards API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+  description: 'Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
+
+    '
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Gift Cards
+  description: 'Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
+
+    '
+paths:
+  /api/gateway/v1/gift_card:
+    post:
+      tags:
+      - Gift Cards
+      summary: Activate and/or load a gift card balance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GiftCardRequest'
+            examples:
+              gc_activate:
+                $ref: '#/components/examples/gc_activate'
+              gc_deactivate:
+                $ref: '#/components/examples/gc_deactivate'
+              gc_load:
+                $ref: '#/components/examples/gc_load'
+              gc_activate_load:
+                $ref: '#/components/examples/gc_activate_load'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GiftCardResponse'
+              examples:
+                success:
+                  summary: Successful activation/load
+                  value:
+                    success: true
+                fail:
+                  summary: Failed activation/load
+                  value:
+                    success: false
+        '500':
+          description: 500 error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedResponse'
+              examples:
+                declined_invalid_card:
+                  $ref: '#/components/examples/declined_invalid_card'
+                declined:
+                  $ref: '#/components/examples/declined'
+                error:
+                  $ref: '#/components/examples/error'
+  /api/gateway/v1/gift_card/read:
+    post:
+      tags:
+      - Gift Cards
+      summary: Read a gift card balance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GiftCardReadRequest'
+            examples:
+              gc_read:
+                $ref: '#/components/examples/gc_read'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GiftCardReadResponse'
+              examples:
+                gc_read_ok:
+                  summary: Successful read
+                  value:
+                    id: '66'
+                    token: 04bfe04a-80aa-4779-8388-59396afdfdf7
+                    balance: 777
+                    activated: false
+                    created_at: 11/3/2021 12:00:00 AM
+                    expires_at: 12/1/2049 12:00:00 AM
+                gc_read_unknown:
+                  summary: Empty/unknown gift card
+                  value:
+                    balance: 0
+                    activated: false
+        '500':
+          description: 500 error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedResponse'
+              examples:
+                declined_invalid_card:
+                  $ref: '#/components/examples/declined_invalid_card'
+                declined:
+                  $ref: '#/components/examples/declined'
+                error:
+                  $ref: '#/components/examples/error'
+components:
+  schemas:
+    UnifiedResponse:
+      type: object
+    GiftCardRequest:
+      type: object
+      properties:
+        card_number:
+          type: string
+          description: Gift card number
+        expiry_month:
+          type: string
+          description: 2 digit month
+        expiry_year:
+          type: string
+          description: 4 digit year
+        pin:
+          type: string
+          description: Gift card pin
+        activated:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: When `activated` is provided and `"true"` the gift card is activated, and deactivated when `"false"`. When `activated` is not provided the activation status is unchanged.
+        load_amount_cents:
+          type: integer
+          description: Amount in cents to load/add on to existing gift card balance.
+    GiftCardReadRequest:
+      type: object
+      properties:
+        card_number:
+          type: string
+          description: Gift card number
+        expiry_month:
+          type: string
+          description: 2 digit month
+        expiry_year:
+          type: string
+          description: 4 digit year
+        pin:
+          type: string
+          description: Gift card pin
+    GiftCardReadResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Gift card id
+        token:
+          type: string
+          description: Tokenized gift card number that (can be used for order sale transactions instead of card_number)
+        balance:
+          type: integer
+          description: Remaining gift card balance
+        activated:
+          type: boolean
+          description: true|false
+        created_at:
+          type: string
+          format: date
+          description: Created timestamp MM/D/YYYY HH:MM:SS AM.
+        expires_at:
+          type: string
+          format: date
+          description: Expiry timestamp MM/D/YYYY HH:MM:SS AM.
+      example:
+        id: '66'
+        token: 04bfe04a-80aa-4779-8388-59396afdfdf7
+        balance: 777
+        activated: false
+        created_at: 11/3/2021 12:00:00 AM
+        expires_at: 12/1/2049 12:00:00 AM
+    GiftCardResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: true|false
+      example:
+        success: true
+  examples:
+    gc_activate:
+      summary: Activate a gift card
+      value:
+        card_number: '4775419990420272'
+        expiry_month: '12'
+        expiry_year: '2049'
+        pin: '1234'
+        activated: 'true'
+    gc_load:
+      summary: Load a gift card with 778.50
+      value:
+        card_number: '4775419990420272'
+        expiry_month: '12'
+        expiry_year: '2049'
+        pin: '1234'
+        load_amount_cents: 77850
+    gc_activate_load:
+      summary: Activate and load a gift card with 778.50
+      value:
+        card_number: '4775419990420272'
+        expiry_month: '12'
+        expiry_year: '2049'
+        pin: '1234'
+        activated: 'true'
+        load_amount_cents: 77850
+    gc_read:
+      summary: Read gift card balance
+      value:
+        card_number: '4775419990420272'
+        expiry_month: '12'
+        expiry_year: '2049'
+        pin: '1234'
+    gc_deactivate:
+      summary: Deactivate a gift card
+      value:
+        card_number: '4775419990420272'
+        expiry_month: '12'
+        expiry_year: '2049'
+        pin: '1234'
+        activated: 'false'
+    error:
+      summary: Other errors
+      value:
+        success: false
+        errors:
+        - order_not_found
+    declined_invalid_card:
+      summary: Decline invalid card
+      value:
+        success: false
+    declined:
+      summary: Gateway declined request
+      value:
+        success: false
+        errors:
+        - declined for REASON
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

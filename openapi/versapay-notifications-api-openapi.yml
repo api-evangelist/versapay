@@ -1,0 +1,399 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Notifications API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+  description: 'As a supplier you can notify customers about their invoices.
+
+    '
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Notifications
+  description: 'As a supplier you can notify customers about their invoices.
+
+    '
+paths:
+  /api/notifications/remind/{number_or_id}:
+    post:
+      summary: Single Invoice Reminder
+      description: 'Issue an invoice reminder to the relevant recipients for the specified invoice.
+
+        '
+      tags:
+      - Notifications
+      parameters:
+      - name: number_or_id
+        in: path
+        required: true
+        description: '`number` or `display_number` or `id` of the invoice record.
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SingleReminderResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/notifications/remind:
+    post:
+      summary: Bulk Invoice Reminder
+      description: 'Issue an invoice reminder to the relevant recipients for the specified invoices.
+
+        '
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                  description: 'A list of `number` or `display_number` or `id` of the invoice records.
+
+                    '
+                  example:
+                  - INV01
+                  - INV02
+                  - INV03
+                  - INV04
+                  - INV05
+                  - INV06
+                  - INV07
+                  - INV08
+                  - INV09
+                  - INV10
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BulkReminderResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/notifications/direct_message:
+    post:
+      tags:
+      - Notifications
+      summary: Direct Message
+      description: 'Issue a direct message to just the specified email address regarding the declared object.<br><br> **Note: When certain conditions are not met for an `order` the response code `400` will be returned. Conditions are:**
+
+        * must be enabled for supplier
+
+        * must not be a draft
+
+        * owing_cents must be greater than 0
+
+        * deposit_amount_cents must be greater than 0
+
+        * order must belong to a customer
+
+        <br>**Note: When certain conditions are not met for a `payment_method` the response code `400` will be returned. Conditions are:**
+
+        * customer identifier must be valid for the supplier
+
+        * customer must not be closed or suspended
+
+        * supplier must accept credit cards (toggle enabled in Admin and not disabled via payment rules)
+
+        * customer must not be exempted from credit card payments
+
+        * email must belong to an activated contact (when `create_contact` is `false`)
+
+        * contact must not have a disabled or read-only role
+
+        '
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              - object_type
+              properties:
+                email:
+                  type: string
+                  description: the notification recipient email address. For `payment_method` requests, email must belong to an activated contact (or contact must be created with `create_contact` flag).
+                  example: email@example.com
+                object_type:
+                  type: string
+                  description: 'the type of object that is the subject of the notification.<br>
+
+                    `invoice` sends an invoice reminder notification<br>
+
+                    `order` sends an order deposit request<br>
+
+                    `payment_method` sends a request to add a payment card
+
+                    '
+                  enum:
+                  - invoice
+                  - order
+                  - payment_method
+                  example: invoice
+                object_identifier:
+                  type: string
+                  description: '`identifier` of the object that is the subject of the notification.<br>
+
+                    **Required** when `object_type` is `invoice` or `order`.<br>
+
+                    **Not required** when `object_type` is `payment_method` (will be ignored if provided).
+
+                    '
+                  example: INV01
+                customer_identifier:
+                  type: string
+                  description: 'identifier of the customer.<br>
+
+                    **Required** when `object_type` is `payment_method`.<br>
+
+                    **Not required** for `invoice` or `order` (customer is derived from the object itself).
+
+                    '
+                  example: CUST001
+                create_contact:
+                  type: boolean
+                  description: 'when `true` a contact will be created for the specified `email` if it does not already exist and will be activated with Admin role.<br>
+
+                    when `false` the contact is required to already exist (will return error if not found) and will be activated if not already activated.
+
+                    '
+                first_name:
+                  type: string
+                  description: Optional, contact first name
+                last_name:
+                  type: string
+                  description: Optional, contact last name
+            examples:
+              invoice_reminder:
+                summary: Send invoice reminder
+                value:
+                  email: customer.contact@example.com
+                  object_type: invoice
+                  object_identifier: INV001
+                  create_contact: false
+              order_deposit_request:
+                summary: Send order deposit request
+                value:
+                  email: customer.contact@example.com
+                  object_type: order
+                  object_identifier: ORD001
+                  create_contact: false
+              payment_method_request:
+                summary: Request to add payment card
+                value:
+                  email: customer.contact@example.com
+                  object_type: payment_method
+                  customer_identifier: CUST001
+                  create_contact: true
+                  first_name: John
+                  last_name: Doe
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                properties:
+                  errors:
+                    type: object
+                    description: error message(s) for validation failures
+                    examples:
+                    - base:
+                      - Customer is closed.
+                    - base:
+                      - email must belong to an activated contact
+                    - base:
+                      - email belongs to a disabled user
+                    - base:
+                      - Contact does not have the required role.
+                    - base:
+                      - Payment method request was not sent because the contact is not activated, invited or signed up, or does not have the required role.
+                  error:
+                    type: string
+                    description: error message for business rule violations
+                    examples:
+                    - Credit cards are not accepted
+                    - Customer exempted from credit card payments
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                    description: error message
+                    example: Record not found
+components:
+  schemas:
+    SingleReminderResponse:
+      type: object
+      properties:
+        requested:
+          type: integer
+          description: The count of invoices that were requested for reminder.
+        sent:
+          type: integer
+          description: The count of invoices that initiated a reminder.
+        not_found:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice could not be found.
+        suppressed:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because customer notification is suppressed.
+        invoice_suppressed:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice notification is suppressed.
+        not_invited:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because customer is not enabled to receive emails.
+        paid:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is already paid.
+        draft:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is in a draft state.
+        credit:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is a credit.
+        scheduled:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is currently scheduled for payment.
+        on_plan:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is on a payment plan.
+      example:
+        requested: 1
+        sent: 1
+        not_found: 0
+        suppressed: 0
+        not_invited: 0
+        paid: 0
+        draft: 0
+        credit: 0
+        scheduled: 0
+        on_plan: 0
+    BulkReminderResponse:
+      type: object
+      properties:
+        requested:
+          type: integer
+          description: The count of invoices that were requested for reminder.
+        sent:
+          type: integer
+          description: The count of invoices that initiated a reminder.
+        not_found:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice could not be found.
+        suppressed:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because customer notification is suppressed.
+        invoice_suppressed:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice notification is suppressed.
+        not_invited:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because customer is not enabled to receive emails.
+        paid:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is already paid.
+        draft:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is in a draft state.
+        credit:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is a credit.
+        scheduled:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is currently scheduled for payment.
+        on_plan:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is on a payment plan.
+      example:
+        requested: 10
+        sent: 7
+        not_found: 1
+        suppressed: 0
+        not_invited: 1
+        paid: 0
+        draft: 0
+        credit: 1
+        scheduled: 0
+        on_plan: 0
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

@@ -1,0 +1,356 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Transactions API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Transactions
+paths:
+  /api/transactions:
+    post:
+      summary: Create Transactions
+      description: ''
+      tags:
+      - Transactions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+    get:
+      summary: View Transactions
+      tags:
+      - Transactions
+      parameters:
+      - name: page
+        in: query
+        description: 50 items are displayed per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/transactions/{token_or_unique_reference}:
+    get:
+      summary: View a Transaction
+      tags:
+      - Transactions
+      parameters:
+      - name: token_or_unique_reference
+        in: path
+        required: true
+        description: The transaction identifier (or unique_reference).
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/transactions/{token}/approve:
+    post:
+      summary: Approve a Transaction
+      description: 'Approve a `new` or `wait_for_request_approval` transaction.<br>
+
+        An API key with administrative access is required to approve a transaction.
+
+        '
+      tags:
+      - Transactions
+      parameters:
+      - name: token
+        in: path
+        description: The transaction identifier.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fund_token:
+                  type: string
+                  description: 'Your bank account or balance''s **token** attribute. Omitting this option will approve the transaction using your default bank account.
+
+                    '
+                  example: 5TH3ACC3AU21
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+  /api/transactions/{token}/cancel:
+    post:
+      summary: Cancel a Transaction
+      description: 'Cancel a `new`, `wait_for_request_approval` or `wait_for_bank_account_verification` transaction you created. Transactions cannot be cancelled after they have been sent to the bank and are `in_progress`.<br>
+
+        An API key with administrative access is required to approve a transaction.
+
+        '
+      tags:
+      - Transactions
+      parameters:
+      - name: token
+        in: path
+        description: The transaction identifier.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+components:
+  schemas:
+    TransactionResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The transaction identifier.
+        amount_in_cents:
+          type: integer
+          description: Transaction amount in cents.
+        email:
+          type: string
+          description: Recipient email address.
+        message:
+          type: string
+          description: A message describing the transaction.
+        state:
+          type: string
+          enum:
+          - new
+          - wait_for_claim
+          - wait_for_request_approval
+          - wait_for_bank_account_verification
+          - rejected
+          - in_progress
+          - error
+          - nsfed
+          - cancelled
+          - completed
+          - completed_but_nsfed
+          description: Transactions current state, see Transaction Lifecycle.
+        from_account:
+          type: string
+          description: Name of the originating account.
+        to_account:
+          type: string
+          description: Name of the recipient account.
+        from_fund:
+          type: string
+          description: 'Name of the balance or bank account used when **transaction_type** is ''send'' or ''direct_credit''.
+
+            '
+        to_fund:
+          type: string
+          description: 'Name of the destination balance or bank account when **transaction_type** is ''request'' or ''direct_debit''.
+
+            '
+        currency:
+          type: string
+          description: Currency code, based on ISO-4217. E.g. `CAD`, `USD`, `AUD`
+        payment_method:
+          type: string
+          enum:
+          - credit_card
+          - bank_account
+          - gift_card
+          - pos_terminal
+        settlement_token:
+          type: string
+          description: Token corresponding to the to_fund settlement routing/processor profile as enumerated in whoami eg bank transfer processor for ACH/EFT, merchant account for CC, gift card processor, pos/terminal processor
+        transaction_reference:
+          type:
+          - string
+          - 'null'
+          description: Reference value associated with the transaction.
+        unique_reference:
+          type: string
+          description: Similar to transaction_reference, except it must be unique. Can be used as a duplicate transaction check.
+        link_url:
+          type: string
+          description: A specified url associated with transaction.
+        process_on:
+          type: string
+          description: The YYYY-MM-DD date when this transaction will be started.
+        created_by_user:
+          type: string
+          format: uuid
+        auto_withdraw:
+          type: boolean
+          description: 'If `true` then the transaction will be auto withdrawn the night of completion.
+
+            '
+        auto_withdrawal_token:
+          type: string
+      example:
+        token: 79VMZNLXCBL9
+        amount_in_cents: 15000
+        message: Thank you for doing business
+        link_url: http://a.link.to/your/invoice
+        type: transaction
+        transaction_type: send_money
+        email: bob.smith@example.com
+        state: in_progress
+        transaction_reference: Lease 123
+        unique_reference: null
+        from_account: John Doe
+        to_account: Jane Smith
+        process_on: null
+        from_fund: TD Canada Trust
+        created_by_user: Uf6TaxzBMBBT_rXjsrN7
+    Transaction:
+      type: object
+      required:
+      - amount_in_cents
+      - email
+      - transaction_type
+      discriminator:
+        propertyName: transaction_type
+        mapping:
+          direct_credit: ./schemas/DirectCreditTransaction
+          direct_debit: ./schemas/DirectDebitTransaction
+          request: ./schemas/RequestTransaction
+          send: ./schemas/SendTransaction
+      properties:
+        transaction_type:
+          type: string
+        amount_in_cents:
+          type: integer
+          description: Transaction amount in cents.
+        email:
+          type: string
+          format: email
+          description: Recipient email address.
+        message:
+          type: string
+          description: A message describing the transaction.
+        transaction_reference:
+          type:
+          - string
+          - 'null'
+          description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
+        unique_reference:
+          type: string
+          description: Similar to transaction_reference, except it must be unique. Can be used as a duplicate transaction check.
+        process_on:
+          type: string
+          format: date
+          description: The date `YYYY-MM-DD` when this transaction should be started.
+        auto_withdraw:
+          type: boolean
+          description: Set `true` to have transaction auto settle from Versapay balance to the specified bank account the night of completion; `false` to settle directly to Versapay balance. Auto withdraw must be enabled for your account. Only applicable to request and pre_authorized_debit transactions.
+      example:
+        transaction_type: send
+        amount_in_cents: 20000
+        email: bob@example.com
+        message: Thank you
+        transaction_reference: Order 3487
+        process_on: '2018-01-05'
+        fund_token: BA9G329DNFPK
+  responses:
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

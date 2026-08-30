@@ -1,0 +1,1256 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference Order Transactions API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+  description: 'Order-based card/ACH and card present EMV payment transactions include verify, authorize, capture, sale, void, return refund, and return credit transaction types. If participating in a gift card program, gift cards can be used in sale, void, refund transaction types. Contact support@versapay.com for support & setup for Order Transactions enablement.
+
+    ## Credit Card Payments
+
+    There are two types of credit card payments: sale and delayed capture. Sale payments occur when the merchant wishes to accept a payment for goods or services that have already been shipped or provided to the cardholder. A sale is a financial transaction, and the movement of funds will be initiated in response to a sale request. Delayed capture payments are used when there is a separation between accepting an order and fulfilling that order. With delayed capture, the credit card is first authorized for the estimated order total. The authorization reserves funds on the cardholder’s account for the merchant but does not initiate a movement of funds. Once the products or services are ready to be delivered to the cardholder, the authorization is captured for the final amount. The capture request initiates the movement of funds.
+
+    ## ACH Payments
+
+    ACH payments are bank-to-bank transfers of funds. Unlike credit card payments, ACH payments only have one type – sale, and there is no prior authorization. Therefore, sale amounts are final and cannot be adjusted after the fact. ACH payments assume success, and if there is a problem with the funding source, like with a bounced paper check, the originator will be notified of a rejection several days after the payment attempt.
+
+    ## EFT Payments
+
+    EFT payments are bank-to-bank transfers of funds. Unlike credit card payments, EFT payments only have one type – sale, and there is no prior authorization. Therefore, sale amounts are final and cannot be adjusted after the fact. EFT payments assume success, and if there is a problem with the funding source, like with a bounced paper check, the originator will be notified of a rejection several days after the payment attempt.
+
+    ## Gift Card Payments
+
+    Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
+
+    ## Point-of-Sale/Card Present EMV Payments
+
+    Card Present EMV payment transactions require a Versapay certified point-of-sale terminal. In addition to the card not present transaction types, the following payment transaction types are also supported: device setup, request signature, and cancel. Contact support@versapay.com for support & setup for POS/CP EMV enablement.
+
+    '
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: Order Transactions
+  description: 'Order-based card/ACH and card present EMV payment transactions include verify, authorize, capture, sale, void, return refund, and return credit transaction types. If participating in a gift card program, gift cards can be used in sale, void, refund transaction types. Contact support@versapay.com for support & setup for Order Transactions enablement.
+
+    ## Credit Card Payments
+
+    There are two types of credit card payments: sale and delayed capture. Sale payments occur when the merchant wishes to accept a payment for goods or services that have already been shipped or provided to the cardholder. A sale is a financial transaction, and the movement of funds will be initiated in response to a sale request. Delayed capture payments are used when there is a separation between accepting an order and fulfilling that order. With delayed capture, the credit card is first authorized for the estimated order total. The authorization reserves funds on the cardholder’s account for the merchant but does not initiate a movement of funds. Once the products or services are ready to be delivered to the cardholder, the authorization is captured for the final amount. The capture request initiates the movement of funds.
+
+    ## ACH Payments
+
+    ACH payments are bank-to-bank transfers of funds. Unlike credit card payments, ACH payments only have one type – sale, and there is no prior authorization. Therefore, sale amounts are final and cannot be adjusted after the fact. ACH payments assume success, and if there is a problem with the funding source, like with a bounced paper check, the originator will be notified of a rejection several days after the payment attempt.
+
+    ## EFT Payments
+
+    EFT payments are bank-to-bank transfers of funds. Unlike credit card payments, EFT payments only have one type – sale, and there is no prior authorization. Therefore, sale amounts are final and cannot be adjusted after the fact. EFT payments assume success, and if there is a problem with the funding source, like with a bounced paper check, the originator will be notified of a rejection several days after the payment attempt.
+
+    ## Gift Card Payments
+
+    Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
+
+    ## Point-of-Sale/Card Present EMV Payments
+
+    Card Present EMV payment transactions require a Versapay certified point-of-sale terminal. In addition to the card not present transaction types, the following payment transaction types are also supported: device setup, request signature, and cancel. Contact support@versapay.com for support & setup for POS/CP EMV enablement.
+
+    '
+paths:
+  /api/gateway/v1/orders/verify:
+    post:
+      tags:
+      - Order Transactions
+      summary: Verify transaction
+      description: A Verify transaction serves two purposes. First, it attempts to validate the provided credit card or bank account information. In the case of credit card Verify transactions, the gateway will run a verification transaction to allow the card issuer to confirm that the account is in good standing and that the provided billing address and card verification value (CVV) is correct. In the case of bank accounts, the gateway may attempt to use a negative database of known bad bank accounts or use other fraud protection tools to confirm the validity of the bank account. Second, the Verify transaction returns a token that is safe for the payment application to store and can be used for future transactions without needing to provide the sensitive account information (this effectively equates to having built a Wallet, see the Wallet API section).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderTransactionRequest'
+            examples:
+              use_existing_fund:
+                $ref: '#/components/examples/use_existing_fund'
+              use_existing_credit_card:
+                $ref: '#/components/examples/use_existing_credit_card'
+              use_existing_credit_card_fee_exempt:
+                $ref: '#/components/examples/use_existing_credit_card_fee_exempt'
+              use_cp_emv_terminal:
+                $ref: '#/components/examples/use_cp_emv_terminal'
+              use_cp_emv_terminal_prompt:
+                $ref: '#/components/examples/use_cp_emv_terminal_prompt'
+              use_new_credit_card:
+                $ref: '#/components/examples/use_new_credit_card'
+              use_new_bank_account:
+                $ref: '#/components/examples/use_new_bank_account'
+              use_settlement_routing:
+                $ref: '#/components/examples/use_settlement_routing'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTransactionResponse'
+        '500':
+          description: 500 error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedResponse'
+              examples:
+                declined_invalid_card:
+                  $ref: '#/components/examples/declined_invalid_card'
+                declined:
+                  $ref: '#/components/examples/declined'
+                error:
+                  $ref: '#/components/examples/error'
+  /api/gateway/v1/orders/sale:
+    post:
+      tags:
+      - Order Transactions
+      summary: Sale/Purchase transaction
+      description: A Sale transaction is a request to initiate the transfer of funds from the buyer to the supplier. For credit card payments, the gateway will first authorize the transaction before adding the transaction to the settlement batch for capture at the end of the processing day. For ACH payments, the gateway will accept the sale request and add the transaction to the batch.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderTransactionRequest'
+            examples:
+              use_existing_fund:
+                $ref: '#/components/examples/use_existing_fund'
+              use_existing_credit_card:
+                $ref: '#/components/examples/use_existing_credit_card'
+              use_existing_credit_card_fee_exempt:
+                $ref: '#/components/examples/use_existing_credit_card_fee_exempt'
+              use_cp_emv_terminal:
+                $ref: '#/components/examples/use_cp_emv_terminal'
+              use_cp_emv_terminal_prompt:
+                $ref: '#/components/examples/use_cp_emv_terminal_prompt'
+              use_new_credit_card:
+                $ref: '#/components/examples/use_new_credit_card'
+              use_new_bank_account:
+                $ref: '#/components/examples/use_new_bank_account'
+              use_gift_card:
+                $ref: '#/components/examples/use_gift_card'
+              use_settlement_routing:
+                $ref: '#/components/examples/use_settlement_routing'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTransactionResponse'
+        '500':
+          description: 500 error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedResponse'
+              examples:
+                declined_invalid_card:
+                  $ref: '#/components/examples/declined_invalid_card'
+                declined:
+                  $ref: '#/components/examples/declined'
+                error:
+                  $ref: '#/components/examples/error'
+  /api/gateway/v1/orders/credit:
+    post:
+      tags:
+      - Order Transactions
+      summary: Return Credit transaction (unlinked return/refund)
+      description: A Credit transaction is a request to initiate the transfer of funds from the supplier back to the buyer and is the opposite of a sale. For credit card payments, the gateway will first authorize the return transaction before adding the transaction to the settlement batch for transmission at the end of the processing day. For ACH payments, the gateway will accept the credit request and add the transaction to the batch.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderTransactionRequest'
+            examples:
+              use_existing_fund:
+                $ref: '#/components/examples/use_existing_fund'
+              use_existing_credit_card:
+                $ref: '#/components/examples/use_existing_credit_card'
+              use_existing_credit_card_fee_exempt:
+                $ref: '#/components/examples/use_existing_credit_card_fee_exempt'
+              use_cp_emv_terminal:
+                $ref: '#/components/examples/use_cp_emv_terminal'
+              use_cp_emv_terminal_prompt:
+                $ref: '#/components/examples/use_cp_emv_terminal_prompt'
+              use_new_credit_card:
+                $ref: '#/components/examples/use_new_credit_card'
+              use_new_bank_account:
+                $ref: '#/components/examples/use_new_bank_account'
+              use_settlement_routing:
+                $ref: '#/components/examples/use_settlement_routing'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTransactionResponse'
+        '500':
+          description: 500 error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedResponse'
+              examples:
+                declined_invalid_card:
+                  $ref: '#/components/examples/declined_invalid_card'
+                declined:
+                  $ref: '#/components/examples/declined'
+                error:
+                  $ref: '#/components/examples/error'
+  /api/gateway/v1/orders/auth:
+    post:
+      tags:
+      - Order Transactions
+      summary: Authorization transaction
+      description: An Authorize transaction is a non-financial transaction and is used to reserve funds on a buyer’s credit card account. An authorization should be used in scenarios when there will be a delay between taking the order and when the goods or services being purchased will be shipped or delivered to the buyer. In order to collect the funds reserved by an authorization, a subsequent capture request is required. Authorizations, if not captured or voided, will automatically be released by the card issuer in anywhere from two to fourteen days.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderTransactionRequest'
+            examples:
+              use_existing_fund:
+                $ref: '#/components/examples/use_existing_fund'
+              use_existing_credit_card:
+                $ref: '#/components/examples/use_existing_credit_card'
+              use_existing_credit_card_fee_exempt:
+                $ref: '#/components/examples/use_existing_credit_card_fee_exempt'
+              use_cp_emv_terminal:
+                $ref: '#/components/examples/use_cp_emv_terminal'
+              use_cp_emv_terminal_prompt:
+                $ref: '#/components/examples/use_cp_emv_terminal_prompt'
+              use_new_credit_card:
+                $ref: '#/components/examples/use_new_credit_card'
+              use_new_bank_account:
+                $ref: '#/components/examples/use_new_bank_account'
+              use_settlement_routing:
+                $ref: '#/components/examples/use_settlement_routing'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTransactionResponse'
+        '500':
+          description: 500 error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedResponse'
+              examples:
+                declined_invalid_card:
+                  $ref: '#/components/examples/declined_invalid_card'
+                declined:
+                  $ref: '#/components/examples/declined'
+                error:
+                  $ref: '#/components/examples/error'
+  /api/gateway/v1/orders/capture:
+    post:
+      tags:
+      - Order Transactions
+      summary: Capture transaction
+      description: A Capture transaction initiates the transfer of funds reserved by a prior authorization. When the gateway receives the capture request, it adds the capture to the settlement batch for transmission to the payment processing platform at the end of the processing day.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderTransactionRequest'
+            examples:
+              prior_transaction_reference:
+                $ref: '#/components/examples/prior_transaction_reference'
+              use_new_credit_card:
+                $ref: '#/components/examples/use_new_credit_card'
+              use_existing_credit_card_fee_exempt:
+                $ref: '#/components/examples/use_existing_credit_card_fee_exempt'
+              use_new_bank_account:
+                $ref: '#/components/examples/use_new_bank_account'
+              use_cp_emv_terminal:
+                $ref: '#/components/examples/use_cp_emv_terminal'
+              use_cp_emv_terminal_prompt:
+                $ref: '#/components/examples/use_cp_emv_terminal_prompt'
+              use_settlement_routing:
+                $ref: '#/components/examples/use_settlement_routing'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTransactionResponse'
+        '500':
+          description: 500 error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedResponse'
+              examples:
+                declined_invalid_card:
+                  $ref: '#/components/examples/declined_invalid_card'
+                declined:
+                  $ref: '#/components/examples/declined'
+                error:
+                  $ref: '#/components/examples/error'
+  /api/gateway/v1/orders/refund:
+    post:
+      tags:
+      - Order Transactions
+      summary: Return refund transaction (linked return/refund)
+      description: A Refund transaction is a request to initiate the transfer of funds from the supplier back to the buyer and is based on a prior sale or capture transaction. For credit card payments, the gateway will first authorize the return transaction before adding the transaction to the settlement batch for transmission at the end of the processing day. For ACH payments, the gateway will accept the refund request and add the transaction to the batch.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderTransactionRequest'
+            examples:
+              prior_transaction_reference:
+                $ref: '#/components/examples/prior_transaction_reference'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTransactionResponse'
+        '500':
+          description: 500 error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedResponse'
+              examples:
+                declined_invalid_card:
+                  $ref: '#/components/examples/declined_invalid_card'
+                declined:
+                  $ref: '#/components/examples/declined'
+                error:
+                  $ref: '#/components/examples/error'
+  /api/gateway/v1/orders/void:
+    post:
+      tags:
+      - Order Transactions
+      summary: Void transaction (linked return/refund)
+      description: A Void transaction reverses the effect of a prior transaction when possible. Financial transactions like sales, captures, credits, and refunds can be voided during the same processing day until the gateway transmits the settlement batch. Once the batch has been transmitted, a void is not possible, and the transaction would need to be reversed using a financial transaction (e.g., a sale would need to be reversed with a refund). Void transactions can also reverse the effect of an authorization, either fully or partially. This is useful if the authorization is no longer needed or if the authorization needs to be captured for a lesser amount.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderTransactionRequest'
+            examples:
+              prior_transaction_reference:
+                $ref: '#/components/examples/prior_transaction_reference'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTransactionResponse'
+        '500':
+          description: 500 error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedResponse'
+              examples:
+                declined_invalid_card:
+                  $ref: '#/components/examples/declined_invalid_card'
+                declined:
+                  $ref: '#/components/examples/declined'
+                error:
+                  $ref: '#/components/examples/error'
+  /api/exports/transaction/{token_or_reference}:
+    get:
+      summary: Export/View a Transaction
+      description: 'View an order transaction details.<br><br> The path parameter `reference_or_token` is matched to the transaction''s `token` or `unique_reference`, in that order. Alias/see `/api/gateway/v1/transaction/{token_or_reference}`
+
+        '
+      tags:
+      - Order Transactions
+      parameters:
+      - name: token_or_reference
+        in: path
+        required: true
+        description: The transaction's `token` or `unique_reference`.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTransaction'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+components:
+  schemas:
+    OrderTransaction:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Transaction token
+        amount_in_cents:
+          type: number
+          description: Transaction amount in cents
+        message:
+          type: string
+          description: Applies to payport transactions
+        link_url:
+          type: string
+          description: Applies to payport transactions
+        type:
+          type: string
+          description: Literal for payport transaction compatibility 'transaction'
+        transaction_type:
+          type: string
+          description: Literal for payport transaction compatibility 'request_money'
+        email:
+          type: string
+          description: TBD
+        state:
+          type: string
+          description: See the lifecycle states of transaction settlement
+        currency:
+          type: string
+          description: Currency code, based on ISO-4217. E.g. `CAD`, `USD`, `AUD`
+        payment_method:
+          type: string
+          enum:
+          - credit_card
+          - bank_account
+          - gift_card
+          - pos_terminal
+        settlement_token:
+          type: string
+          description: Token corresponding to the settlement routing/processor profile as enumerated in whoami eg bank transfer processor for ACH/EFT, merchant account for CC, gift card processor, pos/terminal processor
+        transaction_reference:
+          type:
+          - string
+          - 'null'
+          description: N/A for payport transaction compatibility
+        unique_reference:
+          type:
+          - string
+          - 'null'
+          description: N/A for payport transaction compatibility
+        from_account:
+          type: string
+          description: Name of the customer (or card/account holder) from which payment is made
+        to_account:
+          type: string
+          description: Name of the supplier receiving payment
+        process_on:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: N/A for payport transaction compatibility
+        created_by_user:
+          type: string
+          description: Name of the user otherwise the API token appears if the transaction was created with the api.
+        auto_withdraw:
+          type: boolean
+          description: N/A for payport transaction compatibility
+        auto_withdrawal_token:
+          type:
+          - string
+          - 'null'
+          description: N/A for payport transaction compatibility
+        action:
+          type: string
+          description: Transaction type/action performed
+          enum:
+          - verify
+          - sale
+          - credit
+          - auth
+          - capture
+          - refund
+          - void
+        step_types:
+          type: array
+          items:
+            type: string
+        authorization_response:
+          type: string
+          description: Authorization response code indicating
+          enum:
+          - 100 (approval)
+          - 200 (decline)
+          - 400 (error)
+          - 500 (unexpected/other)
+        avs_response:
+          type: string
+          description: For credit card payments AVS result code when applicable
+          enum:
+          - 0 (APPROVED/NOT_REQUESTED)
+          - D (V_FULL_MATCH_INTERNATIONAL)
+          - F (V_FULL_MATCH_UK)
+          - M (V_FULL_MATCH)
+          - Y (MATCH_ADDRESS_MATCH_ZIP)
+          - X (MATCH_ADDRESS_MATCH_ZIP9)
+          - A (MATCH_ADDRESS_NO_ZIP)
+          - B (MATCH_ADDRESS_MALFORMED_ZIP)
+          - P (MALFORMED_ADDRESS_MATCH_ZIP)
+          - W (NO_ADDRESS_MATCH_ZIP9)
+          - Z (NO_ADDRESS_MATCH_ZIP)
+          - N (NO_MATCH)
+          - C (MALFORMED_ADDRESS_MALFORMED_ZIP)
+          - S (NOT_SUPPORTED)
+          - G (NOT_AVS_PARTICIPANT)
+          - I (NOT_VERIFIED)
+          - U (NO_DATA_FROM_ISSUER)
+          - R (RETRY)
+          - 2 (AMEX_NAME_ADDRESS_ZIP)
+          - 3 (AMEX_NAME_ADDRESS)
+          - 1 (AMEX_NAME_ZIP)
+          - 4 (AMEX_NAME)
+          - 6 (AMEX_ADDRESS_ZIP)
+          - 7 (AMEX_ADDRESS)
+          - 5 (AMEX_ZIP)
+          - 8 (AMEX_NO_MATCH)
+        cvv_response:
+          type: string
+          description: For credit card payments CVV result code when applicable
+          enum:
+          - M (MATCH)
+          - N (NO_MATCH)
+          - P (NOT_PROCESSED)
+          - S (NOT_PRESENT)
+          - U (NOT_CERTIFIED)
+        gateway_response:
+          type: object
+          description: Raw data returned by underlying gateway
+        fx_amount_cents:
+          type: integer
+          description: When FX is involved, the amount in cents after conversion by the gateway. Not returned if no FX occurred.
+        fx_rate:
+          type: string
+          description: When FX is involved, the exchange rate applied by the gateway. Not returned if no FX occurred.
+        credit_card:
+          type: object
+          description: For credit card payments, raw data returned by underlying gateway
+          properties:
+            token:
+              type: string
+              description: Low level token representing the vaulted credit card
+        credit_card_bin:
+          type: string
+          description: When available, the first six digits of the credit card that identify its brand and issuer
+        credit_card_masked_number:
+          type: string
+          description: The credit card number, with all but the last 4 digits replaced with a mask character. Used to verify the last 4 digits and card number length.
+        credit_card_brand:
+          type: string
+          description: The credit card brand
+          enum:
+          - master
+          - visa
+          - american_express
+          - discover
+        credit_card_expiry:
+          type: string
+          description: Expiration date string for the credit card, in MMYYYY format
+        bank_account:
+          type: object
+          description: For ACH payments, raw data returned by underlying gateway
+          properties:
+            token:
+              type: string
+              description: Low level token representing the vaulted credit card
+        bank_account_masked_number:
+          type: string
+          description: The bank account number, with all but the last 4 digits replaced with a mask character
+        bank_account_routing:
+          type: string
+          description: For US bank accounts, the bank routing number
+        bank_account_type:
+          type: string
+          description: For US bank accounts, whether the account is a checking or savings account
+          enum:
+          - checking
+          - savings
+        bank_account_check_type:
+          type: string
+          description: For US bank accounts, whether the account is personal or business
+          enum:
+          - personal
+          - business
+        gift_card:
+          type: object
+          description: For gift card payments, raw data returned by underlying gateway
+          properties:
+            token:
+              type: string
+              description: Low level token representing the vaulted gift card
+        terminal:
+          type: object
+          description: For CP EMV terminal payments, raw data returned by underlying gateway
+          properties:
+            token:
+              type: string
+              description: Low level token representing the vaulted terminal card
+        orders:
+          type: array
+          description: The order associated with this transaction, if any, for reference detail only
+          items:
+            $ref: '#/components/schemas/SummaryOrderReference'
+        payments:
+          type: array
+          description: Any C-AR invoicing payments associated with this transaction, if any, for reference detail only
+          items:
+            $ref: '#/components/schemas/SummaryPaymentReference'
+      example:
+        token: 1TQ7L54E5L9R
+        amount_in_cents: 100
+        message: null
+        link_url: null
+        type: transaction
+        transaction_type: request_money
+        email: customer+abcmedia@versapay.com
+        state: completed
+        transaction_reference: null
+        unique_reference: null
+        from_account: avscvv2b Test
+        to_account: ABC Media
+        process_on: null
+        created_by_user: zoM2xjrzczmgbbGhfHFh
+        auto_withdraw: false
+        auto_withdrawal_token: null
+        action: verify
+        payment_method: credit_card
+        settlement_token: MAY7USR7KABC
+        currency: usd
+        step_types:
+        - TransactionSteps::CardVerifyStep
+        wallet: 2JN6JSR7IBML
+        credit_card: CC9DIRFZE61U
+        authorization_response: APPROVAL
+        avs_response: A
+        cvv_response: N
+        approved_amount_cents: 100
+        gateway_response:
+          token: msjhrhcfbily
+          gateway_token: '39052'
+          authorization_response: APPROVAL
+          avs_response: A
+          cvv_response: N
+          gateway_response:
+            response:
+              authentication:
+                responsestatus: success
+                sessionid: DH6rQ0CRxuScK9ZDJjcuhXBodyadb^ae
+              content:
+                refname: '90144'
+                update:
+                - customer:
+                    refname: customer
+                    responsestatus: failure
+                    errors:
+                      error:
+                        number: '102.021'
+                        description: name is invalid
+                - contact:
+                    refname: contact
+                    responsestatus: failure
+                    errors:
+                      error:
+                        number: '102.021'
+                        description: name is invalid
+                create:
+                - customer:
+                    refname: customer
+                    responsestatus: success
+                    id: '10485'
+                    name: avs_cvv2b Test
+                - contact:
+                    refname: contact
+                    responsestatus: success
+                    id: '11611'
+                - salesdocument:
+                    refname: invoice
+                    responsestatus: success
+                    id: '34054'
+                - transaction:
+                    refname: 0d18e9e7-f7f6-4ee8-a1f9-6a78219bca01
+                    responsestatus: success
+                    authorizationcode: '280278'
+                    avsresponse: A
+                    cvvresponse: N
+                    authorizationresponse: APPROVAL
+                    id: '39052'
+                    hash: '######1111'
+                    cardtype.name: Visa
+                    accountholder: avs_cvv2b Test
+                    amount: '0.00'
+                    account.id: '2013'
+                    token: c500f04b-a61c-44bd-be03-2c3a423cbbaf
+          credit_card:
+            token: c500f04b-a61c-44bd-be03-2c3a423cbbaf
+        orders:
+        - identifier: 1ESZXPKGAJCK
+          number: 1ESZXPKGAJCK
+          amount_cents: 100
+        payments:
+        - identifier: 9U4PK6D11H3D
+          display_identifier: 9U4PK6D11H3D
+          amount_cents: 100
+    SummaryPaymentReference:
+      type: object
+      description: Summary reference of known invoicing payment
+      properties:
+        identifier:
+          type: string
+          description: Associated invoicing payment identifier
+        number:
+          type: string
+          description: Associated invoicing payment number
+        amount_cents:
+          type: number
+          description: Associated invoicing payment amount
+    UnifiedResponse:
+      type: object
+    WalletCreditCard:
+      type: object
+      description: Alternative to fund_token, a credit card object or token reference to an existing credit card
+      required:
+      - name
+      - expiry_month
+      - expiry_year
+      - card_number
+      - cvv
+      - address
+      properties:
+        name:
+          type: string
+          description: Cardholder name
+        expiry_month:
+          type: string
+          description: 2 digit month
+        expiry_year:
+          type: string
+          description: 4 digit year
+        card_number:
+          type: string
+          description: Credit card number
+        cvv:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    WalletBankAccount:
+      type: object
+      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
+      required:
+      - currency
+      - account_type
+      - account_holder
+      - account_number
+      - routing_number
+      - institution_number
+      - branch_number
+      - check_type
+      - address
+      properties:
+        currency:
+          type: string
+          enum:
+          - USD
+          - CAD
+          - AUD
+          - EUR
+          - GBP
+        account_type:
+          type: string
+          enum:
+          - checking
+          - savings
+        account_holder:
+          type: string
+          description: Account holder name
+        account_number:
+          type: string
+          description: Bank account number
+        routing_number:
+          type: string
+          description: For non-CA financial institutions, ABA/bank routing number
+        institution_number:
+          type: string
+          description: For CA financial institutions, 3 digit institution code
+        branch_number:
+          type: string
+          description: For CA financial institutions, transit/branch number
+        check_type:
+          type: string
+          enum:
+          - personal
+          - business
+        external_name:
+          type: string
+        external_number:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    WalletContact:
+      type: object
+      description: Billing contact
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Email address
+        first_name:
+          type: string
+        last_name:
+          type: string
+    OrderTransactionRequest:
+      type: object
+      properties:
+        order:
+          type: object
+          description: An order object or a token reference to an existing order
+        contact:
+          $ref: '#/components/schemas/WalletContact'
+        fund_token:
+          type: string
+          description: A token reference to an existing fund (either credit card or bank account)
+        fee_exempt:
+          type: boolean
+          description: True indicates that any fee related surcharging should be ignored even if the underlying merchant account is configured as such, false inherits any configured fee related behaviour
+        transaction_reference:
+          type:
+          - string
+          - 'null'
+          description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
+        device:
+          type: string
+          description: Optional device name depending on gateway boarding & configuration
+        industry:
+          type: string
+          description: Optional, if not provided defaults to value specified in gateway/account configuration
+          enum:
+          - directmarketing
+          - ecommerce
+          - lodging
+          - restaurant
+          - autorental
+          - retail
+        sec_code:
+          type: string
+          description: Optional, for ACH bank transactions, standard entry class code (if not provided defaults to value specified on payment acceptance config; otherwise defaults to PPD if transaction from bank account check_type is personal & CCD if check_type is business)
+          enum:
+          - CCD
+          - PPD
+          - WEB
+          - POP
+          - TEL
+        credit_card:
+          $ref: '#/components/schemas/WalletCreditCard'
+        bank_account:
+          $ref: '#/components/schemas/WalletBankAccount'
+        gift_card:
+          type: object
+          description: Alternative to fund_token, a gift card
+          properties:
+            expiry_month:
+              type: string
+              description: 2 digit month
+            expiry_year:
+              type: string
+              description: 4 digit year
+            card_number:
+              type: string
+              description: Gift card number
+            pin:
+              type: string
+    OrderTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: true|false
+        transaction:
+          type: string
+          description: Token referencing this transaction (used for void/refund)
+        order:
+          type: string
+          description: Token representing the order
+        wallet:
+          type: string
+          description: Token representing the wallet holding the payment method
+        credit_card:
+          type: string
+          description: Token representing the payment method
+        bank_account:
+          type: string
+          description: Token representing the payment method
+        gift_card:
+          type: string
+          description: Token representing the payment method
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderTransaction'
+      example:
+        success: true
+        transaction: 1TQ7L54E5L9R
+        order: 53HP8ILUK3E8
+        wallet: 2JN6JSR7IBML
+        credit_card: CC9DIRFZE61U
+        transactions:
+        - token: 1TQ7L54E5L9R
+          amount_in_cents: 100
+          message: null
+          link_url: null
+          type: transaction
+          transaction_type: request_money
+          email: customer+abcmedia@versapay.com
+          state: completed
+          transaction_reference: null
+          unique_reference: null
+          from_account: avscvv2b Test
+          to_account: ABC Media
+          process_on: null
+          created_by_user: zoM2xjrzczmgbbGhfHFh
+          auto_withdraw: false
+          auto_withdrawal_token: null
+          action: verify
+          payment_method: credit_card
+          settlement_token: MAY7USR7KABC
+          currency: usd
+          step_types:
+          - TransactionSteps::CardVerifyStep
+          wallet: 2JN6JSR7IBML
+          credit_card: CC9DIRFZE61U
+          authorization_response: APPROVAL
+          avs_response: A
+          cvv_response: N
+          approved_amount_cents: 100
+          gateway_response:
+            token: msjhrhcfbily
+            gateway_token: '39052'
+            authorization_response: APPROVAL
+            avs_response: A
+            cvv_response: N
+            gateway_response:
+              response:
+                authentication:
+                  responsestatus: success
+                  sessionid: DH6rQ0CRxuScK9ZDJjcuhXBodyadb^ae
+                content:
+                  refname: '90144'
+                  update:
+                  - customer:
+                      refname: customer
+                      responsestatus: failure
+                      errors:
+                        error:
+                          number: '102.021'
+                          description: name is invalid
+                  - contact:
+                      refname: contact
+                      responsestatus: failure
+                      errors:
+                        error:
+                          number: '102.021'
+                          description: name is invalid
+                  create:
+                  - customer:
+                      refname: customer
+                      responsestatus: success
+                      id: '10485'
+                      name: avs_cvv2b Test
+                  - contact:
+                      refname: contact
+                      responsestatus: success
+                      id: '11611'
+                  - salesdocument:
+                      refname: invoice
+                      responsestatus: success
+                      id: '34054'
+                  - transaction:
+                      refname: 0d18e9e7-f7f6-4ee8-a1f9-6a78219bca01
+                      responsestatus: success
+                      authorizationcode: '280278'
+                      avsresponse: A
+                      cvvresponse: N
+                      authorizationresponse: APPROVAL
+                      id: '39052'
+                      hash: '######1111'
+                      cardtype.name: Visa
+                      accountholder: avs_cvv2b Test
+                      amount: '0.00'
+                      account.id: '2013'
+                      token: c500f04b-a61c-44bd-be03-2c3a423cbbaf
+            credit_card:
+              token: qw288x8dmx00
+    SummaryOrderReference:
+      type: object
+      description: Summary reference of known order
+      properties:
+        identifier:
+          type: string
+          description: Associated order identifier
+        number:
+          type: string
+          description: Associated order number
+        amount_cents:
+          type: number
+          description: Associated order amount
+  examples:
+    error:
+      summary: Other errors
+      value:
+        success: false
+        errors:
+        - order_not_found
+    use_gift_card:
+      summary: Amount to process and gift card details to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        gift_card:
+          name: Tim Man
+          expiry_month: 12
+          expiry_year: 2049
+          card_number: '4775419990420272'
+          pin: '1234'
+    use_settlement_routing:
+      summary: Use specific merchant account settlement route to pay order (eg credit card)
+      value:
+        order:
+          identifier: 3SLSC9HX3AHB
+          settlement_token: MA123XYZABCD
+        amount_cents: 4200
+        fund_token: CC98U7LI8H91
+    prior_transaction_reference:
+      summary: Directly reference prior transaction and amount to capture
+      value:
+        amount_cents: 4200
+        transaction: 9HWLBLWXXPRX
+    declined_invalid_card:
+      summary: Decline invalid card
+      value:
+        success: false
+    use_new_credit_card:
+      summary: Amount to process and full credit card details to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        credit_card:
+          name: Tim Man
+          expiry_month: 12
+          expiry_year: 2025
+          card_number: '4111111111111111'
+          cvv: '123'
+          address:
+            address_1: 123 Abc St
+            city: Beverly Hills
+            province: CA
+            postal_code: '90210'
+            country: US
+    use_cp_emv_terminal:
+      summary: Amount to process via terminal (card present emv)
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        terminal:
+          laneid: '1'
+          enable_manual_entry: false
+    use_existing_credit_card_fee_exempt:
+      summary: Amount to process and credit card reference to pay from (ignore any configured surcharging rules)
+      value:
+        fee_exempt: true
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        credit_card: CC98U7LI8H91
+    use_existing_credit_card:
+      summary: Amount to process and credit card reference to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        credit_card: CC98U7LI8H91
+    declined:
+      summary: Gateway declined request
+      value:
+        success: false
+        errors:
+        - declined for REASON
+    use_cp_emv_terminal_prompt:
+      summary: Amount to process via terminal (card present emv) prompting for card number entry via PIN pad
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        terminal:
+          laneid: '1'
+          enable_manual_entry: true
+    use_existing_fund:
+      summary: Amount to process and fund reference (eg credit card) to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        fund_token: CC98U7LI8H91
+    use_new_bank_account:
+      summary: Amount to process and bank account details to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        bank_account:
+          currency: USD
+          account_type: checking
+          account_holder: Tim Coffee Ltd
+          account_number: '144155167'
+          routing_number: '121000248'
+          external_name: BANK
+          external_number: '777'
+          address:
+            address_1: 123 Abc St
+            city: Beverly Hills
+            province: CA
+            postal_code: '90210'
+            country: US
+  responses:
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: ActiveRecord::RecordNotFound
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports

@@ -1,0 +1,1118 @@
+openapi: 3.2.0
+info:
+  version: 1.3.35
+  title: Versapay API Reference File Imports API
+  contact:
+    name: Versapay Support
+    url: https://www.versapay.com/support
+    email: support@versapay.com
+  x-logo:
+    url: https://developers.versapay.com/images/logo.png
+  termsOfService: https://www.versapay.com/terms-of-use
+  license:
+    name: Copyright 2022 Versapay. All Rights Reserved.
+  description: 'As a supplier you can upload customer, invoice, and payment data in CSV file formats.
+
+    '
+servers:
+- url: https://secure.versapay.com
+  description: Production
+- url: https://uat.versapay.com
+  description: UAT
+tags:
+- name: File Imports
+  description: 'As a supplier you can upload customer, invoice, and payment data in CSV file formats.
+
+    '
+paths:
+  /api/imports:
+    post:
+      summary: Import a CSV File
+      description: 'When uploading a CSV-formatted file it’s helpful to use your language/framework tooling to simplify the [multipart/form-data](https://www.ietf.org/rfc/rfc2388.txt) file upload.
+
+        ### Size Limit
+
+        The file cannot exceed 25MB.
+
+        ### Layouts
+
+        Please contact support@versapay.com or reach out to your implementation specialist for standard inbound CSV file layouts.
+
+        '
+      tags:
+      - File Imports
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                file:
+                  type: string
+                  description: The file to upload.
+                filename:
+                  type: string
+                  description: Name of original file.
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileImport'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      x-codeSamples:
+      - lang: cURL
+        source: 'curl \
+
+          -u "Nvax...:UN0I..." \
+
+          -F "filename=data.csv" \
+
+          -F "file=@/home/user/Desktop/data.csv" \
+
+          https://secure.versapay.com/api/imports/
+
+          '
+      - lang: Ruby
+        source: 'file = { :file => File.new(''/home/user/Desktop/data.csv'') }
+
+          auth = { :basic_auth => { :username => ''Nvax...'', :password => ''UN0I...'' } }
+
+          HTTMultiParty.post(''https://secure.versapay.com/api/imports/'', auth.merge( :query => file ))
+
+          '
+    get:
+      summary: View In-Progress & Completed Batches
+      description: View recent in-progress and completed import batches.
+      tags:
+      - File Imports
+      parameters:
+      - name: page
+        in: query
+        description: 50 items are displayed per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileImport'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/imports/processing:
+    get:
+      summary: View In-Progress Batches
+      description: View only recent in-progress import batches.
+      operationId: viewInProgressBatches
+      tags:
+      - File Imports
+      parameters:
+      - name: page
+        in: query
+        description: 50 items are displayed per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileImport'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/imports/completed:
+    get:
+      summary: View Completed Batches
+      description: View only recent completed import batches.
+      operationId: viewCompletedBatches
+      tags:
+      - File Imports
+      parameters:
+      - name: page
+        in: query
+        description: 50 items are displayed per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileImport'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/imports/{id}:
+    get:
+      summary: View Batch Details
+      operationId: viewBatchDetail
+      tags:
+      - File Imports
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The import batch identifier.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileImport'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/imports/{id}/echo:
+    get:
+      summary: View Tokenized Results of File Imported Payment Methods
+      description: 'Tokenized results of file imported payment methods are available up to 24hrs following a fund import. This results file echo''s the original input lines - absent the original header line, with sensitive field masking - appending the imported items `wallet token`, `fund token`, and `vault token` - i.e. essential references that can be used for subsequent payment/order transactions API usage.
+
+        '
+      operationId: viewEchoResults
+      tags:
+      - File Imports
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The import batch identifier.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            text/csv:
+              schema:
+                type: string
+              example: '1. Example of credit card import source text/csv:
+
+                customer_identifier,name,first_name,last_name,number,expiry,postal_code,create_debit_agreement,auto_debit_reference
+
+                10001,John Doe,John,Doe,4111111111111111,0318,H0H 0H0,Y,POLICY_10001
+
+                10001,John Doe,John,Doe,5473500000000014,0318,H0H 0H0,Y,10001,John Doe,John,Doe,372700699251018,0318,H0H 0H0,N,
+
+                10004,Mary Smith,Mary,Smith,4111111111111111,0318,H0H 0H0,Y,POLICY_10004
+
+                10004,Mary Smith,Mary,Smith,5473500000000014,0318,H0H 0H0,Y,10004,Mary Smith,Mary,Smith,372700699251018,0318,H0H 0H0,N,
+
+
+                2. Example of credit card import results text/csv:
+
+                10001,John Doe,John,Doe,************1111,****,H0H 0H0,Y,POLICY_10001,1L8DN37Y6TL8,CC8KCKWWL8UT,ccuq905fyzruz9
+
+                10001,John Doe,John,Doe,************0014,****,H0H 0H0,Y,,1L8DN37Y6TL8,CC3R9L5BDHI3,ccghc1fsa52tko
+
+                10004,Mary Smith,Mary,Smith,************1111,****,H0H 0H0,Y,POLICY_10004,4JL6FH2L7LKN,CC851RBU5WGJ,ccg8c12dymulm1
+
+                10004,Mary Smith,Mary,Smith,************0014,****,H0H 0H0,Y,,4JL6FH2L7LKN,CC2YDCF82NQK,ccom320nfnozj8'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/imports/{id}/errors:
+    get:
+      summary: View Batch Errors
+      description: 'View the error results for a given batch import. This endpoint returns by default a `json` type response. But you can specify the extension in which you want to see the response, the accepted extensions are `json` and `csv`
+
+        '
+      operationId: viewBatchError
+      tags:
+      - File Imports
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The import batch identifier.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/InvoiceResponse'
+              examples:
+                message:
+                  value:
+                    message:
+                    - line_number: 2
+                      error: division id not specified
+                      id: null
+                      amount_cents: 73570
+                      number: A00359X
+                      due_date: '2022-08-01'
+                      created_at: null
+                      updated_at: null
+                      sender_id: 4
+                      customer_id: null
+                      batch_id: 485
+                      read_at: null
+                      currency: cad
+                      company_name: null
+                      notes_header: null
+                      notes_text: null
+                      invoice_style: Product
+                      date: '2022-07-01'
+                      address_id: null
+                      telephone: null
+                      fax: null
+                      currencies: null
+                      external_id: null
+                      sent_at: null
+                      balance_adjustment: null
+                      owing_cents: 73570
+                      shipping_name: null
+                      shipping_address_id: null
+                      purchase_order_number: null
+                      auto_debit: true
+                      payment_date: null
+                      bad_debt_cents: null
+                      draft: false
+                      published_at: null
+                      division_id: null
+                      identifier: cadbalance|A00359X
+                      auto_debit_reference: null
+                      display_number: null
+                      deleted: false
+                      deleted_at: null
+                      insert_token: 8ece9938-dd53-41be-979e-7ed962c9c082
+                      update_token: 8ece9938-dd53-41be-979e-7ed962c9c082
+                      subtotal_cents: 73570
+                      subtotal_tax1: null
+                      subtotal_tax2: null
+                      address_1: null
+                      address_2: null
+                      city: null
+                      province: null
+                      postal_code: null
+                      balance_mode: true
+                      disputed: false
+                      recurring_invoice_id: null
+                      offer: false
+                      scheduled_payment_id: null
+                      paid_by_auto_debit: null
+                      converted_amount_cents: 73570
+                      converted_owing_cents: 73570
+                      customer_name: null
+                      net_days: null
+                      email_delivered_at: null
+                      email_opened_at: null
+                      delivery_status: new
+                      email_not_delivered_reason: null
+                      ref1: null
+                      ref2: null
+                      ref3: null
+                      match_at: null
+                      plan_identifier: null
+                      plan_start_date: null
+                      plan_end_date: null
+                      plan_payment_cents: null
+                      plan_suspended: null
+                      annualized_amount_cents: null
+                      annualized_effective_date: null
+                      annualized_expiry_date: null
+                      plan_invalid: false
+                      annualization_history: {}
+                      last_payment_failed: false
+                      autopay_on_hold: false
+                      email_sent_at: null
+                      printed: false
+                      paper_delivery_state: null
+                      paper_state_change_at: null
+                      printer_queued_at: null
+                      printer_received_at: null
+                      printer_printed_at: null
+                      printer_mailed_at: null
+                      printer_failed_at: null
+                      printer_failed_message: null
+                      balance_updated_at: null
+                      last_payment_at: null
+                      checkout_payment: false
+                      approval_status: none
+                      first_pending_at: null
+                      summary_invoice_parent: false
+                      summary_invoice_number: null
+                      summary_discrepancy_currency: false
+                      summary_discrepancy_amount: false
+                      summary_orphan: false
+                      discount_expiry_date: null
+                      discount_rate: null
+                      discount_amount_cents: null
+                      converted_discount_amount_cents: null
+                      ref4: null
+                      line_item_tax_warning: false
+                      discount_cancelled_at: null
+                      card_number: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/exports/invoice_recon/{batch_file_id}:
+    get:
+      summary: Export/View Invoice Reconciliation Results
+      description: 'View the most recent, or for a given batch import, invoice reconciliation results.
+
+        '
+      tags:
+      - File Imports
+      parameters:
+      - name: batch_file_id
+        in: path
+        required: true
+        description: Optional, the `id` of the batch file import queued via /api/imports. When not specified the most recent invoice recon results are returned if any.
+        schema:
+          type: integer
+      - name: watermark
+        in: query
+        description: The value to base a subsequent extract of the next 100 items.
+        schema:
+          $ref: '#/components/schemas/Watermark'
+      - name: list
+        in: query
+        description: See Watermark & Limit for more information on response structure.
+        schema:
+          type: boolean
+          example: true
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reconciliation_invoices:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/InvoiceReconResponse'
+              examples:
+                reconciliation_invoices:
+                  value:
+                    reconciliation_invoices:
+                      '213635737':
+                        number: '0012'
+                        division_code: null
+                        customer_number: ''
+                        customer_name: ''
+                        invoice_date: null
+                        payment_identifier: null
+                        payment_date: null
+                        orphaned_payment_amount: ''
+                        balance_in_arc: ''
+                        balance_in_source_system: $11,200.00
+                        discrepancy_message: Invoice Not Present in ARC
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /api/exports/payment_recon/{batch_file_id}:
+    get:
+      summary: Export/View Payment Reconciliation Results
+      description: 'View the most recent, or for a given batch import, payment reconciliation results.
+
+        '
+      tags:
+      - File Imports
+      parameters:
+      - name: batch_file_id
+        in: path
+        required: true
+        description: Optional, the `id` of the batch file import queued via /api/imports. When not specified the most recent invoice recon results are returned if any.
+        schema:
+          type: integer
+      - name: watermark
+        in: query
+        description: The value to base a subsequent extract of the next 100 items.
+        schema:
+          $ref: '#/components/schemas/Watermark'
+      - name: list
+        in: query
+        description: See Watermark & Limit for more information on response structure.
+        schema:
+          type: boolean
+          example: true
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reconciliation_invoices:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/PaymentReconResponse'
+              examples:
+                reconciliation_invoices:
+                  value:
+                    reconciliation_payments:
+                      '213635737':
+                        payment_reconciliation_identifier: 7TSX9SFRY
+                        unapplied_amount: $3,000.00
+                        unapplied_amount_in_source_system: $90.00
+                        customer_identifier: CUST123
+                        discrepancy_message: 'These fields do not match: Payment date, Payment amount, Applied amount, Unapplied amount'
+                        payment_amount: $3,000.00
+                        payment_amount_in_source_system: $4,805.87
+                        applied_amount: $0.00
+                        applied_amount_in_source_system: $900.00
+                        payment_date: '2021-08-31'
+                        payment_date_in_source_system: '2023-08-07'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+components:
+  schemas:
+    InvoiceReconResponse:
+      type: object
+      properties:
+        number:
+          type: string
+          description: The invoice number.
+          example: 12
+        division_code:
+          type: string
+          description: The division code associated with the invoice.
+          example: HOM
+        customer_number:
+          type: string
+          description: The customer identifier associated with the invoice.
+          example: 1024
+        customer_name:
+          type: string
+          description: The customer name associated with the invoice.
+          example: Starblux Ltd
+        invoice_date:
+          type: string
+          description: The invoice date.
+          example: '2021-12-31'
+        payment_identifier:
+          type: string
+          description: The identifier of any detected parked/orphan payment associated with the invoice.
+        payment_date:
+          type: string
+          description: The date of any detected parked/orphan payment associated with the invoice.
+        orphaned_payment_amount:
+          type: string
+          description: The amount of any detected parked/orphan payment associated with the invoice.
+          example: $11,200.00
+        balance_in_arc:
+          type: string
+          description: The invoice balance.
+          example: $11,200.00
+        balance_in_source_system:
+          type: string
+          description: The invoice balance in source/provided.
+          example: $11,200.00
+        discrepancy_message:
+          type: string
+          description: Message explaining the discrepancy.
+          example: Invoice Not Present in ARC
+    InvoiceResponse:
+      type: object
+      properties:
+        number:
+          type: string
+          description: Invoice number, unique within a supplier.
+        display_number:
+          type: string
+          description: Invoice number as displayed to customers.
+        currency:
+          type: string
+          description: Currency code, based on ISO-4217, in lowercase. E.g. `cad`, `usd`, `aud`
+        amount_cents:
+          type: integer
+          description: The invoice amount in cents.
+        subtotal_tax1:
+          type: string
+          description: Tax amount, in dollars.
+        subtotal_tax2:
+          type: string
+          description: Additional field to carry tax amount, in dollars. For example, when invoice shows state (provincial) and federal taxes.
+        customer_identifier:
+          type: string
+          description: Unique identifier for customer.
+        date:
+          type: string
+          format: date
+          description: Invoice date, YYYY-MM-DD, based on ISO-8601.
+        order_date:
+          type: string
+          format: date
+          description: Order date, YYYY-MM-DD.
+        due_date:
+          type: string
+          format: date
+          description: Invoice due date, YYYY-MM-DD.
+        purchase_order_number:
+          type: string
+          description: Purchase order number.
+        notes_text:
+          type: string
+          description: Optional text field up to 64K.
+        shipping_name:
+          type: string
+          description: 'Shipping address: recipient name'
+        shipping_address:
+          type: object
+          description: Shipping address
+          properties:
+            address_1:
+              type: string
+              description: Shipping address, line 1
+            address_2:
+              type: string
+              description: Shipping address, line 2
+            city:
+              type: string
+              description: 'Shipping address: city'
+            state:
+              type: string
+              description: 'Shipping address: state or province. Based on the second part (after hyphen) of codes in ISO 3166-2 standard. E.g. "ON" for Ontario, "CA" for California'
+            country:
+              type: string
+              description: Shipping country code. E.g. "US" for USA.
+            country_name:
+              type: string
+              description: Shipping country name.
+            zip:
+              type: string
+              description: 'Shipping address: zip or postal code'
+            line_1:
+              type: string
+              description: 'Single line combining shipping `address_1` and `address_2`.
+
+                '
+            line_2:
+              type: string
+              description: 'Single line combining shipping `city`, `state` and `zip`.
+
+                '
+        line_item_attributes:
+          type: array
+          description: Details of each line-item for the invoice.
+          items:
+            $ref: '#/components/schemas/LineItemResponse'
+        auto_debit:
+          type: boolean
+          description: '`true` (invoice is to be auto-paid if customer has pre-authorized payment) or `false` (invoice is to be paid manually by customer)
+
+            '
+        division:
+          type: string
+          description: Division code, applicable when supplier supports divisions.
+        auto_pay_reference:
+          type: string
+          description: Reference number associated to the invoice, used in AutoPay agreements.
+        owing_cents:
+          type: integer
+          description: Balance remaining on this invoice or credit memo.
+        status:
+          type: string
+          description: 'The status of the invoice. Can be one of `DRAFT`, `CURRENT`, `OVERDUE`, `PARTIAL`, `PAID`, `CREDIT` or `CLOSED`.
+
+            '
+          enum:
+          - DRAFT
+          - CURRENT
+          - OVERDUE
+          - PARTIAL
+          - PAID
+          - CREDIT
+          - CLOSED
+        delivery_status:
+          type: string
+          description: 'The delivery status of the invoice. Statuses in the API map to those in the UI as follows:<br>
+
+
+            The email delivery statuses in the API reflect the following statuses from UI:
+
+
+            |API Status|Status in the UI|
+
+            |:--|:--|
+
+            |`new`|"Not Tracked"|
+
+            |`not_sent`|"Available"|
+
+            |`sent`|"Email Sent"|
+
+            |`delivery_unknown`|"Delivery Unknown"|
+
+            |`not_delivered`|"Not Delivered"|
+
+            |`delivered`|"Email Delivered"|
+
+            |`opened`|"Email Opened"|
+
+            |`clicked`|"Viewed"|
+
+            '
+          enum:
+          - new
+          - not_sent
+          - sent
+          - delivery_unknown
+          - not_delivered
+          - opened
+          - clicked
+        ref1:
+          type: string
+          description: A reference that is meaningful to the customer, e.g. Policy number, contract number, etc.
+        ref2:
+          type: string
+          description: As above.
+        ref3:
+          type: string
+          description: As above.
+        adjustments_attributes:
+          type: array
+          description: Adjustments such as Fuel Surcharge or Discount on the invoice.
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                description: Label for adjustment amount.
+              amount_cents:
+                type: integer
+                description: Adjustment amount in cents.
+              id:
+                type: integer
+                description: Internal id of the adjustment.
+              invoice_id:
+                type: integer
+                description: Internal id of the invoice.
+              recurring_invoice_id:
+                type: integer
+                description: Internal id of the recurring invoice. Applicable when supplier is configured to create recurring invoices.
+        plan_identifier:
+          type: string
+          description: Payment plan template identifier. Applicable when supplier is configured for payment plans.
+        plan_start_date:
+          type: string
+          format: date
+          description: Payment plan start date. Applicable when supplier is configured for payment plans.
+        plan_end_date:
+          type: string
+          format: date
+          description: Payment plan end date. Applicable when supplier is configured for payment plans.
+        plan_payment_cents:
+          type: integer
+          description: Payment plan recurring payment amount in cents. Applicable when supplier is configured for payment plan.
+        annualized_amount_cents:
+          type: integer
+          description: The annual invoice amount in cents. Applicable if the supplier is configured for payment plans.
+        annualized_effective_date:
+          type: string
+          format: date
+          description: The date that the annualized_amount takes effect. Applicable if the supplier is configured for payment plans.
+        annualized_expiry_date:
+          type: string
+          format: date
+          description: The end date of the period for which the annualized_amount is in effect. Applicable if the supplier is configured for payment plans.
+        external_id:
+          type: string
+          description: Optional external identifier for the invoice to be included in payment exports.
+        extended_attributes:
+          type: object
+          description: Additional non-standard attribute stored with the invoice record for presentment rendering.
+          properties:
+            key:
+              type: string
+              description: Key-value pair of the extended attribute on the invoice.
+        summary_invoice_parent:
+          type: string
+          description: Flag that indicates if the invoice is a summary invoice. Default is 0 (invoice is not a summary invoice).
+        summary_invoice_number:
+          type: string
+          description: If the invoice in the row is a child of a summary invoice, that summary invoice's identifier appears here.
+        service_rep_email:
+          type: string
+          description: One or more supplier user email addresses (semi-colon delimited) that will be used for notification routing eg when in dispute each specified rep is notified only.
+        pay_url:
+          type: string
+          description: The URL to the anonymous click-to-pay page.  This value is provided only for open invoices in an owing position.
+        pay_urls:
+          type: object
+          description: Context sensitive URLs to click-to-pay page, keyed by recipient email addresses. These values are only provided for open invoices in an owing position.
+          properties:
+            key:
+              type: string
+              description: Key-value pair of the context sensitive click-to-pay URLs.
+        deleted:
+          type: boolean
+          description: Indicates if the invoice has been deleted, this is optional and only present based on request parameter.
+      example:
+        number: sh763-h3454-dh3432
+        display_number: INV1234
+        customer_identifier: CUS001
+        amount_cents: 40000
+        owing_cents: 30000
+        subtotal_tax1: $0.00
+        subtotal_tax2: $0.00
+        currency: usd
+        date: '2017-11-01'
+        due_date: '2017-12-15'
+        order_date: null
+        purchase_order_number: PO-3847
+        notes_text: Thank you for your business
+        shipping_name: Acme Inc.
+        shipping_address:
+          address_1: 1 Main Street
+          address_2: Suite 600
+          city: New York
+          state: NY
+          zip: '90210'
+          country: US
+          country_name: United States
+          line_1: 1 Main Street, Suite 600
+          line_2: New York, NY 90210
+        line_item_attributes:
+        - number: '001'
+          description: Modems
+          amount_cents: 40000
+          balance_cents: 40000
+          quantity: 40
+          unit_cost_cents: 1000
+          id: 6935660
+          identifier: acme|sh763-h3454-dh3432|001
+          invoice_id: 4344538
+          order_key: null
+          purchase_order_number: null
+          recurring_invoice_id: null
+          extended_attributes:
+            item_number: A3947C9878
+        auto_debit: true
+        division: '770'
+        auto_pay_reference: null
+        ref1: null
+        ref2: null
+        ref3: null
+        adjustments_attributes:
+        - label: Surcharge
+          amount_cents: 2000
+          id: 2212
+          invoice_id: 4344538
+          recurring_invoice_id: null
+        plan_identifier: null
+        plan_start_date: null
+        plan_end_date: null
+        plan_payment_cents: null
+        annualized_amount_cents: null
+        annualized_effective_date: null
+        annualized_expiry_date: null
+        external_id: null
+        status: CURRENT
+        delivery_status: not_sent
+        extended_attributes:
+          lease_type: LS
+          currency_mode: D
+        summary_invoice_parent: 0
+        summary_invoice_number: null
+        service_rep_email: john.doe@supplier.com;jane.doe@supplier.com
+        pay_url: https://secure.versapay.com/pay/a25f5d86-552a-4868-907e-e3a5932cff36
+        pay_urls:
+          CUS001@example.com: https://secure.versapay.com/pay/198e7073-53d0-435a-baff-87ce390581c5G
+        payments:
+        - payment_reference: 959YTHNMESPV
+          invoice_number: 1
+          date: '2022-10-26'
+          amount: 870
+          plan_fee: 0
+          payment_amount: 870
+          payment_transaction_amount: 870
+          payment_transaction_token: 9559NENM23SK
+          payment_method: (0013)
+          payment_from_bank_account: true
+          payment_from_credit_card: false
+          payment_institution_name: null
+          payment_credit_card_brand: null
+          short_pay_indicator: Y
+          payment_note: null
+          auto_debit_indicator: N
+          invoice_balance: 5030
+          payment_timestamp: '2022-10-26T12:40:36-04:00'
+          invoice_division: CTL
+          invoice_division_number: null
+          invoice_division_name: Central
+          pay_to_bank_account: 100007
+          pay_to_bank_account_name: (0007)
+          settlement_token: BA7G777DNABC
+          customer_identifier: C10
+          customer_name: Customer 10 Williamson
+          status: PAID
+          payment_source: ARC
+          payment_code: null
+          payment_description: null
+          gateway_authorization_code: TM37E6
+          purchase_order_number: null
+          ref1: null
+          ref2: null
+          ref3: null
+          short_pay_reason_identifier: null
+          short_pay_reason: null
+          dispute_reason_identifier: null
+          dispute_reason: null
+          invoice_amount_paid: 870
+          invoice_amount: 5900
+          invoice_identifier: global|1
+          invoice_date: '2022-10-26'
+          invoice_external_id: null
+          invoice_currency: usd
+          invoice_purchase_order_number: new_line_item_short_pay_invoice_1
+          invoice_ref1: null
+          invoice_ref2: null
+          invoice_ref3: null
+          cumulative_customer_amount: 870
+          checkout_token: 6JQSRWISTPA4
+          status_reason: null
+          payment_transaction_fee: 0
+          settlement_date: null
+          customer_address: null
+          payor_name: null
+          payor_phone: null
+          payor_email: multi@example.com
+          cardholder_name: null
+          fund_token: BA1WYKRYHLLS
+          card_expiry_year: null
+          card_expiry_month: null
+          order_identifier: null
+          order_number: null
+          order_document_type: null
+          external_payment_number: null
+          external_payment_type: null
+          ref4: null
+          invoice_ref4: null
+          watermark: 1888
+          line_item_transactional_amounts:
+          - line_item_number: 8cc21f8a-ddcd-4bfe-915f-3e7480068444
+            line_item_payment_amount: 20
+            line_item_balance: 0
+            line_item_short_pay_indicator: N
+            line_item_payment_note: will pay later
+            line_item_short_pay_reason_identifier: null
+            line_item_short_pay_reason: null
+            line_item_dispute_reason_identifier: null
+            line_item_dispute_reason: null
+            line_item_extended_attributes: {}
+          - line_item_number: 214db37e-3b92-4705-960f-ccb585bc0fce
+            line_item_payment_amount: 210
+            line_item_balance: 0
+            line_item_short_pay_indicator: N
+            line_item_payment_note: will pay later
+            line_item_short_pay_reason_identifier: null
+            line_item_short_pay_reason: null
+            line_item_dispute_reason_identifier: null
+            line_item_dispute_reason: null
+            line_item_extended_attributes: {}
+          - line_item_number: a32a21c0-01f0-43b7-be2e-8f45504e5800
+            line_item_payment_amount: 640
+            line_item_balance: 0
+            line_item_short_pay_indicator: N
+            line_item_payment_note: sorry
+            line_item_short_pay_reason_identifier: null
+            line_item_short_pay_reason: null
+            line_item_dispute_reason_identifier: null
+            line_item_dispute_reason: null
+            line_item_extended_attributes: {}
+    FileImport:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The import batch identifier.
+          example: 21877
+        file_name:
+          type: string
+          description: The original filename of the raw file.
+          example: invoices.csv
+        file_size:
+          type: integer
+          description: The original size of the raw file in bytes.
+          example: 1024
+        file_content_type:
+          type: string
+          description: The MIME/content-type of the raw file.
+          example: text/plain
+        file_fingerprint:
+          type: string
+          description: The fingerprint/hash representing the raw file contents.
+          example: bf817b5548d69f6a3a49b6bb872fb906
+        file_errors_count:
+          type: string
+          description: Number of records that failed import due to data error
+          example: 5
+        error:
+          type: string
+          description: The error message corresponding to a failed import.
+          example: ''
+        result_message:
+          type: string
+          description: Result of batch import.
+          example: 5487 invoices
+        complete_at:
+          type: string
+          description: The ISO8601 timestamp corresponding to completion of the import.
+          example: '2016-08-30T15:39:30-04:00'
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
+    LineItemResponse:
+      type: object
+      properties:
+        number:
+          type: string
+          description: Invoice line-item number.
+        description:
+          type: string
+          description: Invoice line-item description
+        quantity:
+          type: number
+          description: Invoice line-item quantity.
+        unit_cost_cents:
+          type: integer
+          description: Invoice line-item unit price in cents.
+        amount_cents:
+          type: integer
+          description: Invoice line-item total in cents.
+        balance_cents:
+          type: integer
+          description: Line-item balance in cents. Applicable if accepting short payments at line-item level.
+        id:
+          type: number
+          description: Internal id of the line-item record.
+        identifier:
+          type: string
+          description: Unique internal identifier for the line-item. Applicable if accepting short payments at line-item level.
+        invoice_id:
+          type: number
+          description: Internal id of the invoice.
+        purchase_order_number:
+          type: string
+          description: Purchase order number at the line-item level.
+        order_key:
+          type: string
+          description: Sequence number for the line-item to order-by when rendering on the invoice.
+        recurring_invoice_id:
+          type: string
+          description: Internal id of the recurring invoice. Applicable if using recurring invoices.
+        extended_attributes:
+          type: object
+          description: Additional non-standard attribute stored with the line-item record for presentment rendering.
+          properties:
+            key:
+              type: string
+              description: Key-value pair of the extended attribute on the line-item.
+    PaymentReconResponse:
+      type: object
+      properties:
+        payment_reconciliation_identifier:
+          type: string
+          description: Identifier of the payment
+        unapplied_amount:
+          type: string
+          description: The unapplied amount from total payment amount in Versapay.
+        unapplied_amount_in_source_system:
+          type: string
+          description: The unapplied amount from total payment amount in source/provided.
+        customer_identifier:
+          type: string
+          description: The customer number recorded on the payment in Versapay.
+          example: CUST123
+        discrepancy_message:
+          type: string
+          description: Message explaining the discrepancy.
+          example: Payment Not Present in Versapay.
+        payment_amount:
+          type: string
+          description: Optional, The payment amount in Versapay if present in uploaded recon csv.
+        payment_amount_in_source_system:
+          type: string
+          description: Optional, The payment amount in source/provided if present in uploaded recon csv.
+        applied_amount:
+          type: string
+          description: Optional, The amount applied from total payment amount in Versapay if present in uploaded recon csv.
+        applied_amount_in_source_system:
+          type: string
+          description: Optional, The amount applied from total payment amount in source/provided if present in uploaded recon csv.
+        external_payment_number:
+          type: string
+          description: Optional, The payment external number in Versapay if present in uploaded recon csv.
+        external_payment_number_in_source_system:
+          type: string
+          description: Optional, The payment external number in source/provided if present in uploaded recon csv.
+        payment_date:
+          type: string
+          description: Optional, Payment date in Versapay
+          example: '2021-12-31'
+        payment_date_in_source_system:
+          type: string
+          description: Optional, Payment date in source/provided if present in uploaded recon csv.
+          example: '2021-12-31'
+        currency:
+          type: string
+          description: Optional, The currency code in Versapay if present in uploaded recon csv.
+        currency_in_source_system:
+          type: string
+          description: Optional, The currency code in source/provided if present in uploaded recon csv.
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+x-tagGroups:
+- name: Versapay API
+  description: Introduction to the Versapay API.
+  tags:
+  - Overview
+  - Versioning & Compatibility
+  - Environments
+  - Rate Limits
+  - Authentication
+  - Webhooks
+  - Watermark & Limit
+- name: Collaborative AR
+  description: Operations available for Collaborative AR integration.
+  tags:
+  - Reference Data
+  - Onboarding
+  - Ecommerce Integration
+  - Orders
+  - Order Transactions
+  - Testing Order Transactions
+  - Gift Cards
+  - Card Present EMV
+  - Settlement Reporting
+  - Wallets
+  - Customers
+  - Invoices
+  - Autopay
+  - Invoicing Payments
+  - Divisions
+  - Notifications
+  - Collaboration
+  - File Imports
