@@ -37,7 +37,7 @@ tags:
 - Canada
 - Accounts Receivable
 - AR Automation
-- Order-to-Cash
+- Order to Cash
 - Payment Acceptance
 - Payment Processing
 - B2B Payments
@@ -152,6 +152,8 @@ apis:
   humanURL: https://developers.versapay.com/
   baseURL: https://secure.versapay.com
   tags:
+  - AutoPay
+  tags_raw:
   - Autopay
   properties:
   - type: OpenAPI
@@ -242,6 +244,8 @@ apis:
   humanURL: https://developers.versapay.com/
   baseURL: https://secure.versapay.com
   tags:
+  - Developers
+  tags_raw:
   - developers
   properties:
   - type: OpenAPI
@@ -344,6 +348,8 @@ apis:
   humanURL: https://developers.versapay.com/
   baseURL: https://secure.versapay.com
   tags:
+  - Internal
+  tags_raw:
   - internal
   properties:
   - type: OpenAPI
@@ -418,6 +424,8 @@ apis:
   humanURL: https://developers.versapay.com/
   baseURL: https://secure.versapay.com
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI
@@ -528,6 +536,8 @@ apis:
   humanURL: https://developers.versapay.com/
   baseURL: https://secure.versapay.com
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
@@ -597,6 +607,8 @@ apis:
   humanURL: https://developers.versapay.com/
   baseURL: https://secure.versapay.com
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI
