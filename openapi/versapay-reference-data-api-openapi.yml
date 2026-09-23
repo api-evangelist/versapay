@@ -11,9 +11,7 @@ info:
   termsOfService: https://www.versapay.com/terms-of-use
   license:
     name: Copyright 2022 Versapay. All Rights Reserved.
-  description: 'For convenience purposes only, Versapay can supply third party reference data to its partners and users. This data can be used to implement client-side tooling (e.g., fraud mitigation services), but it may not be redistributed. The accuracy and completeness of this third party data cannot be guaranteed and is for informational and convenience purposes only. Contact support@versapay.com for eligibility for reference data enablement.
-
-    '
+  description: For convenience purposes only, Versapay can supply third party reference data to its partners and users. This data can be used to implement client-side tooling (e.g., fraud mitigation services), but it may not be redistributed. The accuracy and completeness of this third party data cannot be guaranteed and is for informational and convenience purposes only. Contact support@versapay.com for eligibility for reference data enablement.
 servers:
 - url: https://secure.versapay.com
   description: Production
@@ -21,16 +19,121 @@ servers:
   description: UAT
 tags:
 - name: Reference Data
-  description: 'For convenience purposes only, Versapay can supply third party reference data to its partners and users. This data can be used to implement client-side tooling (e.g., fraud mitigation services), but it may not be redistributed. The accuracy and completeness of this third party data cannot be guaranteed and is for informational and convenience purposes only. Contact support@versapay.com for eligibility for reference data enablement.
-
-    '
+  description: For convenience purposes only, Versapay can supply third party reference data to its partners and users. This data can be used to implement client-side tooling (e.g., fraud mitigation services), but it may not be redistributed. The accuracy and completeness of this third party data cannot be guaranteed and is for informational and convenience purposes only. Contact support@versapay.com for eligibility for reference data enablement.
 paths:
   /api/reference_data/v1/response_codes:
     get:
       tags:
       - Reference Data
       summary: Retrieve list of supported error response codes
-      description: "View the list of possible error response codes that may be returned as part of a `response_code` key (and/or `gateway_error_*` related keys) in Order Transactions API. For instance the following response payload highlights a `211` response code:\n\n```\n{\n  \"success\": false,\n  \"transaction\": \"8ATB...586N\",\n  \"authorization\": \"5dl1...ady5\",\n  \"gateway_token\": \"71...77\",\n  \"order\": \"12345\",\n  \"wallet\": \"2ZW4...8Q6V\",\n  \"credit_card\": \"CC4X...WXGX\",\n  \"transactions\": [\n    {\n      \"token\": \"...\",\n      \"amount_in_cents\": 13151,\n      \"type\": \"transaction\",\n      \"transaction_type\": \"request_money\",\n      \"state\": \"declined\",\n      \"created_at\": \"2023-11-14T12:13:29-05:00\",\n      \"step_types\": [\n        \"TransactionSteps::CardSaleStep\"\n      ],\n      \"action\": \"sale\",\n      \"payment_method\": \"credit_card\",\n      \"wallet\": \"2ZW4...8Q6V\",\n      \"credit_card\": \"CC4X...WXGX\",\n      \"settlement_token\": \"MA4P...LD5P\",\n      \"currency\": \"usd\",\n      \"approved_amount_cents\": 0,\n      \"fee_amount_cents\": 0,\n      \"fee_exempt\": true,\n      \"gateway_response\": {...},\n      \"gateway_token\": \"7126377\",\n      \"gateway_authorization_response\": \"520.014: INVALID ACCOUNT NUMBER\",\n      \"gateway_error_scope\": \"tpro4\",\n      \"gateway_error_code\": \"520.014\",\n      \"gateway_error_message\": \"INVALID ACCOUNT NUMBER\",\n      \"authorization_response\": \"500\",\n      \"avs_response\": \"Z\",\n      \"credit_card_bin\": \"410040\",\n      \"credit_card_masked_number\": \"XXXXXXXXXXXX9700\",\n      \"credit_card_brand\": \"visa\",\n      \"credit_card_expiry\": \"082026\"\n    }\n  ],\n  \"response_code\": 211\n}\n```\nThe /api/reference_data/v1/response_codes payload reports `211` as follows:\n```\n{\n  \"code\": 211,\n  \"description\": \"Account number invalid\"\n}\n```\n"
+      description: 'View the list of possible error response codes that may be returned as part of a `response_code` key (and/or `gateway_error_*` related keys) in Order Transactions API. For instance the following response payload highlights a `211` response code:
+
+
+        ```
+
+        {
+
+        "success": false,
+
+        "transaction": "8ATB...586N",
+
+        "authorization": "5dl1...ady5",
+
+        "gateway_token": "71...77",
+
+        "order": "12345",
+
+        "wallet": "2ZW4...8Q6V",
+
+        "credit_card": "CC4X...WXGX",
+
+        "transactions": [
+
+        {
+
+        "token": "...",
+
+        "amount_in_cents": 13151,
+
+        "type": "transaction",
+
+        "transaction_type": "request_money",
+
+        "state": "declined",
+
+        "created_at": "2023-11-14T12:13:29-05:00",
+
+        "step_types": [
+
+        "TransactionSteps::CardSaleStep"
+
+        ],
+
+        "action": "sale",
+
+        "payment_method": "credit_card",
+
+        "wallet": "2ZW4...8Q6V",
+
+        "credit_card": "CC4X...WXGX",
+
+        "settlement_token": "MA4P...LD5P",
+
+        "currency": "usd",
+
+        "approved_amount_cents": 0,
+
+        "fee_amount_cents": 0,
+
+        "fee_exempt": true,
+
+        "gateway_response": {...},
+
+        "gateway_token": "7126377",
+
+        "gateway_authorization_response": "520.014: INVALID ACCOUNT NUMBER",
+
+        "gateway_error_scope": "tpro4",
+
+        "gateway_error_code": "520.014",
+
+        "gateway_error_message": "INVALID ACCOUNT NUMBER",
+
+        "authorization_response": "500",
+
+        "avs_response": "Z",
+
+        "credit_card_bin": "410040",
+
+        "credit_card_masked_number": "XXXXXXXXXXXX9700",
+
+        "credit_card_brand": "visa",
+
+        "credit_card_expiry": "082026"
+
+        }
+
+        ],
+
+        "response_code": 211
+
+        }
+
+        ```
+
+        The /api/reference_data/v1/response_codes payload reports `211` as follows:
+
+        ```
+
+        {
+
+        "code": 211,
+
+        "description": "Account number invalid"
+
+        }
+
+        ```'
       responses:
         '200':
           description: Successful Operation
@@ -40,6 +143,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ResponseCode'
+      operationId: getApiReferenceDataV1ResponseCodes
+      x-operation-id-source: derived
   /api/reference_data/v1/country_codes:
     get:
       tags:
@@ -53,14 +158,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseCountryCodes'
+      operationId: getApiReferenceDataV1CountryCodes
+      x-operation-id-source: derived
   /api/reference_data/v1/bin:
     get:
       tags:
       - Reference Data
       summary: Get Bank Identification Number (BIN) reference data
-      description: 'View the Bank Identification Number (BIN) reference data, including bank names, phone number, URLs, country, brand and card types.
-
-        '
+      description: View the Bank Identification Number (BIN) reference data, including bank names, phone number, URLs, country, brand and card types.
       responses:
         '200':
           description: Successful Operation
@@ -81,14 +186,14 @@ paths:
                     type: string
                     description: Error message
                     example: You need to sign in or create an account before continuing.
+      operationId: getApiReferenceDataV1Bin
+      x-operation-id-source: derived
   /api/reference_data/v1/bin/{bin}:
     get:
       tags:
       - Reference Data
       summary: Get Bank Identification Number (BIN) reference data
-      description: 'View the Bank Identification Number (BIN) reference data for a given bin number, including bank names, phone number, URLs, and card types.
-
-        '
+      description: View the Bank Identification Number (BIN) reference data for a given bin number, including bank names, phone number, URLs, and card types.
       parameters:
       - name: bin
         in: path
@@ -116,24 +221,45 @@ paths:
                     type: string
                     description: Error message
                     example: You need to sign in or create an account before continuing.
+      operationId: getApiReferenceDataV1BinByBin
+      x-operation-id-source: derived
 components:
   schemas:
+    BIN:
+      type: object
+      properties:
+        url:
+          $ref: '#/components/schemas/URL'
+        bin:
+          $ref: '#/components/schemas/BankIdentificationNumber'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        type:
+          $ref: '#/components/schemas/BankCardType'
+        country:
+          $ref: '#/components/schemas/CountryAlpha3Code'
+        category:
+          $ref: '#/components/schemas/BankCardCategory'
+        brand:
+          $ref: '#/components/schemas/BankCardBrand'
+        bank:
+          $ref: '#/components/schemas/BankName'
+    BankName:
+      type: string
+      example: BANK OF VERSAPAY
+    BankCardType:
+      type: string
+      example: CREDIT
+    Phone:
+      type: string
+      example: 503-685-4116
+      description: cannot begin with 1 or 0
     BankIdentificationNumber:
       type: string
       maxLength: 8
       minLength: 6
       pattern: ^\d{6,8}$
       example: '411111'
-    BankName:
-      type: string
-      example: BANK OF VERSAPAY
-    CountryAlpha3Code:
-      type: string
-      pattern: ^[A-Z]{3}$
-      example: USA
-      maxLength: 3
-      minLength: 3
-      description: The uppercase 3-character ISO country code
     ResponseCountryCodes:
       type: object
       properties:
@@ -176,28 +302,13 @@ components:
             - ACT: Australian Capital Territory
             - NSW: New South Wales
             - VIC: Victoria
-    BankCardCategory:
+    CountryAlpha3Code:
       type: string
-      example: PREPAID
-    BIN:
-      type: object
-      properties:
-        url:
-          $ref: '#/components/schemas/URL'
-        bin:
-          $ref: '#/components/schemas/BankIdentificationNumber'
-        phone:
-          $ref: '#/components/schemas/Phone'
-        type:
-          $ref: '#/components/schemas/BankCardType'
-        country:
-          $ref: '#/components/schemas/CountryAlpha3Code'
-        category:
-          $ref: '#/components/schemas/BankCardCategory'
-        brand:
-          $ref: '#/components/schemas/BankCardBrand'
-        bank:
-          $ref: '#/components/schemas/BankName'
+      pattern: ^[A-Z]{3}$
+      example: USA
+      maxLength: 3
+      minLength: 3
+      description: The uppercase 3-character ISO country code
     ResponseCode:
       type: object
       properties:
@@ -207,20 +318,16 @@ components:
         description:
           type: string
           example: Approved
-    BankCardBrand:
+    BankCardCategory:
       type: string
-      example: VISA
+      example: PREPAID
     URL:
       type: string
       format: url
       example: https://www.example.com
-    Phone:
+    BankCardBrand:
       type: string
-      example: 503-685-4116
-      description: cannot begin with 1 or 0
-    BankCardType:
-      type: string
-      example: CREDIT
+      example: VISA
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

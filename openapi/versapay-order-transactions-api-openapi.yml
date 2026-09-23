@@ -11,29 +11,7 @@ info:
   termsOfService: https://www.versapay.com/terms-of-use
   license:
     name: Copyright 2022 Versapay. All Rights Reserved.
-  description: 'Order-based card/ACH and card present EMV payment transactions include verify, authorize, capture, sale, void, return refund, and return credit transaction types. If participating in a gift card program, gift cards can be used in sale, void, refund transaction types. Contact support@versapay.com for support & setup for Order Transactions enablement.
-
-    ## Credit Card Payments
-
-    There are two types of credit card payments: sale and delayed capture. Sale payments occur when the merchant wishes to accept a payment for goods or services that have already been shipped or provided to the cardholder. A sale is a financial transaction, and the movement of funds will be initiated in response to a sale request. Delayed capture payments are used when there is a separation between accepting an order and fulfilling that order. With delayed capture, the credit card is first authorized for the estimated order total. The authorization reserves funds on the cardholder’s account for the merchant but does not initiate a movement of funds. Once the products or services are ready to be delivered to the cardholder, the authorization is captured for the final amount. The capture request initiates the movement of funds.
-
-    ## ACH Payments
-
-    ACH payments are bank-to-bank transfers of funds. Unlike credit card payments, ACH payments only have one type – sale, and there is no prior authorization. Therefore, sale amounts are final and cannot be adjusted after the fact. ACH payments assume success, and if there is a problem with the funding source, like with a bounced paper check, the originator will be notified of a rejection several days after the payment attempt.
-
-    ## EFT Payments
-
-    EFT payments are bank-to-bank transfers of funds. Unlike credit card payments, EFT payments only have one type – sale, and there is no prior authorization. Therefore, sale amounts are final and cannot be adjusted after the fact. EFT payments assume success, and if there is a problem with the funding source, like with a bounced paper check, the originator will be notified of a rejection several days after the payment attempt.
-
-    ## Gift Card Payments
-
-    Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
-
-    ## Point-of-Sale/Card Present EMV Payments
-
-    Card Present EMV payment transactions require a Versapay certified point-of-sale terminal. In addition to the card not present transaction types, the following payment transaction types are also supported: device setup, request signature, and cancel. Contact support@versapay.com for support & setup for POS/CP EMV enablement.
-
-    '
+  description: Order-based card/ACH and card present EMV payment transactions include verify, authorize, capture, sale, void, return refund, and return credit transaction types.
 servers:
 - url: https://secure.versapay.com
   description: Production
@@ -41,29 +19,7 @@ servers:
   description: UAT
 tags:
 - name: Order Transactions
-  description: 'Order-based card/ACH and card present EMV payment transactions include verify, authorize, capture, sale, void, return refund, and return credit transaction types. If participating in a gift card program, gift cards can be used in sale, void, refund transaction types. Contact support@versapay.com for support & setup for Order Transactions enablement.
-
-    ## Credit Card Payments
-
-    There are two types of credit card payments: sale and delayed capture. Sale payments occur when the merchant wishes to accept a payment for goods or services that have already been shipped or provided to the cardholder. A sale is a financial transaction, and the movement of funds will be initiated in response to a sale request. Delayed capture payments are used when there is a separation between accepting an order and fulfilling that order. With delayed capture, the credit card is first authorized for the estimated order total. The authorization reserves funds on the cardholder’s account for the merchant but does not initiate a movement of funds. Once the products or services are ready to be delivered to the cardholder, the authorization is captured for the final amount. The capture request initiates the movement of funds.
-
-    ## ACH Payments
-
-    ACH payments are bank-to-bank transfers of funds. Unlike credit card payments, ACH payments only have one type – sale, and there is no prior authorization. Therefore, sale amounts are final and cannot be adjusted after the fact. ACH payments assume success, and if there is a problem with the funding source, like with a bounced paper check, the originator will be notified of a rejection several days after the payment attempt.
-
-    ## EFT Payments
-
-    EFT payments are bank-to-bank transfers of funds. Unlike credit card payments, EFT payments only have one type – sale, and there is no prior authorization. Therefore, sale amounts are final and cannot be adjusted after the fact. EFT payments assume success, and if there is a problem with the funding source, like with a bounced paper check, the originator will be notified of a rejection several days after the payment attempt.
-
-    ## Gift Card Payments
-
-    Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
-
-    ## Point-of-Sale/Card Present EMV Payments
-
-    Card Present EMV payment transactions require a Versapay certified point-of-sale terminal. In addition to the card not present transaction types, the following payment transaction types are also supported: device setup, request signature, and cancel. Contact support@versapay.com for support & setup for POS/CP EMV enablement.
-
-    '
+  description: Order-based card/ACH and card present EMV payment transactions include verify, authorize, capture, sale, void, return refund, and return credit transaction types.
 paths:
   /api/gateway/v1/orders/verify:
     post:
@@ -113,6 +69,8 @@ paths:
                   $ref: '#/components/examples/declined'
                 error:
                   $ref: '#/components/examples/error'
+      operationId: postApiGatewayV1OrdersVerify
+      x-operation-id-source: derived
   /api/gateway/v1/orders/sale:
     post:
       tags:
@@ -163,6 +121,8 @@ paths:
                   $ref: '#/components/examples/declined'
                 error:
                   $ref: '#/components/examples/error'
+      operationId: postApiGatewayV1OrdersSale
+      x-operation-id-source: derived
   /api/gateway/v1/orders/credit:
     post:
       tags:
@@ -211,6 +171,8 @@ paths:
                   $ref: '#/components/examples/declined'
                 error:
                   $ref: '#/components/examples/error'
+      operationId: postApiGatewayV1OrdersCredit
+      x-operation-id-source: derived
   /api/gateway/v1/orders/auth:
     post:
       tags:
@@ -259,6 +221,8 @@ paths:
                   $ref: '#/components/examples/declined'
                 error:
                   $ref: '#/components/examples/error'
+      operationId: postApiGatewayV1OrdersAuth
+      x-operation-id-source: derived
   /api/gateway/v1/orders/capture:
     post:
       tags:
@@ -305,6 +269,8 @@ paths:
                   $ref: '#/components/examples/declined'
                 error:
                   $ref: '#/components/examples/error'
+      operationId: postApiGatewayV1OrdersCapture
+      x-operation-id-source: derived
   /api/gateway/v1/orders/refund:
     post:
       tags:
@@ -339,6 +305,8 @@ paths:
                   $ref: '#/components/examples/declined'
                 error:
                   $ref: '#/components/examples/error'
+      operationId: postApiGatewayV1OrdersRefund
+      x-operation-id-source: derived
   /api/gateway/v1/orders/void:
     post:
       tags:
@@ -373,12 +341,15 @@ paths:
                   $ref: '#/components/examples/declined'
                 error:
                   $ref: '#/components/examples/error'
+      operationId: postApiGatewayV1OrdersVoid
+      x-operation-id-source: derived
   /api/exports/transaction/{token_or_reference}:
     get:
       summary: Export/View a Transaction
-      description: 'View an order transaction details.<br><br> The path parameter `reference_or_token` is matched to the transaction''s `token` or `unique_reference`, in that order. Alias/see `/api/gateway/v1/transaction/{token_or_reference}`
+      description: 'View an order transaction details.
 
-        '
+
+        The path parameter `reference_or_token` is matched to the transaction''s `token` or `unique_reference`, in that order. Alias/see `/api/gateway/v1/transaction/{token_or_reference}`'
       tags:
       - Order Transactions
       parameters:
@@ -399,8 +370,142 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+      operationId: getApiExportsTransactionByTokenOrReference
+      x-operation-id-source: derived
 components:
   schemas:
+    WalletBankAccount:
+      type: object
+      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
+      required:
+      - currency
+      - account_type
+      - account_holder
+      - account_number
+      - routing_number
+      - institution_number
+      - branch_number
+      - check_type
+      - address
+      properties:
+        currency:
+          type: string
+          enum:
+          - USD
+          - CAD
+          - AUD
+          - EUR
+          - GBP
+        account_type:
+          type: string
+          enum:
+          - checking
+          - savings
+        account_holder:
+          type: string
+          description: Account holder name
+        account_number:
+          type: string
+          description: Bank account number
+        routing_number:
+          type: string
+          description: For non-CA financial institutions, ABA/bank routing number
+        institution_number:
+          type: string
+          description: For CA financial institutions, 3 digit institution code
+        branch_number:
+          type: string
+          description: For CA financial institutions, transit/branch number
+        check_type:
+          type: string
+          enum:
+          - personal
+          - business
+        external_name:
+          type: string
+        external_number:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    WalletCreditCard:
+      type: object
+      description: Alternative to fund_token, a credit card object or token reference to an existing credit card
+      required:
+      - name
+      - expiry_month
+      - expiry_year
+      - card_number
+      - cvv
+      - address
+      properties:
+        name:
+          type: string
+          description: Cardholder name
+        expiry_month:
+          type: string
+          description: 2 digit month
+        expiry_year:
+          type: string
+          description: 4 digit year
+        card_number:
+          type: string
+          description: Credit card number
+        cvv:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
     OrderTransaction:
       type: object
       properties:
@@ -726,153 +831,6 @@ components:
         amount_cents:
           type: number
           description: Associated invoicing payment amount
-    UnifiedResponse:
-      type: object
-    WalletCreditCard:
-      type: object
-      description: Alternative to fund_token, a credit card object or token reference to an existing credit card
-      required:
-      - name
-      - expiry_month
-      - expiry_year
-      - card_number
-      - cvv
-      - address
-      properties:
-        name:
-          type: string
-          description: Cardholder name
-        expiry_month:
-          type: string
-          description: 2 digit month
-        expiry_year:
-          type: string
-          description: 4 digit year
-        card_number:
-          type: string
-          description: Credit card number
-        cvv:
-          type: string
-        locked:
-          type: boolean
-        nickname:
-          type: string
-        is_default:
-          type: boolean
-          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
-        is_single_use:
-          type: boolean
-          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
-        address:
-          type: object
-          properties:
-            address_1:
-              type: string
-            city:
-              type: string
-            province:
-              type: string
-              description: US state or CA province code
-            postal_code:
-              type: string
-              description: US zip code or CA postal code
-            country:
-              type: string
-              enum:
-              - US
-              - CA
-    WalletBankAccount:
-      type: object
-      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
-      required:
-      - currency
-      - account_type
-      - account_holder
-      - account_number
-      - routing_number
-      - institution_number
-      - branch_number
-      - check_type
-      - address
-      properties:
-        currency:
-          type: string
-          enum:
-          - USD
-          - CAD
-          - AUD
-          - EUR
-          - GBP
-        account_type:
-          type: string
-          enum:
-          - checking
-          - savings
-        account_holder:
-          type: string
-          description: Account holder name
-        account_number:
-          type: string
-          description: Bank account number
-        routing_number:
-          type: string
-          description: For non-CA financial institutions, ABA/bank routing number
-        institution_number:
-          type: string
-          description: For CA financial institutions, 3 digit institution code
-        branch_number:
-          type: string
-          description: For CA financial institutions, transit/branch number
-        check_type:
-          type: string
-          enum:
-          - personal
-          - business
-        external_name:
-          type: string
-        external_number:
-          type: string
-        locked:
-          type: boolean
-        nickname:
-          type: string
-        is_default:
-          type: boolean
-          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
-        is_single_use:
-          type: boolean
-          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
-        address:
-          type: object
-          properties:
-            address_1:
-              type: string
-            city:
-              type: string
-            province:
-              type: string
-              description: US state or CA province code
-            postal_code:
-              type: string
-              description: US zip code or CA postal code
-            country:
-              type: string
-              enum:
-              - US
-              - CA
-    WalletContact:
-      type: object
-      description: Billing contact
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          description: Email address
-        first_name:
-          type: string
-        last_name:
-          type: string
     OrderTransactionRequest:
       type: object
       properties:
@@ -933,6 +891,34 @@ components:
               description: Gift card number
             pin:
               type: string
+    SummaryOrderReference:
+      type: object
+      description: Summary reference of known order
+      properties:
+        identifier:
+          type: string
+          description: Associated order identifier
+        number:
+          type: string
+          description: Associated order number
+        amount_cents:
+          type: number
+          description: Associated order amount
+    WalletContact:
+      type: object
+      description: Billing contact
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Email address
+        first_name:
+          type: string
+        last_name:
+          type: string
+    UnifiedResponse:
+      type: object
     OrderTransactionResponse:
       type: object
       properties:
@@ -1054,79 +1040,14 @@ components:
                       token: c500f04b-a61c-44bd-be03-2c3a423cbbaf
             credit_card:
               token: qw288x8dmx00
-    SummaryOrderReference:
-      type: object
-      description: Summary reference of known order
-      properties:
-        identifier:
-          type: string
-          description: Associated order identifier
-        number:
-          type: string
-          description: Associated order number
-        amount_cents:
-          type: number
-          description: Associated order amount
   examples:
-    error:
-      summary: Other errors
+    use_existing_credit_card_fee_exempt:
+      summary: Amount to process and credit card reference to pay from (ignore any configured surcharging rules)
       value:
-        success: false
-        errors:
-        - order_not_found
-    use_gift_card:
-      summary: Amount to process and gift card details to pay from
-      value:
+        fee_exempt: true
         order: 3SLSC9HX3AHB
         amount_cents: 4200
-        contact:
-          email: tim@coffee.com
-          first_name: Tim
-          last_name: Man
-        gift_card:
-          name: Tim Man
-          expiry_month: 12
-          expiry_year: 2049
-          card_number: '4775419990420272'
-          pin: '1234'
-    use_settlement_routing:
-      summary: Use specific merchant account settlement route to pay order (eg credit card)
-      value:
-        order:
-          identifier: 3SLSC9HX3AHB
-          settlement_token: MA123XYZABCD
-        amount_cents: 4200
-        fund_token: CC98U7LI8H91
-    prior_transaction_reference:
-      summary: Directly reference prior transaction and amount to capture
-      value:
-        amount_cents: 4200
-        transaction: 9HWLBLWXXPRX
-    declined_invalid_card:
-      summary: Decline invalid card
-      value:
-        success: false
-    use_new_credit_card:
-      summary: Amount to process and full credit card details to pay from
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        contact:
-          email: tim@coffee.com
-          first_name: Tim
-          last_name: Man
-        credit_card:
-          name: Tim Man
-          expiry_month: 12
-          expiry_year: 2025
-          card_number: '4111111111111111'
-          cvv: '123'
-          address:
-            address_1: 123 Abc St
-            city: Beverly Hills
-            province: CA
-            postal_code: '90210'
-            country: US
+        credit_card: CC98U7LI8H91
     use_cp_emv_terminal:
       summary: Amount to process via terminal (card present emv)
       value:
@@ -1139,37 +1060,6 @@ components:
         terminal:
           laneid: '1'
           enable_manual_entry: false
-    use_existing_credit_card_fee_exempt:
-      summary: Amount to process and credit card reference to pay from (ignore any configured surcharging rules)
-      value:
-        fee_exempt: true
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        credit_card: CC98U7LI8H91
-    use_existing_credit_card:
-      summary: Amount to process and credit card reference to pay from
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        credit_card: CC98U7LI8H91
-    declined:
-      summary: Gateway declined request
-      value:
-        success: false
-        errors:
-        - declined for REASON
-    use_cp_emv_terminal_prompt:
-      summary: Amount to process via terminal (card present emv) prompting for card number entry via PIN pad
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        contact:
-          email: tim@coffee.com
-          first_name: Tim
-          last_name: Man
-        terminal:
-          laneid: '1'
-          enable_manual_entry: true
     use_existing_fund:
       summary: Amount to process and fund reference (eg credit card) to pay from
       value:
@@ -1199,18 +1089,90 @@ components:
             province: CA
             postal_code: '90210'
             country: US
+    declined:
+      summary: Gateway declined request
+      value:
+        success: false
+        errors:
+        - declined for REASON
+    use_gift_card:
+      summary: Amount to process and gift card details to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        gift_card:
+          name: Tim Man
+          expiry_month: 12
+          expiry_year: 2049
+          card_number: '4775419990420272'
+          pin: '1234'
+    use_settlement_routing:
+      summary: Use specific merchant account settlement route to pay order (eg credit card)
+      value:
+        order:
+          identifier: 3SLSC9HX3AHB
+          settlement_token: MA123XYZABCD
+        amount_cents: 4200
+        fund_token: CC98U7LI8H91
+    prior_transaction_reference:
+      summary: Directly reference prior transaction and amount to capture
+      value:
+        amount_cents: 4200
+        transaction: 9HWLBLWXXPRX
+    use_existing_credit_card:
+      summary: Amount to process and credit card reference to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        credit_card: CC98U7LI8H91
+    error:
+      summary: Other errors
+      value:
+        success: false
+        errors:
+        - order_not_found
+    use_new_credit_card:
+      summary: Amount to process and full credit card details to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        credit_card:
+          name: Tim Man
+          expiry_month: 12
+          expiry_year: 2025
+          card_number: '4111111111111111'
+          cvv: '123'
+          address:
+            address_1: 123 Abc St
+            city: Beverly Hills
+            province: CA
+            postal_code: '90210'
+            country: US
+    use_cp_emv_terminal_prompt:
+      summary: Amount to process via terminal (card present emv) prompting for card number entry via PIN pad
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        terminal:
+          laneid: '1'
+          enable_manual_entry: true
+    declined_invalid_card:
+      summary: Decline invalid card
+      value:
+        success: false
   responses:
-    NotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: ActiveRecord::RecordNotFound
     UnauthorizedError:
       description: Unauthorized
       content:
@@ -1222,6 +1184,17 @@ components:
                 type: string
                 description: Error message
                 example: You need to sign in or create an account before continuing.
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: ActiveRecord::RecordNotFound
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

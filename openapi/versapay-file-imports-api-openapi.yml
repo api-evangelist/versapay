@@ -11,9 +11,7 @@ info:
   termsOfService: https://www.versapay.com/terms-of-use
   license:
     name: Copyright 2022 Versapay. All Rights Reserved.
-  description: 'As a supplier you can upload customer, invoice, and payment data in CSV file formats.
-
-    '
+  description: As a supplier you can upload customer, invoice, and payment data in CSV file formats.
 servers:
 - url: https://secure.versapay.com
   description: Production
@@ -21,14 +19,12 @@ servers:
   description: UAT
 tags:
 - name: File Imports
-  description: 'As a supplier you can upload customer, invoice, and payment data in CSV file formats.
-
-    '
+  description: As a supplier you can upload customer, invoice, and payment data in CSV file formats.
 paths:
   /api/imports:
     post:
       summary: Import a CSV File
-      description: 'When uploading a CSV-formatted file it’s helpful to use your language/framework tooling to simplify the [multipart/form-data](https://www.ietf.org/rfc/rfc2388.txt) file upload.
+      description: 'When uploading a CSV-formatted file it’s helpful to use your language/framework tooling to simplify the multipart/form-data file upload.
 
         ### Size Limit
 
@@ -36,9 +32,7 @@ paths:
 
         ### Layouts
 
-        Please contact support@versapay.com or reach out to your implementation specialist for standard inbound CSV file layouts.
-
-        '
+        Please contact support@versapay.com or reach out to your implementation specialist for standard inbound CSV file layouts.'
       tags:
       - File Imports
       requestBody:
@@ -82,6 +76,8 @@ paths:
           HTTMultiParty.post(''https://secure.versapay.com/api/imports/'', auth.merge( :query => file ))
 
           '
+      operationId: postApiImports
+      x-operation-id-source: derived
     get:
       summary: View In-Progress & Completed Batches
       description: View recent in-progress and completed import batches.
@@ -104,6 +100,8 @@ paths:
                   $ref: '#/components/schemas/FileImport'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: getApiImports
+      x-operation-id-source: derived
   /api/imports/processing:
     get:
       summary: View In-Progress Batches
@@ -177,9 +175,7 @@ paths:
   /api/imports/{id}/echo:
     get:
       summary: View Tokenized Results of File Imported Payment Methods
-      description: 'Tokenized results of file imported payment methods are available up to 24hrs following a fund import. This results file echo''s the original input lines - absent the original header line, with sensitive field masking - appending the imported items `wallet token`, `fund token`, and `vault token` - i.e. essential references that can be used for subsequent payment/order transactions API usage.
-
-        '
+      description: Tokenized results of file imported payment methods are available up to 24hrs following a fund import. This results file echo's the original input lines - absent the original header line, with sensitive field masking - appending the imported items `wallet token`, `fund token`, and `vault token` - i.e. essential references that can be used for subsequent payment/order transactions API usage.
       operationId: viewEchoResults
       tags:
       - File Imports
@@ -224,9 +220,7 @@ paths:
   /api/imports/{id}/errors:
     get:
       summary: View Batch Errors
-      description: 'View the error results for a given batch import. This endpoint returns by default a `json` type response. But you can specify the extension in which you want to see the response, the accepted extensions are `json` and `csv`
-
-        '
+      description: View the error results for a given batch import. This endpoint returns by default a `json` type response. But you can specify the extension in which you want to see the response, the accepted extensions are `json` and `csv`
       operationId: viewBatchError
       tags:
       - File Imports
@@ -366,9 +360,7 @@ paths:
   /api/exports/invoice_recon/{batch_file_id}:
     get:
       summary: Export/View Invoice Reconciliation Results
-      description: 'View the most recent, or for a given batch import, invoice reconciliation results.
-
-        '
+      description: View the most recent, or for a given batch import, invoice reconciliation results.
       tags:
       - File Imports
       parameters:
@@ -419,12 +411,12 @@ paths:
                         discrepancy_message: Invoice Not Present in ARC
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: getApiExportsInvoiceReconByBatchFileId
+      x-operation-id-source: derived
   /api/exports/payment_recon/{batch_file_id}:
     get:
       summary: Export/View Payment Reconciliation Results
-      description: 'View the most recent, or for a given batch import, payment reconciliation results.
-
-        '
+      description: View the most recent, or for a given batch import, payment reconciliation results.
       tags:
       - File Imports
       parameters:
@@ -475,7 +467,21 @@ paths:
                         payment_date_in_source_system: '2023-08-07'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: getApiExportsPaymentReconByBatchFileId
+      x-operation-id-source: derived
 components:
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
   schemas:
     InvoiceReconResponse:
       type: object
@@ -522,6 +528,147 @@ components:
           type: string
           description: Message explaining the discrepancy.
           example: Invoice Not Present in ARC
+    PaymentReconResponse:
+      type: object
+      properties:
+        payment_reconciliation_identifier:
+          type: string
+          description: Identifier of the payment
+        unapplied_amount:
+          type: string
+          description: The unapplied amount from total payment amount in Versapay.
+        unapplied_amount_in_source_system:
+          type: string
+          description: The unapplied amount from total payment amount in source/provided.
+        customer_identifier:
+          type: string
+          description: The customer number recorded on the payment in Versapay.
+          example: CUST123
+        discrepancy_message:
+          type: string
+          description: Message explaining the discrepancy.
+          example: Payment Not Present in Versapay.
+        payment_amount:
+          type: string
+          description: Optional, The payment amount in Versapay if present in uploaded recon csv.
+        payment_amount_in_source_system:
+          type: string
+          description: Optional, The payment amount in source/provided if present in uploaded recon csv.
+        applied_amount:
+          type: string
+          description: Optional, The amount applied from total payment amount in Versapay if present in uploaded recon csv.
+        applied_amount_in_source_system:
+          type: string
+          description: Optional, The amount applied from total payment amount in source/provided if present in uploaded recon csv.
+        external_payment_number:
+          type: string
+          description: Optional, The payment external number in Versapay if present in uploaded recon csv.
+        external_payment_number_in_source_system:
+          type: string
+          description: Optional, The payment external number in source/provided if present in uploaded recon csv.
+        payment_date:
+          type: string
+          description: Optional, Payment date in Versapay
+          example: '2021-12-31'
+        payment_date_in_source_system:
+          type: string
+          description: Optional, Payment date in source/provided if present in uploaded recon csv.
+          example: '2021-12-31'
+        currency:
+          type: string
+          description: Optional, The currency code in Versapay if present in uploaded recon csv.
+        currency_in_source_system:
+          type: string
+          description: Optional, The currency code in source/provided if present in uploaded recon csv.
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
+    FileImport:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The import batch identifier.
+          example: 21877
+        file_name:
+          type: string
+          description: The original filename of the raw file.
+          example: invoices.csv
+        file_size:
+          type: integer
+          description: The original size of the raw file in bytes.
+          example: 1024
+        file_content_type:
+          type: string
+          description: The MIME/content-type of the raw file.
+          example: text/plain
+        file_fingerprint:
+          type: string
+          description: The fingerprint/hash representing the raw file contents.
+          example: bf817b5548d69f6a3a49b6bb872fb906
+        file_errors_count:
+          type: string
+          description: Number of records that failed import due to data error
+          example: 5
+        error:
+          type: string
+          description: The error message corresponding to a failed import.
+          example: ''
+        result_message:
+          type: string
+          description: Result of batch import.
+          example: 5487 invoices
+        complete_at:
+          type: string
+          description: The ISO8601 timestamp corresponding to completion of the import.
+          example: '2016-08-30T15:39:30-04:00'
+    LineItemResponse:
+      type: object
+      properties:
+        number:
+          type: string
+          description: Invoice line-item number.
+        description:
+          type: string
+          description: Invoice line-item description
+        quantity:
+          type: number
+          description: Invoice line-item quantity.
+        unit_cost_cents:
+          type: integer
+          description: Invoice line-item unit price in cents.
+        amount_cents:
+          type: integer
+          description: Invoice line-item total in cents.
+        balance_cents:
+          type: integer
+          description: Line-item balance in cents. Applicable if accepting short payments at line-item level.
+        id:
+          type: number
+          description: Internal id of the line-item record.
+        identifier:
+          type: string
+          description: Unique internal identifier for the line-item. Applicable if accepting short payments at line-item level.
+        invoice_id:
+          type: number
+          description: Internal id of the invoice.
+        purchase_order_number:
+          type: string
+          description: Purchase order number at the line-item level.
+        order_key:
+          type: string
+          description: Sequence number for the line-item to order-by when rendering on the invoice.
+        recurring_invoice_id:
+          type: string
+          description: Internal id of the recurring invoice. Applicable if using recurring invoices.
+        extended_attributes:
+          type: object
+          description: Additional non-standard attribute stored with the line-item record for presentment rendering.
+          properties:
+            key:
+              type: string
+              description: Key-value pair of the extended attribute on the line-item.
     InvoiceResponse:
       type: object
       properties:
@@ -931,159 +1078,6 @@ components:
             line_item_dispute_reason_identifier: null
             line_item_dispute_reason: null
             line_item_extended_attributes: {}
-    FileImport:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The import batch identifier.
-          example: 21877
-        file_name:
-          type: string
-          description: The original filename of the raw file.
-          example: invoices.csv
-        file_size:
-          type: integer
-          description: The original size of the raw file in bytes.
-          example: 1024
-        file_content_type:
-          type: string
-          description: The MIME/content-type of the raw file.
-          example: text/plain
-        file_fingerprint:
-          type: string
-          description: The fingerprint/hash representing the raw file contents.
-          example: bf817b5548d69f6a3a49b6bb872fb906
-        file_errors_count:
-          type: string
-          description: Number of records that failed import due to data error
-          example: 5
-        error:
-          type: string
-          description: The error message corresponding to a failed import.
-          example: ''
-        result_message:
-          type: string
-          description: Result of batch import.
-          example: 5487 invoices
-        complete_at:
-          type: string
-          description: The ISO8601 timestamp corresponding to completion of the import.
-          example: '2016-08-30T15:39:30-04:00'
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
-    LineItemResponse:
-      type: object
-      properties:
-        number:
-          type: string
-          description: Invoice line-item number.
-        description:
-          type: string
-          description: Invoice line-item description
-        quantity:
-          type: number
-          description: Invoice line-item quantity.
-        unit_cost_cents:
-          type: integer
-          description: Invoice line-item unit price in cents.
-        amount_cents:
-          type: integer
-          description: Invoice line-item total in cents.
-        balance_cents:
-          type: integer
-          description: Line-item balance in cents. Applicable if accepting short payments at line-item level.
-        id:
-          type: number
-          description: Internal id of the line-item record.
-        identifier:
-          type: string
-          description: Unique internal identifier for the line-item. Applicable if accepting short payments at line-item level.
-        invoice_id:
-          type: number
-          description: Internal id of the invoice.
-        purchase_order_number:
-          type: string
-          description: Purchase order number at the line-item level.
-        order_key:
-          type: string
-          description: Sequence number for the line-item to order-by when rendering on the invoice.
-        recurring_invoice_id:
-          type: string
-          description: Internal id of the recurring invoice. Applicable if using recurring invoices.
-        extended_attributes:
-          type: object
-          description: Additional non-standard attribute stored with the line-item record for presentment rendering.
-          properties:
-            key:
-              type: string
-              description: Key-value pair of the extended attribute on the line-item.
-    PaymentReconResponse:
-      type: object
-      properties:
-        payment_reconciliation_identifier:
-          type: string
-          description: Identifier of the payment
-        unapplied_amount:
-          type: string
-          description: The unapplied amount from total payment amount in Versapay.
-        unapplied_amount_in_source_system:
-          type: string
-          description: The unapplied amount from total payment amount in source/provided.
-        customer_identifier:
-          type: string
-          description: The customer number recorded on the payment in Versapay.
-          example: CUST123
-        discrepancy_message:
-          type: string
-          description: Message explaining the discrepancy.
-          example: Payment Not Present in Versapay.
-        payment_amount:
-          type: string
-          description: Optional, The payment amount in Versapay if present in uploaded recon csv.
-        payment_amount_in_source_system:
-          type: string
-          description: Optional, The payment amount in source/provided if present in uploaded recon csv.
-        applied_amount:
-          type: string
-          description: Optional, The amount applied from total payment amount in Versapay if present in uploaded recon csv.
-        applied_amount_in_source_system:
-          type: string
-          description: Optional, The amount applied from total payment amount in source/provided if present in uploaded recon csv.
-        external_payment_number:
-          type: string
-          description: Optional, The payment external number in Versapay if present in uploaded recon csv.
-        external_payment_number_in_source_system:
-          type: string
-          description: Optional, The payment external number in source/provided if present in uploaded recon csv.
-        payment_date:
-          type: string
-          description: Optional, Payment date in Versapay
-          example: '2021-12-31'
-        payment_date_in_source_system:
-          type: string
-          description: Optional, Payment date in source/provided if present in uploaded recon csv.
-          example: '2021-12-31'
-        currency:
-          type: string
-          description: Optional, The currency code in Versapay if present in uploaded recon csv.
-        currency_in_source_system:
-          type: string
-          description: Optional, The currency code in source/provided if present in uploaded recon csv.
-  responses:
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

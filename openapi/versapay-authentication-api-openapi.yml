@@ -11,39 +11,7 @@ info:
   termsOfService: https://www.versapay.com/terms-of-use
   license:
     name: Copyright 2022 Versapay. All Rights Reserved.
-  description: 'Visit your account settings in `UAT` (https://uat.versapay.com/account) or `Production` (https://secure.versapay.com/account) to setup API credentials needed for authentication as well as webhooks to receive relevant callbacks from Versapay transaction processing.
-
-
-    You can generate/disable your API credentials as often as necessary for security reasons.
-
-
-    If you do not have an account, please contact Versapay Support for support & setup of AR invoicing integration, hosted checkout and/or payment acceptance for partner and/or API credential setup.
-
-
-    ## API Token and API Key
-
-    API requests are authenticated using `API Token & Key` via [HTTPS Basic Access Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). <table class="security-details"><tbody><tr><th> Security Scheme Type </th><td> <!-- -->HTTPS<!-- --> </td></tr><tr><th> HTTPS Authorization Scheme </th><td> <!-- -->basic<!-- --> </td></tr></tbody></table>
-
-
-    Simply provide the `API Token & Key` values as the `user` and `password` parameters, using cURL for instance:
-
-
-    `curl -u "Nvax...:UN0I..." -X POST https://secure.versapay.com/api/...`
-
-
-    ## JWT Token
-
-    Alternatively, API requests can also be authenticated using `JWT Token` via [HTTPS Bearer Authentication](https://en.wikipedia.org/wiki/JSON_Web_Token). <table class="security-details"><tbody><tr><th> Security Scheme Type </th><td> <!-- -->HTTPS<!-- --> </td></tr><tr><th> HTTP Authorization Scheme </th><td> <!-- -->bearer JWT<!-- --> </td></tr></tbody></table>
-
-    `JWT Tokens`, automatically generated alongside `API Token & Key`, are displayed along with expiration in account settings as well as via authenticated `/api/whoami`, see `Authentication` _Echo identity and account profile settings_
-
-
-    Simply provide the `JWT Token` in the authorization header, using cURL for instance:
-
-
-    `curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6Im54eDFaSjgzeXRNNmhtb3NGVExCIiwiZXhwIjoxNzEyOTU5NDA5fQ.adV6U1vW69Ypskt61uPL8hZ-4muvtM4FLM48QN6iCc4" -X POST https://secure.versapay.com/api/...`
-
-    '
+  description: Visit your account settings in `UAT` (https://uat.versapay.com/account) or `Production` (https://secure.versapay.com/account) to setup API credentials needed for authentication as well as webhooks to receive relevant callbacks from Versapay transaction processing.
 servers:
 - url: https://secure.versapay.com
   description: Production
@@ -51,48 +19,14 @@ servers:
   description: UAT
 tags:
 - name: Authentication
-  description: 'Visit your account settings in `UAT` (https://uat.versapay.com/account) or `Production` (https://secure.versapay.com/account) to setup API credentials needed for authentication as well as webhooks to receive relevant callbacks from Versapay transaction processing.
-
-
-    You can generate/disable your API credentials as often as necessary for security reasons.
-
-
-    If you do not have an account, please contact Versapay Support for support & setup of AR invoicing integration, hosted checkout and/or payment acceptance for partner and/or API credential setup.
-
-
-    ## API Token and API Key
-
-    API requests are authenticated using `API Token & Key` via [HTTPS Basic Access Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). <table class="security-details"><tbody><tr><th> Security Scheme Type </th><td> <!-- -->HTTPS<!-- --> </td></tr><tr><th> HTTPS Authorization Scheme </th><td> <!-- -->basic<!-- --> </td></tr></tbody></table>
-
-
-    Simply provide the `API Token & Key` values as the `user` and `password` parameters, using cURL for instance:
-
-
-    `curl -u "Nvax...:UN0I..." -X POST https://secure.versapay.com/api/...`
-
-
-    ## JWT Token
-
-    Alternatively, API requests can also be authenticated using `JWT Token` via [HTTPS Bearer Authentication](https://en.wikipedia.org/wiki/JSON_Web_Token). <table class="security-details"><tbody><tr><th> Security Scheme Type </th><td> <!-- -->HTTPS<!-- --> </td></tr><tr><th> HTTP Authorization Scheme </th><td> <!-- -->bearer JWT<!-- --> </td></tr></tbody></table>
-
-    `JWT Tokens`, automatically generated alongside `API Token & Key`, are displayed along with expiration in account settings as well as via authenticated `/api/whoami`, see `Authentication` _Echo identity and account profile settings_
-
-
-    Simply provide the `JWT Token` in the authorization header, using cURL for instance:
-
-
-    `curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6Im54eDFaSjgzeXRNNmhtb3NGVExCIiwiZXhwIjoxNzEyOTU5NDA5fQ.adV6U1vW69Ypskt61uPL8hZ-4muvtM4FLM48QN6iCc4" -X POST https://secure.versapay.com/api/...`
-
-    '
+  description: Visit your account settings in `UAT` (https://uat.versapay.com/account) or `Production` (https://secure.versapay.com/account) to setup API credentials needed for authentication as well as webhooks to receive relevant callbacks from Versapay transaction processing.
 paths:
   /api/whoami:
     get:
       tags:
       - Authentication
       summary: Echo identity and account profile settings
-      description: 'Lists key account profile settings configured for the authenticated account
-
-        '
+      description: Lists key account profile settings configured for the authenticated account
       parameters:
       - name: options[jwt_expiry]
         in: query
@@ -394,176 +328,6 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
 components:
   schemas:
-    BankProcessor:
-      type: object
-      properties:
-        token:
-          type: string
-          description: the bank account token
-        currency:
-          type: string
-          enum:
-          - usd
-          - gbp
-          - eur
-          - cad
-          - aud
-        account_type:
-          description: checking or savings, defaults checking (required country = US)
-          type: string
-          example: checking
-        routing_number:
-          description: "Financial institution branch/location. If USD, it is the routing number.\n  If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits),\n  If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.\n"
-          type: string
-          example: ''
-        masked_account_number:
-          type: string
-          description: a masked version of the account number
-        routing_account_hash_function:
-          type: string
-          description: the hash function used to mask the routing number and account number
-        routing_account_hash:
-          type: string
-          description: the hash value used to mask the routing number and account number.
-        nickname:
-          type:
-          - string
-          - 'null'
-          description: 'Optional value that describes the bank account
-
-            '
-        reference_token:
-          type:
-          - string
-          - 'null'
-          description: 'Optional value that describes the reference token provided by the source of the merchant application that resulted in this settlement bank account
-
-            '
-        gl_number:
-          type:
-          - string
-          - 'null'
-          description: 'Optional value that is the general ledger account number that is associated with the merchant account deposits
-
-            '
-        external_name:
-          type:
-          - string
-          - 'null'
-        external_number:
-          type:
-          - string
-          - 'null'
-        is_default:
-          type: boolean
-          description: 'Default account for the account type for the specified currency
-
-            '
-        address:
-          type:
-          - object
-          - 'null'
-          properties:
-            address_1:
-              type:
-              - string
-              - 'null'
-            address_2:
-              type:
-              - string
-              - 'null'
-            city:
-              type:
-              - string
-              - 'null'
-            province:
-              type:
-              - string
-              - 'null'
-              description: US state or CA province code
-            postal_code:
-              type:
-              - string
-              - 'null'
-              description: US zip code or CA postal code
-            country:
-              type:
-              - string
-              - 'null'
-              enum:
-              - US
-              - CA
-    TerminalProcessor:
-      type: object
-      properties:
-        currency:
-          type: string
-          enum:
-          - usd
-          - gbp
-          - eur
-          - cad
-          - aud
-        token:
-          type: string
-          description: The terminal processor token
-        deposit_account_masked_number:
-          type:
-          - string
-          - 'null'
-          description: 'A masked version of the deposit account number associated with the terminal processor
-
-            '
-        deposit_routing_account_hash:
-          type: string
-          description: 'A hash of the deposit routing number and deposit account number
-
-            '
-        deposit_routing_account_hash_function:
-          type: string
-          description: 'The hash function used to mask the routing number and account number
-
-            '
-        deposit_account_routing_number:
-          type:
-          - string
-          - 'null'
-          description: 'The routing number (if USD) of the deposit account associated with the terminal processor. If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits), If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.
-
-            '
-        nickname:
-          type:
-          - string
-          - 'null'
-          description: 'Optional value that describes the terminal processor
-
-            '
-        gl_account:
-          type:
-          - string
-          - 'null'
-          description: 'Optional value that is the general ledger account number that is associated with the terminal processor deposits
-
-            '
-        mid:
-          type:
-          - string
-          - 'null'
-          description: 'The merchant id of the terminal processor
-
-            '
-        tid:
-          type:
-          - string
-          - 'null'
-          description: 'The terminal id of the terminal processor
-
-            '
-        is_default:
-          type: boolean
-          description: 'Default account for the account type for the specified currency
-
-            '
     Divisions:
       type: object
       properties:
@@ -756,6 +520,148 @@ components:
         external_payment_auto_match_mode:
           type: boolean
           description: External Payments Auto Match Mode
+    GiftCardProcessor:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        token:
+          type: string
+          description: The gift card processor token
+        deposit_account_masked_number:
+          type:
+          - string
+          - 'null'
+          description: 'A masked version of the deposit account number associated with the gift card processor
+
+            '
+        deposit_routing_account_hash:
+          type: string
+          description: 'A hash of the deposit routing number and deposit account number
+
+            '
+        deposit_routing_account_hash_function:
+          type: string
+          description: 'The hash function used to mask the routing number and account number
+
+            '
+        deposit_account_routing_number:
+          type:
+          - string
+          - 'null'
+          description: 'The routing number (if USD) of the deposit account associated with the gift card processor. If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits), If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.
+
+            '
+        nickname:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the gift card processor
+
+            '
+        gl_account:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that is the general ledger account number that is associated with the gift card processor deposits
+
+            '
+        mid:
+          type:
+          - string
+          - 'null'
+          description: 'The merchant id of the gift card processor
+
+            '
+        tid:
+          type:
+          - string
+          - 'null'
+          description: 'The terminal id of the gift card processor
+
+            '
+        is_default:
+          type: boolean
+          description: 'Default account for the account type for the specified currency
+
+            '
+    TerminalProcessor:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        token:
+          type: string
+          description: The terminal processor token
+        deposit_account_masked_number:
+          type:
+          - string
+          - 'null'
+          description: 'A masked version of the deposit account number associated with the terminal processor
+
+            '
+        deposit_routing_account_hash:
+          type: string
+          description: 'A hash of the deposit routing number and deposit account number
+
+            '
+        deposit_routing_account_hash_function:
+          type: string
+          description: 'The hash function used to mask the routing number and account number
+
+            '
+        deposit_account_routing_number:
+          type:
+          - string
+          - 'null'
+          description: 'The routing number (if USD) of the deposit account associated with the terminal processor. If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits), If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.
+
+            '
+        nickname:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the terminal processor
+
+            '
+        gl_account:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that is the general ledger account number that is associated with the terminal processor deposits
+
+            '
+        mid:
+          type:
+          - string
+          - 'null'
+          description: 'The merchant id of the terminal processor
+
+            '
+        tid:
+          type:
+          - string
+          - 'null'
+          description: 'The terminal id of the terminal processor
+
+            '
+        is_default:
+          type: boolean
+          description: 'Default account for the account type for the specified currency
+
+            '
     MerchantAccount:
       type: object
       properties:
@@ -875,9 +781,12 @@ components:
               enum:
               - US
               - CA
-    GiftCardProcessor:
+    BankProcessor:
       type: object
       properties:
+        token:
+          type: string
+          description: the bank account token
         currency:
           type: string
           enum:
@@ -886,66 +795,91 @@ components:
           - eur
           - cad
           - aud
-        token:
+        account_type:
+          description: checking or savings, defaults checking (required country = US)
           type: string
-          description: The gift card processor token
-        deposit_account_masked_number:
-          type:
-          - string
-          - 'null'
-          description: 'A masked version of the deposit account number associated with the gift card processor
-
-            '
-        deposit_routing_account_hash:
+          example: checking
+        routing_number:
+          description: "Financial institution branch/location. If USD, it is the routing number.\n  If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits),\n  If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.\n"
           type: string
-          description: 'A hash of the deposit routing number and deposit account number
-
-            '
-        deposit_routing_account_hash_function:
+          example: ''
+        masked_account_number:
           type: string
-          description: 'The hash function used to mask the routing number and account number
-
-            '
-        deposit_account_routing_number:
-          type:
-          - string
-          - 'null'
-          description: 'The routing number (if USD) of the deposit account associated with the gift card processor. If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits), If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.
-
-            '
+          description: a masked version of the account number
+        routing_account_hash_function:
+          type: string
+          description: the hash function used to mask the routing number and account number
+        routing_account_hash:
+          type: string
+          description: the hash value used to mask the routing number and account number.
         nickname:
           type:
           - string
           - 'null'
-          description: 'Optional value that describes the gift card processor
+          description: 'Optional value that describes the bank account
 
             '
-        gl_account:
+        reference_token:
           type:
           - string
           - 'null'
-          description: 'Optional value that is the general ledger account number that is associated with the gift card processor deposits
+          description: 'Optional value that describes the reference token provided by the source of the merchant application that resulted in this settlement bank account
 
             '
-        mid:
+        gl_number:
           type:
           - string
           - 'null'
-          description: 'The merchant id of the gift card processor
+          description: 'Optional value that is the general ledger account number that is associated with the merchant account deposits
 
             '
-        tid:
+        external_name:
           type:
           - string
           - 'null'
-          description: 'The terminal id of the gift card processor
-
-            '
+        external_number:
+          type:
+          - string
+          - 'null'
         is_default:
           type: boolean
           description: 'Default account for the account type for the specified currency
 
             '
+        address:
+          type:
+          - object
+          - 'null'
+          properties:
+            address_1:
+              type:
+              - string
+              - 'null'
+            address_2:
+              type:
+              - string
+              - 'null'
+            city:
+              type:
+              - string
+              - 'null'
+            province:
+              type:
+              - string
+              - 'null'
+              description: US state or CA province code
+            postal_code:
+              type:
+              - string
+              - 'null'
+              description: US zip code or CA postal code
+            country:
+              type:
+              - string
+              - 'null'
+              enum:
+              - US
+              - CA
   responses:
     UnauthorizedError:
       description: Unauthorized

@@ -56,6 +56,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
+      operationId: postApiDebitAgreements
+      x-operation-id-source: derived
   /api/debit_agreements/sent:
     get:
       summary: View Sent Agreements
@@ -78,6 +80,8 @@ paths:
                   $ref: '#/components/schemas/Agreement'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: getApiDebitAgreementsSent
+      x-operation-id-source: derived
   /api/debit_agreements/received:
     get:
       summary: View Received Agreements
@@ -100,6 +104,8 @@ paths:
                   $ref: '#/components/schemas/Agreement'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: getApiDebitAgreementsReceived
+      x-operation-id-source: derived
   /api/debit_agreements/{token}/approve:
     post:
       summary: Approve an Agreement
@@ -135,6 +141,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
+      operationId: postApiDebitAgreementsByTokenApprove
+      x-operation-id-source: derived
   /api/debit_agreements/{token}/cancel:
     post:
       summary: Cancel an Agreement
@@ -156,12 +164,12 @@ paths:
                 $ref: '#/components/schemas/Agreement'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: postApiDebitAgreementsByTokenCancel
+      x-operation-id-source: derived
   /api/debit_agreements/{token}/reject:
     post:
       summary: Reject an Agreement
-      description: 'Reject a *pending* agreement by supplying an agreement''s *token* attribute and providing a *rejection_reason*.
-
-        '
+      description: Reject a *pending* agreement by supplying an agreement's *token* attribute and providing a *rejection_reason*.
       tags:
       - Agreements
       parameters:
@@ -180,12 +188,12 @@ paths:
                 $ref: '#/components/schemas/Agreement'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: postApiDebitAgreementsByTokenReject
+      x-operation-id-source: derived
   /api/debit_agreements/{token}/revoke:
     post:
       summary: Revoke an Agreement
-      description: 'Revoke an *approved* agreement for your account by supplying an agreement''s token attribute. The agreement''s creator will no longer be able to debit your account using this agreement.
-
-        '
+      description: Revoke an *approved* agreement for your account by supplying an agreement's token attribute. The agreement's creator will no longer be able to debit your account using this agreement.
       operationId: revokeAgreement
       tags:
       - Agreements

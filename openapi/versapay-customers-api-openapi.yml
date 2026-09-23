@@ -17,9 +17,7 @@ info:
     ## Webhooks
 
 
-    When using Webhooks, your application will be notified when key events are triggered for a customer.
-
-    '
+    When using Webhooks, your application will be notified when key events are triggered for a customer.'
 servers:
 - url: https://secure.versapay.com
   description: Production
@@ -33,18 +31,15 @@ tags:
     ## Webhooks
 
 
-    When using Webhooks, your application will be notified when key events are triggered for a customer.
-
-    '
+    When using Webhooks, your application will be notified when key events are triggered for a customer.'
 paths:
   /api/imports/customer:
     post:
       summary: Create and Update Customer
-      description: 'Create a customer using the following attributes (at minimum by providing values for required attributes). If providing an identifier for an existing customer, its information is updated.<br><br>
+      description: 'Create a customer using the following attributes (at minimum by providing values for required attributes). If providing an identifier for an existing customer, its information is updated.
 
-        *Note: Any additional non-standard attribute will be stored with customer record and available for presentment rendering.*
 
-        '
+        *Note: Any additional non-standard attribute will be stored with customer record and available for presentment rendering.*'
       tags:
       - Customers
       requestBody:
@@ -70,12 +65,12 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
+      operationId: postApiImportsCustomer
+      x-operation-id-source: derived
   /api/exports/customer/{identifier}:
     get:
       summary: Export/View a Customer
-      description: 'View a customer based on the `identifier` provided.
-
-        '
+      description: View a customer based on the `identifier` provided.
       tags:
       - Customers
       parameters:
@@ -98,12 +93,15 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+      operationId: getApiExportsCustomerByIdentifier
+      x-operation-id-source: derived
   /api/exports/customers:
     get:
       summary: Export Customers
-      description: 'Customer records that have been created since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.
+      description: 'Customer records that have been created since watermark, limited to 100 records at a time.
 
-        '
+
+        A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.'
       tags:
       - Customers
       parameters:
@@ -186,12 +184,15 @@ paths:
                         watermark: 20
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: getApiExportsCustomers
+      x-operation-id-source: derived
   /api/exports/customers/recent:
     get:
       summary: Export Customers Recently Updated
-      description: 'Customer records that have been updated in the past 7 days, since watermark, limited to 100 records at a time.<br><br>A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.
+      description: 'Customer records that have been updated in the past 7 days, since watermark, limited to 100 records at a time.
 
-        '
+
+        A consumer should store the last `id` value of each response and include it as the watermark parameter for subsequent calls.'
       tags:
       - Customers
       parameters:
@@ -274,16 +275,19 @@ paths:
                         watermark: 20
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: getApiExportsCustomersRecent
+      x-operation-id-source: derived
   /api/exports/customer/{identifier}/open_invoices:
     get:
       summary: Export Open Invoices for a Customer
       description: 'Invoice records with an open balance for the customer based on the `identifier` provided,
 
-        limited to 100 records at a time.<br><br>A consumer should store the last `watermark` value of each
+        limited to 100 records at a time.
 
-        response and include it as the watermark parameter for subsequent calls.
 
-        '
+        A consumer should store the last `watermark` value of each
+
+        response and include it as the watermark parameter for subsequent calls.'
       tags:
       - Customers
       parameters:
@@ -358,15 +362,15 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
+      operationId: getApiExportsCustomerByIdentifierOpenInvoices
+      x-operation-id-source: derived
   /api/invitations:
     post:
       summary: Issue an invitation
-      description: 'Issue a new contact invitation for the specified customer.  The recipient of the invitation will begin to receive other Collaborative AR notifications, subject to the configuration of the supplier.
+      description: 'Issue a new contact invitation for the specified customer. The recipient of the invitation will begin to receive other Collaborative AR notifications, subject to the configuration of the supplier.
 
 
-        *Note:* If the provided email is not an existing contact of the specified customer, a new contact will be created.
-
-        '
+        *Note:* If the provided email is not an existing contact of the specified customer, a new contact will be created.'
       tags:
       - Customers
       requestBody:
@@ -401,14 +405,14 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFoundError'
+      operationId: postApiInvitations
+      x-operation-id-source: derived
     delete:
       summary: Cancel an invitation
       description: 'Cancel an existing contact invitation for the specified customer.
 
 
-        *Note:* `403` will be returned if the specified customer is closed, or if the specified email was invited by a customer user
-
-        '
+        *Note:* `403` will be returned if the specified customer is closed, or if the specified email was invited by a customer user'
       tags:
       - Customers
       requestBody:
@@ -443,12 +447,15 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFoundError'
+      operationId: deleteApiInvitations
+      x-operation-id-source: derived
   /api/imports/customers/{identifier}/update_identifier:
     post:
       summary: Update Customer Identifier
-      description: 'Update a customer''s identifier and any associations where identifier is being stored. <br><br> *Note:* `412` will be returned if the specified customer cannot be found or the identifier has already been taken.
+      description: 'Update a customer''s identifier and any associations where identifier is being stored.
 
-        '
+
+        *Note:* `412` will be returned if the specified customer cannot be found or the identifier has already been taken.'
       tags:
       - Customers
       parameters:
@@ -496,36 +503,10 @@ paths:
                     type: string
                     description: stringified json message containing error.
                     example: '{:customer=>["not found."]}'
+      operationId: postApiImportsCustomersByIdentifierUpdateIdentifier
+      x-operation-id-source: derived
 components:
   schemas:
-    Contact:
-      type: object
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          description: Email address of the contact.
-          format: email
-        first_name:
-          type: string
-          description: First name of the contact.
-        last_name:
-          type: string
-          description: Last name of the contact.
-        title:
-          type: string
-          description: Title of the contact.
-        department:
-          type: string
-          description: Department of the contact.
-        telephone:
-          type: string
-          description: Phone number of the contact.
-        bulk_activate:
-          type: boolean
-          description: If this is `true`, the contact is activated or invited (depending on the account configuration) on import.
-          default: false
     Customer:
       type: object
       required:
@@ -734,6 +715,217 @@ components:
             first_name: Steve
             last_name: Jobs
             title: CEO
+    CustomersResponse:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Customer number, unique within supplier.
+        display_number:
+          type: string
+          description: Customer display number.
+        name:
+          type: string
+          description: Customer name.
+        email:
+          type: string
+          format: email
+          description: Email address of the default contact.
+        business_number:
+          type: string
+          description: Customer EIN or Business Number.
+        first_name:
+          type: string
+          description: First name of the default contact.
+        last_name:
+          type: string
+          description: Last name of the default contact.
+        address_1:
+          type: string
+          description: Billing address line 1.
+        address_2:
+          type: string
+          description: Billing address line 2.
+        postal_code:
+          type: string
+          description: Billing address - zip or postal code.
+        city:
+          type: string
+          description: Billing address - city.
+        province:
+          type: string
+          description: Billing address - state or province.
+        country:
+          type: string
+          description: Billing address - country.
+        telephone:
+          type: string
+          description: Customer phone number.
+        fax:
+          type: string
+          description: Customer fax number.
+        status:
+          type: string
+          description: Customer adoption status.
+        auto_debit:
+          type: string
+          description: AutoPay agreement status.
+        invite_sent:
+          type: string
+          format: date
+          description: The date when invite was sent, in YYYY-MM-DD format.
+        signed_up:
+          type: string
+          format: date
+          description: The date when customer user signed up, in YYYY-MM-DD format.
+        notification_suppressed:
+          type: boolean
+          description: If true, notifications to the customer are suppressed.
+        notification_override:
+          type: boolean
+          description: If true, overdue balance notifications are made optional.
+        paper_invoices:
+          type: boolean
+          description: If true, customer receives paper invoices.
+        paper_statements:
+          type: boolean
+          description: If true, customer receives paper statements.
+        parent_identifier:
+          type: string
+          description: Identifier of the parent customer in a hierarchy.
+        balance_cents:
+          type: integer
+          description: 'Total outstanding balance on the customer account in cents.
+
+            '
+        aging_cents:
+          type: integer
+          description: 'Total overdue balance on the customer account in cents.
+
+            '
+        aging_30_cents:
+          type: integer
+          description: 'Balance overdue (1-30 days) on the customer account in cents.
+
+            '
+        aging_60_cents:
+          type: integer
+          description: 'Balance overdue (31-60 days) on the customer account in cents.
+
+            '
+        aging_90_cents:
+          type: integer
+          description: 'Balance overdue (61-90 days) on the customer account in cents.
+
+            '
+        aging_120_cents:
+          type: integer
+          description: 'Balance overdue (91-120 days) on the customer account in cents.
+
+            '
+        aging_180_cents:
+          type: integer
+          description: 'Balance overdue (121-180 days) on the customer account in cents.
+
+            '
+        aging_older_cents:
+          type: integer
+          description: 'Balance overdue (181+ days) on the customer account in cents.
+
+            '
+        current_cents:
+          type: integer
+          description: 'Current outstanding balance in cents.
+
+            '
+        credit_cents:
+          type: integer
+          description: 'Total outstanding credit balance on the customer account in cents.
+
+            '
+        unapplied_payment_cents:
+          type: integer
+          description: 'Total unapplied payment on the customer account in cents.
+
+            '
+        prepayment_cents:
+          type: integer
+          description: 'Total prepayment on the customer account in cents.
+
+            '
+        owing_cents:
+          type: integer
+          description: Total owing balance in cents.
+        notes:
+          type: string
+          description: Optional notes.
+        adp:
+          type: string
+          description: Average days to pay.
+        adp_arc:
+          type: string
+          description: Average days to pay (checkout).
+        adp_external:
+          type: string
+          description: Average days to pay (external).
+        last_contact_date:
+          type: string
+          format: date
+          description: Last contact date.
+        next_contact_date:
+          type: string
+          format: date
+          description: Next planned contact date.
+        credit_limit_cents:
+          type: integer
+          description: Credit limit in cents.
+        account_status:
+          type: string
+          description: Account status (open/closed).
+        tags:
+          type: string
+          description: Semi-colon delimited list of imported tags.
+        user_tags:
+          type: string
+          description: Semi-colon delimited list of user-assigned tags.
+        attributes_marshal:
+          type: object
+          description: Additional attributes.
+        external_id:
+          type: string
+          description: External (ERP-based) identifier for the customer record.
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
+    Contact:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Email address of the contact.
+          format: email
+        first_name:
+          type: string
+          description: First name of the contact.
+        last_name:
+          type: string
+          description: Last name of the contact.
+        title:
+          type: string
+          description: Title of the contact.
+        department:
+          type: string
+          description: Department of the contact.
+        telephone:
+          type: string
+          description: Phone number of the contact.
+        bulk_activate:
+          type: boolean
+          description: If this is `true`, the contact is activated or invited (depending on the account configuration) on import.
+          default: false
     CustomerResponse:
       type: object
       properties:
@@ -1259,192 +1451,9 @@ components:
           user_telephone: null
           user_title: null
           user_department: null
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
-    CustomersResponse:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Customer number, unique within supplier.
-        display_number:
-          type: string
-          description: Customer display number.
-        name:
-          type: string
-          description: Customer name.
-        email:
-          type: string
-          format: email
-          description: Email address of the default contact.
-        business_number:
-          type: string
-          description: Customer EIN or Business Number.
-        first_name:
-          type: string
-          description: First name of the default contact.
-        last_name:
-          type: string
-          description: Last name of the default contact.
-        address_1:
-          type: string
-          description: Billing address line 1.
-        address_2:
-          type: string
-          description: Billing address line 2.
-        postal_code:
-          type: string
-          description: Billing address - zip or postal code.
-        city:
-          type: string
-          description: Billing address - city.
-        province:
-          type: string
-          description: Billing address - state or province.
-        country:
-          type: string
-          description: Billing address - country.
-        telephone:
-          type: string
-          description: Customer phone number.
-        fax:
-          type: string
-          description: Customer fax number.
-        status:
-          type: string
-          description: Customer adoption status.
-        auto_debit:
-          type: string
-          description: AutoPay agreement status.
-        invite_sent:
-          type: string
-          format: date
-          description: The date when invite was sent, in YYYY-MM-DD format.
-        signed_up:
-          type: string
-          format: date
-          description: The date when customer user signed up, in YYYY-MM-DD format.
-        notification_suppressed:
-          type: boolean
-          description: If true, notifications to the customer are suppressed.
-        notification_override:
-          type: boolean
-          description: If true, overdue balance notifications are made optional.
-        paper_invoices:
-          type: boolean
-          description: If true, customer receives paper invoices.
-        paper_statements:
-          type: boolean
-          description: If true, customer receives paper statements.
-        parent_identifier:
-          type: string
-          description: Identifier of the parent customer in a hierarchy.
-        balance_cents:
-          type: integer
-          description: 'Total outstanding balance on the customer account in cents.
-
-            '
-        aging_cents:
-          type: integer
-          description: 'Total overdue balance on the customer account in cents.
-
-            '
-        aging_30_cents:
-          type: integer
-          description: 'Balance overdue (1-30 days) on the customer account in cents.
-
-            '
-        aging_60_cents:
-          type: integer
-          description: 'Balance overdue (31-60 days) on the customer account in cents.
-
-            '
-        aging_90_cents:
-          type: integer
-          description: 'Balance overdue (61-90 days) on the customer account in cents.
-
-            '
-        aging_120_cents:
-          type: integer
-          description: 'Balance overdue (91-120 days) on the customer account in cents.
-
-            '
-        aging_180_cents:
-          type: integer
-          description: 'Balance overdue (121-180 days) on the customer account in cents.
-
-            '
-        aging_older_cents:
-          type: integer
-          description: 'Balance overdue (181+ days) on the customer account in cents.
-
-            '
-        current_cents:
-          type: integer
-          description: 'Current outstanding balance in cents.
-
-            '
-        credit_cents:
-          type: integer
-          description: 'Total outstanding credit balance on the customer account in cents.
-
-            '
-        unapplied_payment_cents:
-          type: integer
-          description: 'Total unapplied payment on the customer account in cents.
-
-            '
-        prepayment_cents:
-          type: integer
-          description: 'Total prepayment on the customer account in cents.
-
-            '
-        owing_cents:
-          type: integer
-          description: Total owing balance in cents.
-        notes:
-          type: string
-          description: Optional notes.
-        adp:
-          type: string
-          description: Average days to pay.
-        adp_arc:
-          type: string
-          description: Average days to pay (checkout).
-        adp_external:
-          type: string
-          description: Average days to pay (external).
-        last_contact_date:
-          type: string
-          format: date
-          description: Last contact date.
-        next_contact_date:
-          type: string
-          format: date
-          description: Next planned contact date.
-        credit_limit_cents:
-          type: integer
-          description: Credit limit in cents.
-        account_status:
-          type: string
-          description: Account status (open/closed).
-        tags:
-          type: string
-          description: Semi-colon delimited list of imported tags.
-        user_tags:
-          type: string
-          description: Semi-colon delimited list of user-assigned tags.
-        attributes_marshal:
-          type: object
-          description: Additional attributes.
-        external_id:
-          type: string
-          description: External (ERP-based) identifier for the customer record.
   responses:
-    Forbidden:
-      description: Forbidden
+    UnauthorizedError:
+      description: Unauthorized
       content:
         application/json:
           schema:
@@ -1453,7 +1462,7 @@ components:
               error:
                 type: string
                 description: Error message
-                example: This request is not allowed for this resource.
+                example: You need to sign in or create an account before continuing.
     BadRequest:
       description: Bad Request
       content:
@@ -1465,6 +1474,17 @@ components:
                 type: string
                 description: Error message
                 example: You have not provided all necessary parameters to make this call.
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: This request is not allowed for this resource.
     NotFoundError:
       description: Not Found
       content:
@@ -1487,17 +1507,6 @@ components:
                 type: string
                 description: Error message
                 example: API token does not have permission for this request. Please contact your account administrator.
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

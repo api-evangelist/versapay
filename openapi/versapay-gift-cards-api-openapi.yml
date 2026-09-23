@@ -11,9 +11,7 @@ info:
   termsOfService: https://www.versapay.com/terms-of-use
   license:
     name: Copyright 2022 Versapay. All Rights Reserved.
-  description: 'Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
-
-    '
+  description: Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
 servers:
 - url: https://secure.versapay.com
   description: Production
@@ -21,9 +19,7 @@ servers:
   description: UAT
 tags:
 - name: Gift Cards
-  description: 'Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
-
-    '
+  description: Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact support@versapay.com for support & setup for Gift Card acceptance.
 paths:
   /api/gateway/v1/gift_card:
     post:
@@ -73,6 +69,8 @@ paths:
                   $ref: '#/components/examples/declined'
                 error:
                   $ref: '#/components/examples/error'
+      operationId: postApiGatewayV1GiftCard
+      x-operation-id-source: derived
   /api/gateway/v1/gift_card/read:
     post:
       tags:
@@ -121,8 +119,18 @@ paths:
                   $ref: '#/components/examples/declined'
                 error:
                   $ref: '#/components/examples/error'
+      operationId: postApiGatewayV1GiftCardRead
+      x-operation-id-source: derived
 components:
   schemas:
+    GiftCardResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: true|false
+      example:
+        success: true
     UnifiedResponse:
       type: object
     GiftCardRequest:
@@ -149,21 +157,6 @@ components:
         load_amount_cents:
           type: integer
           description: Amount in cents to load/add on to existing gift card balance.
-    GiftCardReadRequest:
-      type: object
-      properties:
-        card_number:
-          type: string
-          description: Gift card number
-        expiry_month:
-          type: string
-          description: 2 digit month
-        expiry_year:
-          type: string
-          description: 4 digit year
-        pin:
-          type: string
-          description: Gift card pin
     GiftCardReadResponse:
       type: object
       properties:
@@ -194,23 +187,42 @@ components:
         activated: false
         created_at: 11/3/2021 12:00:00 AM
         expires_at: 12/1/2049 12:00:00 AM
-    GiftCardResponse:
+    GiftCardReadRequest:
       type: object
       properties:
-        success:
-          type: boolean
-          description: true|false
-      example:
-        success: true
+        card_number:
+          type: string
+          description: Gift card number
+        expiry_month:
+          type: string
+          description: 2 digit month
+        expiry_year:
+          type: string
+          description: 4 digit year
+        pin:
+          type: string
+          description: Gift card pin
   examples:
-    gc_activate:
-      summary: Activate a gift card
+    gc_deactivate:
+      summary: Deactivate a gift card
       value:
         card_number: '4775419990420272'
         expiry_month: '12'
         expiry_year: '2049'
         pin: '1234'
-        activated: 'true'
+        activated: 'false'
+    error:
+      summary: Other errors
+      value:
+        success: false
+        errors:
+        - order_not_found
+    declined:
+      summary: Gateway declined request
+      value:
+        success: false
+        errors:
+        - declined for REASON
     gc_load:
       summary: Load a gift card with 778.50
       value:
@@ -228,6 +240,14 @@ components:
         pin: '1234'
         activated: 'true'
         load_amount_cents: 77850
+    gc_activate:
+      summary: Activate a gift card
+      value:
+        card_number: '4775419990420272'
+        expiry_month: '12'
+        expiry_year: '2049'
+        pin: '1234'
+        activated: 'true'
     gc_read:
       summary: Read gift card balance
       value:
@@ -235,30 +255,10 @@ components:
         expiry_month: '12'
         expiry_year: '2049'
         pin: '1234'
-    gc_deactivate:
-      summary: Deactivate a gift card
-      value:
-        card_number: '4775419990420272'
-        expiry_month: '12'
-        expiry_year: '2049'
-        pin: '1234'
-        activated: 'false'
-    error:
-      summary: Other errors
-      value:
-        success: false
-        errors:
-        - order_not_found
     declined_invalid_card:
       summary: Decline invalid card
       value:
         success: false
-    declined:
-      summary: Gateway declined request
-      value:
-        success: false
-        errors:
-        - declined for REASON
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

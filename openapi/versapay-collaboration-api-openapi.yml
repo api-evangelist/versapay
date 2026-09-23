@@ -11,9 +11,7 @@ info:
   termsOfService: https://www.versapay.com/terms-of-use
   license:
     name: Copyright 2022 Versapay. All Rights Reserved.
-  description: 'As a supplier your customers collaborate with you through comments about invoices and/or payments.
-
-    '
+  description: As a supplier your customers collaborate with you through comments about invoices and/or payments.
 servers:
 - url: https://secure.versapay.com
   description: Production
@@ -21,20 +19,18 @@ servers:
   description: UAT
 tags:
 - name: Collaboration
-  description: 'As a supplier your customers collaborate with you through comments about invoices and/or payments.
-
-    '
+  description: As a supplier your customers collaborate with you through comments about invoices and/or payments.
 paths:
   /api/invoices/{invoice_number}/disputes/close:
     post:
       summary: Close a Dispute
-      description: 'Close the active dispute on the specified invoice.<br><br>
+      description: 'Close the active dispute on the specified invoice.
 
-        If the invoice has no active dispute, the request is treated as a no-op and returns a success response with `"0 disputes closed"`.<br><br>
 
-        An optional `closer` attribute can be provided to record who closed the dispute, and an optional `comment` attribute will create a closing comment on the dispute.
+        If the invoice has no active dispute, the request is treated as a no-op and returns a success response with `"0 disputes closed"`.
 
-        '
+
+        An optional `closer` attribute can be provided to record who closed the dispute, and an optional `comment` attribute will create a closing comment on the dispute.'
       tags:
       - Collaboration
       parameters:
@@ -88,6 +84,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
+      operationId: postApiInvoicesByInvoiceNumberDisputesClose
+      x-operation-id-source: derived
   /api/exports/disputes:
     get:
       summary: Export Open and Closed Disputes
@@ -145,6 +143,8 @@ paths:
                         invoice_external_id: null
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: getApiExportsDisputes
+      x-operation-id-source: derived
   /api/exports/comments:
     get:
       summary: Export Customer and Invoice Comments
@@ -194,8 +194,37 @@ paths:
                         organization: Acme Inc.
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: getApiExportsComments
+      x-operation-id-source: derived
 components:
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
   schemas:
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
     Dispute:
       type: object
       properties:
@@ -311,33 +340,6 @@ components:
           description: 'Name of the user''s organization – supplier''s name or the customer''s name. <br><br>Note that for comments made by customers, the customer_name and organization will have the same value. When the supplier made the comment, this field will hold the supplier business name.
 
             '
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
-  responses:
-    PreconditionFailed:
-      description: Precondition Failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: API token does not have permission for this request. Please contact your account administrator.
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

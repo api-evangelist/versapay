@@ -11,9 +11,7 @@ info:
   termsOfService: https://www.versapay.com/terms-of-use
   license:
     name: Copyright 2022 Versapay. All Rights Reserved.
-  description: 'As a supplier divisions are used to group your invoices.
-
-    '
+  description: As a supplier divisions are used to group your invoices.
 servers:
 - url: https://secure.versapay.com
   description: Production
@@ -21,14 +19,23 @@ servers:
   description: UAT
 tags:
 - name: Divisions
-  description: 'As a supplier divisions are used to group your invoices.
-
-    '
+  description: As a supplier divisions are used to group your invoices.
 paths:
   /api/imports/division:
     post:
       summary: Create and Update Division
-      description: "Create and update divisions.  If the division already exists when a request is processed, it will be updated.<br><br>\nNote:\n  * A Division cannot be deleted if it is:\n    * related to any invoices\n    * a parent division\n  * The parent division must exist in order to add a child division to a hierarchy.  Attempting to set an unknown parent code will permit the creation of the new division, but will not create a parent.\n"
+      description: 'Create and update divisions. If the division already exists when a request is processed, it will be updated.
+
+
+        Note:
+
+        * A Division cannot be deleted if it is:
+
+        * related to any invoices
+
+        * a parent division
+
+        * The parent division must exist in order to add a child division to a hierarchy. Attempting to set an unknown parent code will permit the creation of the new division, but will not create a parent.'
       tags:
       - Divisions
       requestBody:
@@ -79,6 +86,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
+      operationId: postApiImportsDivision
+      x-operation-id-source: derived
 components:
   responses:
     PreconditionFailed:

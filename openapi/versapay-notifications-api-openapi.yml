@@ -11,9 +11,7 @@ info:
   termsOfService: https://www.versapay.com/terms-of-use
   license:
     name: Copyright 2022 Versapay. All Rights Reserved.
-  description: 'As a supplier you can notify customers about their invoices.
-
-    '
+  description: As a supplier you can notify customers about their invoices.
 servers:
 - url: https://secure.versapay.com
   description: Production
@@ -21,16 +19,12 @@ servers:
   description: UAT
 tags:
 - name: Notifications
-  description: 'As a supplier you can notify customers about their invoices.
-
-    '
+  description: As a supplier you can notify customers about their invoices.
 paths:
   /api/notifications/remind/{number_or_id}:
     post:
       summary: Single Invoice Reminder
-      description: 'Issue an invoice reminder to the relevant recipients for the specified invoice.
-
-        '
+      description: Issue an invoice reminder to the relevant recipients for the specified invoice.
       tags:
       - Notifications
       parameters:
@@ -52,12 +46,12 @@ paths:
                 $ref: '#/components/schemas/SingleReminderResponse'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: postApiNotificationsRemindByNumberOrId
+      x-operation-id-source: derived
   /api/notifications/remind:
     post:
       summary: Bulk Invoice Reminder
-      description: 'Issue an invoice reminder to the relevant recipients for the specified invoices.
-
-        '
+      description: Issue an invoice reminder to the relevant recipients for the specified invoices.
       tags:
       - Notifications
       requestBody:
@@ -94,12 +88,17 @@ paths:
                 $ref: '#/components/schemas/BulkReminderResponse'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+      operationId: postApiNotificationsRemind
+      x-operation-id-source: derived
   /api/notifications/direct_message:
     post:
       tags:
       - Notifications
       summary: Direct Message
-      description: 'Issue a direct message to just the specified email address regarding the declared object.<br><br> **Note: When certain conditions are not met for an `order` the response code `400` will be returned. Conditions are:**
+      description: 'Issue a direct message to just the specified email address regarding the declared object.
+
+
+        **Note: When certain conditions are not met for an `order` the response code `400` will be returned. Conditions are:**
 
         * must be enabled for supplier
 
@@ -111,7 +110,8 @@ paths:
 
         * order must belong to a customer
 
-        <br>**Note: When certain conditions are not met for a `payment_method` the response code `400` will be returned. Conditions are:**
+
+        **Note: When certain conditions are not met for a `payment_method` the response code `400` will be returned. Conditions are:**
 
         * customer identifier must be valid for the supplier
 
@@ -123,9 +123,7 @@ paths:
 
         * email must belong to an activated contact (when `create_contact` is `false`)
 
-        * contact must not have a disabled or read-only role
-
-        '
+        * contact must not have a disabled or read-only role'
       requestBody:
         content:
           application/json:
@@ -257,6 +255,8 @@ paths:
                     type: string
                     description: error message
                     example: Record not found
+      operationId: postApiNotificationsDirectMessage
+      x-operation-id-source: derived
 components:
   schemas:
     SingleReminderResponse:

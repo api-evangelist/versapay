@@ -11,11 +11,7 @@ info:
   termsOfService: https://www.versapay.com/terms-of-use
   license:
     name: Copyright 2022 Versapay. All Rights Reserved.
-  description: '
-
-    Autopays are a digital analog to paper pre-authorized debit agreements that businesses could use, for instance, for monthly billing.
-
-    '
+  description: Autopays are a digital analog to paper pre-authorized debit agreements that businesses could use, for instance, for monthly billing.
 servers:
 - url: https://secure.versapay.com
   description: Production
@@ -23,11 +19,7 @@ servers:
   description: UAT
 tags:
 - name: Autopay
-  description: '
-
-    Autopays are a digital analog to paper pre-authorized debit agreements that businesses could use, for instance, for monthly billing.
-
-    '
+  description: Autopays are a digital analog to paper pre-authorized debit agreements that businesses could use, for instance, for monthly billing.
 paths:
   /api/autopay:
     post:
@@ -75,6 +67,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
+      operationId: postApiAutopay
+      x-operation-id-source: derived
     put:
       summary: Updates an Autopay
       description: Updates a autopay fund
@@ -109,6 +103,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
+      operationId: putApiAutopay
+      x-operation-id-source: derived
     get:
       summary: Retrieves Autopays
       description: Gets all the autopay for a customer
@@ -137,12 +133,12 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
+      operationId: getApiAutopay
+      x-operation-id-source: derived
   /api/autopay/revoke:
     post:
       summary: Revoke an Autopay
-      description: 'Revoke an *approved* autopay for your account by supplying an agreement''s token attribute. The agreement''s creator will no longer be able to debit your account using this autopay agreement.
-
-        '
+      description: Revoke an *approved* autopay for your account by supplying an agreement's token attribute. The agreement's creator will no longer be able to debit your account using this autopay agreement.
       operationId: revokeAutopay
       tags:
       - Autopay
@@ -167,15 +163,30 @@ paths:
         '200':
           description: Successful Operation
 components:
+  responses:
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
   schemas:
-    AutopayCreated:
-      type: object
-      properties:
-        token:
-          type: string
-          description: The agreement token.
-      example:
-        token: TOKEN123
     AutopayResponse:
       type: object
       properties:
@@ -208,29 +219,14 @@ components:
         autopay_reference: TOKEN123
         autopay_inherited_from_customer_identifier: CUST123
         can_delete: true
-  responses:
-    PreconditionFailed:
-      description: Precondition Failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: API token does not have permission for this request. Please contact your account administrator.
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
+    AutopayCreated:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The agreement token.
+      example:
+        token: TOKEN123
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.
