@@ -433,6 +433,17 @@ paths:
       x-operation-id-source: derived
 components:
   responses:
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
     UnauthorizedError:
       description: Unauthorized
       content:
@@ -455,17 +466,6 @@ components:
                 type: string
                 description: Error message
                 example: ActiveRecord::RecordNotFound
-    PreconditionFailed:
-      description: Precondition Failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: API token does not have permission for this request. Please contact your account administrator.
   schemas:
     PaymentResponse:
       type: object
@@ -578,6 +578,168 @@ components:
       type: integer
       format: int64
       example: 0
+    PaymentImport:
+      type: object
+      required:
+      - identifier
+      properties:
+        identifier:
+          type: string
+          description: 'Payment identifier; must be unique within supplier. May appear multiple times in a single file if payment was applied to multiple invoices.
+
+            '
+        amount_cents:
+          type: integer
+          description: 'The amount of total payment, in cents.
+
+
+            Note: when providing data in a CSV layout this field can also be represented as payment_total; however, in JSON layout this field must be called amount_cents.
+
+
+            Note 2: For the update of a payment originated in Versapay, only the total payment amount without fees, or the total payment amount with fees will be accepted.  Any other value will be rejected.'
+        date:
+          type: string
+          format: date
+          description: Payment date, in the format YYYY-MM-DD.
+        currency:
+          type: string
+          description: Currency code, based on ISO-4217.
+        invoice_number:
+          type: string
+          description: 'Invoice number associated with this payment (if payment covers single invoice).
+
+            If payment covers multiple invoices, provide `payment_amounts_attributes` instead.
+
+            '
+        payment_code:
+          type: string
+          description: Payment code
+        payment_description:
+          type: string
+          description: Description corresponding to payment code.
+        payment_amounts_attributes:
+          type: array
+          description: Applicable only when payment covers multiple invoices.
+          items:
+            type: object
+            properties:
+              invoice_number:
+                type: string
+                description: Invoice number associated with this payment.
+              amount:
+                type: integer
+                description: Amount paid towards this invoice.
+              notes:
+                type: string
+                description: Payment note
+              purchase_order_number:
+                type: string
+                description: Purchase order number to link this payment to an invoice.
+              ref1:
+                type: string
+                description: An additional reference number that could link this payment to an invoice. E.g. policy number, contract number, etc.
+              ref2:
+                type: string
+                description: Same as above.
+              ref3:
+                type: string
+                description: Same as above.
+              line_number:
+                type: string
+                description: (Optional) Invoice line item to which this payment amount should apply.
+              short_pay_reason_identifier:
+                type: string
+                description: Short pay reason code, if set up.
+              reason_type:
+                type: string
+                description: 'Indicates the type of short payment. Acceptable values are:
+
+                  * `short_pay`: The payment amount is less than expected.
+
+                  * `dispute`: A dispute will be opened for the invoice.
+
+
+                  Note: If the value is `dispute`, it means an invoice dispute will be initiated.'
+              match_at:
+                type: string
+                format: date
+                description: The date when an external payment was matched outside of Versapay and/or via Cash application processing, in the format YYYY-MM-DD.
+              remit_invoice_date:
+                type: string
+                format: date
+                description: Original invoice date supplied with remittance. May or may not match actual invoice.
+              remit_invoice_amount_cents:
+                type: integer
+                description: Original invoice amount supplied with remittance. May or may not match actual invoice.
+              remit_invoice_discount_cents:
+                type: integer
+                description: 'Original invoice discount taken supplied with remittance. May or may not match actual invoice.
+
+
+                  When part of an external payment, this value will be applied towards the invoice in addition to the value passed in `amount`.
+
+                  '
+              remit_customer_number:
+                type: string
+                description: A customer identifier or number associated with the invoice. This may or may not match what is in Collaborative AR. It is for information purposes only, for manual matching if invoice# is missing.
+              remit_customer_name:
+                type: string
+                description: A customer name associated with the invoice. This may or may not match what is in Collaborative AR. It is for information purposes only, for manual matching if invoice# is missing.
+              division:
+                type: string
+                description: 'Division code, if divisions are set up.
+
+
+                  This value takes precedence over the value specified in the header data.
+
+                  '
+        division:
+          type: string
+          description: 'Division code, if divisions are set up.
+
+
+            This value will be used for all `payment_amounts_attributes` that do not specify their own `division` attribute.
+
+            '
+        customer_identifier:
+          type: string
+          description: Customer identifier.
+        customer_name:
+          type: string
+          description: Customer name.
+        external_payment_type:
+          type: string
+          description: When provided identifies this payment as having been processed externally E.g. cash, check/cheque, wire, ACH, Paypal, etc.
+        external_payment_number:
+          type: string
+          description: When provided identifies this payment as having been processed externally, its value corresponding to the type above. E.g. the actual cheque number.
+        payor_bank_branch_number:
+          type: string
+          description: Branch (if CAD) or Routing number (if USD). Useful when external_payment_type = check/cheque.
+        payor_bank_account_number:
+          type: string
+          description: Bank account number. Useful when external_payment_type = check/cheque.
+        payor_name:
+          type: string
+          description: Name of entity or business making the payment. May or may not be the same as customer name on invoice.
+        settlement_date:
+          type: string
+          format: date
+          description: Settlement date, in the format YYYY-MM-DD.
+        external_id:
+          type: string
+          description: The internal reference of the payment as originated from a source system, typically used by ERP connectors to aid in synchronizing payment data.
+      example:
+        identifier: PMT001-05
+        amount_cents: 10000
+        currency: usd
+        date: '2017-12-02'
+        customer_identifier: CUS001
+        payment_amounts_attributes:
+        - invoice_number: INV004
+          amount: 8000
+        - invoice_number: INV010
+          amount: 2000
     PaymentAmount:
       type: object
       properties:
@@ -816,168 +978,6 @@ components:
         fx_amount_cents:
           type: number
           description: Optional. The amount of the payment in the gateway currency in cents.
-    PaymentImport:
-      type: object
-      required:
-      - identifier
-      properties:
-        identifier:
-          type: string
-          description: 'Payment identifier; must be unique within supplier. May appear multiple times in a single file if payment was applied to multiple invoices.
-
-            '
-        amount_cents:
-          type: integer
-          description: 'The amount of total payment, in cents.
-
-
-            Note: when providing data in a CSV layout this field can also be represented as payment_total; however, in JSON layout this field must be called amount_cents.
-
-
-            Note 2: For the update of a payment originated in Versapay, only the total payment amount without fees, or the total payment amount with fees will be accepted.  Any other value will be rejected.'
-        date:
-          type: string
-          format: date
-          description: Payment date, in the format YYYY-MM-DD.
-        currency:
-          type: string
-          description: Currency code, based on ISO-4217.
-        invoice_number:
-          type: string
-          description: 'Invoice number associated with this payment (if payment covers single invoice).
-
-            If payment covers multiple invoices, provide `payment_amounts_attributes` instead.
-
-            '
-        payment_code:
-          type: string
-          description: Payment code
-        payment_description:
-          type: string
-          description: Description corresponding to payment code.
-        payment_amounts_attributes:
-          type: array
-          description: Applicable only when payment covers multiple invoices.
-          items:
-            type: object
-            properties:
-              invoice_number:
-                type: string
-                description: Invoice number associated with this payment.
-              amount:
-                type: integer
-                description: Amount paid towards this invoice.
-              notes:
-                type: string
-                description: Payment note
-              purchase_order_number:
-                type: string
-                description: Purchase order number to link this payment to an invoice.
-              ref1:
-                type: string
-                description: An additional reference number that could link this payment to an invoice. E.g. policy number, contract number, etc.
-              ref2:
-                type: string
-                description: Same as above.
-              ref3:
-                type: string
-                description: Same as above.
-              line_number:
-                type: string
-                description: (Optional) Invoice line item to which this payment amount should apply.
-              short_pay_reason_identifier:
-                type: string
-                description: Short pay reason code, if set up.
-              reason_type:
-                type: string
-                description: 'Indicates the type of short payment. Acceptable values are:
-
-                  * `short_pay`: The payment amount is less than expected.
-
-                  * `dispute`: A dispute will be opened for the invoice.
-
-
-                  Note: If the value is `dispute`, it means an invoice dispute will be initiated.'
-              match_at:
-                type: string
-                format: date
-                description: The date when an external payment was matched outside of Versapay and/or via Cash application processing, in the format YYYY-MM-DD.
-              remit_invoice_date:
-                type: string
-                format: date
-                description: Original invoice date supplied with remittance. May or may not match actual invoice.
-              remit_invoice_amount_cents:
-                type: integer
-                description: Original invoice amount supplied with remittance. May or may not match actual invoice.
-              remit_invoice_discount_cents:
-                type: integer
-                description: 'Original invoice discount taken supplied with remittance. May or may not match actual invoice.
-
-
-                  When part of an external payment, this value will be applied towards the invoice in addition to the value passed in `amount`.
-
-                  '
-              remit_customer_number:
-                type: string
-                description: A customer identifier or number associated with the invoice. This may or may not match what is in Collaborative AR. It is for information purposes only, for manual matching if invoice# is missing.
-              remit_customer_name:
-                type: string
-                description: A customer name associated with the invoice. This may or may not match what is in Collaborative AR. It is for information purposes only, for manual matching if invoice# is missing.
-              division:
-                type: string
-                description: 'Division code, if divisions are set up.
-
-
-                  This value takes precedence over the value specified in the header data.
-
-                  '
-        division:
-          type: string
-          description: 'Division code, if divisions are set up.
-
-
-            This value will be used for all `payment_amounts_attributes` that do not specify their own `division` attribute.
-
-            '
-        customer_identifier:
-          type: string
-          description: Customer identifier.
-        customer_name:
-          type: string
-          description: Customer name.
-        external_payment_type:
-          type: string
-          description: When provided identifies this payment as having been processed externally E.g. cash, check/cheque, wire, ACH, Paypal, etc.
-        external_payment_number:
-          type: string
-          description: When provided identifies this payment as having been processed externally, its value corresponding to the type above. E.g. the actual cheque number.
-        payor_bank_branch_number:
-          type: string
-          description: Branch (if CAD) or Routing number (if USD). Useful when external_payment_type = check/cheque.
-        payor_bank_account_number:
-          type: string
-          description: Bank account number. Useful when external_payment_type = check/cheque.
-        payor_name:
-          type: string
-          description: Name of entity or business making the payment. May or may not be the same as customer name on invoice.
-        settlement_date:
-          type: string
-          format: date
-          description: Settlement date, in the format YYYY-MM-DD.
-        external_id:
-          type: string
-          description: The internal reference of the payment as originated from a source system, typically used by ERP connectors to aid in synchronizing payment data.
-      example:
-        identifier: PMT001-05
-        amount_cents: 10000
-        currency: usd
-        date: '2017-12-02'
-        customer_identifier: CUS001
-        payment_amounts_attributes:
-        - invoice_number: INV004
-          amount: 8000
-        - invoice_number: INV010
-          amount: 2000
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

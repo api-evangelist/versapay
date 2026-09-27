@@ -72,15 +72,46 @@ paths:
       operationId: postApiGatewayV1Terminal
       x-operation-id-source: derived
 components:
+  examples:
+    tc_device_status:
+      summary: Device status
+      value:
+        laneid: '1'
+        command: DeviceStatus
+    tc_cancel:
+      summary: Cancel
+      value:
+        laneid: '1'
+        command: Cancel
+    tc_device_setup:
+      summary: Device setup
+      value:
+        laneid: '1'
+        command: DeviceSetup
+    declined:
+      summary: Gateway declined request
+      value:
+        success: false
+        errors:
+        - declined for REASON
+    declined_invalid_card:
+      summary: Decline invalid card
+      value:
+        success: false
+    error:
+      summary: Other errors
+      value:
+        success: false
+        errors:
+        - order_not_found
+    tc_request_signature:
+      summary: Request signature
+      value:
+        laneid: '1'
+        command: RequestSignature
   schemas:
-    TerminalResponse:
+    UnifiedResponse:
       type: object
-      properties:
-        success:
-          type: boolean
-          description: true|false
-      example:
-        success: true
     TerminalRequest:
       type: object
       properties:
@@ -98,45 +129,14 @@ components:
       example:
         laneid: '1'
         command: DeviceSetup
-    UnifiedResponse:
+    TerminalResponse:
       type: object
-  examples:
-    tc_device_status:
-      summary: Device status
-      value:
-        laneid: '1'
-        command: DeviceStatus
-    tc_request_signature:
-      summary: Request signature
-      value:
-        laneid: '1'
-        command: RequestSignature
-    error:
-      summary: Other errors
-      value:
-        success: false
-        errors:
-        - order_not_found
-    tc_cancel:
-      summary: Cancel
-      value:
-        laneid: '1'
-        command: Cancel
-    declined:
-      summary: Gateway declined request
-      value:
-        success: false
-        errors:
-        - declined for REASON
-    declined_invalid_card:
-      summary: Decline invalid card
-      value:
-        success: false
-    tc_device_setup:
-      summary: Device setup
-      value:
-        laneid: '1'
-        command: DeviceSetup
+      properties:
+        success:
+          type: boolean
+          description: true|false
+      example:
+        success: true
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

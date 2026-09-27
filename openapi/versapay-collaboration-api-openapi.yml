@@ -198,17 +198,6 @@ paths:
       x-operation-id-source: derived
 components:
   responses:
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
     PreconditionFailed:
       description: Precondition Failed
       content:
@@ -220,7 +209,63 @@ components:
                 type: string
                 description: Error message
                 example: API token does not have permission for this request. Please contact your account administrator.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
   schemas:
+    Comment:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for comment
+        customer_identifier:
+          type: string
+          description: Customer number
+        customer_name:
+          type: string
+          description: Customer name
+        regarding:
+          type: string
+          description: Invoice number (if applicable) associated to the comment.
+        target_users:
+          type: string
+          description: List of users that the comment specifically targets, separated by semi-colons.
+        dispute:
+          type: string
+          description: '`Y` if the comment opened is a dispute. `N` otherwise.
+
+            '
+        internal:
+          type: string
+          description: '`Y` if the comment is internal. `N` otherwise.
+
+            '
+        timestamp:
+          type: string
+          format: date-time
+          description: '''Date and time when the comment was created, based on ISO 8601 standard. Format: YYYY-MM-DDTHH:MM:SS+HH:MM''
+
+            '
+        user:
+          type: string
+          description: Name of the user who create the comment. First and last name, if available. Otherwise, email address.
+        email:
+          type: string
+          description: Email of the user who created the comment.
+        organization:
+          type: string
+          description: 'Name of the user''s organization – supplier''s name or the customer''s name. <br><br>Note that for comments made by customers, the customer_name and organization will have the same value. When the supplier made the comment, this field will hold the supplier business name.
+
+            '
     Watermark:
       type: integer
       format: int64
@@ -295,51 +340,6 @@ components:
         invoice_external_id:
           type: string
           description: External identifier for the invoice record.
-    Comment:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Unique identifier for comment
-        customer_identifier:
-          type: string
-          description: Customer number
-        customer_name:
-          type: string
-          description: Customer name
-        regarding:
-          type: string
-          description: Invoice number (if applicable) associated to the comment.
-        target_users:
-          type: string
-          description: List of users that the comment specifically targets, separated by semi-colons.
-        dispute:
-          type: string
-          description: '`Y` if the comment opened is a dispute. `N` otherwise.
-
-            '
-        internal:
-          type: string
-          description: '`Y` if the comment is internal. `N` otherwise.
-
-            '
-        timestamp:
-          type: string
-          format: date-time
-          description: '''Date and time when the comment was created, based on ISO 8601 standard. Format: YYYY-MM-DDTHH:MM:SS+HH:MM''
-
-            '
-        user:
-          type: string
-          description: Name of the user who create the comment. First and last name, if available. Otherwise, email address.
-        email:
-          type: string
-          description: Email of the user who created the comment.
-        organization:
-          type: string
-          description: 'Name of the user''s organization – supplier''s name or the customer''s name. <br><br>Note that for comments made by customers, the customer_name and organization will have the same value. When the supplier made the comment, this field will hold the supplier business name.
-
-            '
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

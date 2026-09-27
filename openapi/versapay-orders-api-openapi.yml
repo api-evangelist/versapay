@@ -262,6 +262,85 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    OrderItem:
+      type: object
+      properties:
+        number:
+          type: string
+          description: Order line-item number
+        description:
+          type: string
+          description: Order line-item description
+        quantity:
+          type: number
+          description: Order line-item quantity
+        unit_cost_cents:
+          type: integer
+          description: Order line-item unit price in cents.
+        amount_cents:
+          type: integer
+          description: Order line-item total in cents.
+        tax_amount_cents:
+          type: integer
+          description: Order line-item tax in cents.
+        discount_amount_cents:
+          type: integer
+          description: Order line-item discount in cents.
+        product_code:
+          type: string
+          description: Order line-item product_code.
+        category:
+          type: string
+          description: Order line-item category.
+        attributes:
+          type: object
+          properties: {}
+          description: array of key pair items.
+        L3_commodity_code:
+          type: string
+          description: Product commodity code (UNSPSC).
+          example: '12345678'
+        L3_unit_of_measure:
+          type: string
+          description: Unit of measure (EA, KG, L).
+          example: EA
+        L3_discount_amount:
+          type: string
+          description: Discount amount.
+          example: '1.00'
+        L3_tax_amount:
+          type: string
+          description: Tax amount.
+          example: '0.50'
+        L3_product_code:
+          type: string
+          description: Product SKU or internal code.
+          example: SKU-001
+      example:
+        number: '1'
+        amount_cents: 10000
+        description: description
+        product_code: product_code
+        category: category
+        quantity: 1
+        unit_cost_cents: 10000
+        tax_amount_cents: 100
+        discount_amount_cents: 0
+        orderitem_attr1: '1111111'
+        orderitem2_attr2: '222222'
+    SummaryOrderReference:
+      type: object
+      description: Summary reference of known order
+      properties:
+        identifier:
+          type: string
+          description: Associated order identifier
+        number:
+          type: string
+          description: Associated order number
+        amount_cents:
+          type: number
+          description: Associated order amount
     Order:
       properties:
         watermark:
@@ -435,89 +514,6 @@ components:
           orderitem_attr1: '32222222'
           orderitem2_attr2: '422222'
         transactions: []
-    OrderItem:
-      type: object
-      properties:
-        number:
-          type: string
-          description: Order line-item number
-        description:
-          type: string
-          description: Order line-item description
-        quantity:
-          type: number
-          description: Order line-item quantity
-        unit_cost_cents:
-          type: integer
-          description: Order line-item unit price in cents.
-        amount_cents:
-          type: integer
-          description: Order line-item total in cents.
-        tax_amount_cents:
-          type: integer
-          description: Order line-item tax in cents.
-        discount_amount_cents:
-          type: integer
-          description: Order line-item discount in cents.
-        product_code:
-          type: string
-          description: Order line-item product_code.
-        category:
-          type: string
-          description: Order line-item category.
-        attributes:
-          type: object
-          properties: {}
-          description: array of key pair items.
-        L3_commodity_code:
-          type: string
-          description: Product commodity code (UNSPSC).
-          example: '12345678'
-        L3_unit_of_measure:
-          type: string
-          description: Unit of measure (EA, KG, L).
-          example: EA
-        L3_discount_amount:
-          type: string
-          description: Discount amount.
-          example: '1.00'
-        L3_tax_amount:
-          type: string
-          description: Tax amount.
-          example: '0.50'
-        L3_product_code:
-          type: string
-          description: Product SKU or internal code.
-          example: SKU-001
-      example:
-        number: '1'
-        amount_cents: 10000
-        description: description
-        product_code: product_code
-        category: category
-        quantity: 1
-        unit_cost_cents: 10000
-        tax_amount_cents: 100
-        discount_amount_cents: 0
-        orderitem_attr1: '1111111'
-        orderitem2_attr2: '222222'
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
-    SummaryPaymentReference:
-      type: object
-      description: Summary reference of known invoicing payment
-      properties:
-        identifier:
-          type: string
-          description: Associated invoicing payment identifier
-        number:
-          type: string
-          description: Associated invoicing payment number
-        amount_cents:
-          type: number
-          description: Associated invoicing payment amount
     OrderTransaction:
       type: object
       properties:
@@ -830,19 +826,23 @@ components:
         - identifier: 9U4PK6D11H3D
           display_identifier: 9U4PK6D11H3D
           amount_cents: 100
-    SummaryOrderReference:
+    SummaryPaymentReference:
       type: object
-      description: Summary reference of known order
+      description: Summary reference of known invoicing payment
       properties:
         identifier:
           type: string
-          description: Associated order identifier
+          description: Associated invoicing payment identifier
         number:
           type: string
-          description: Associated order number
+          description: Associated invoicing payment number
         amount_cents:
           type: number
-          description: Associated order amount
+          description: Associated invoicing payment amount
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

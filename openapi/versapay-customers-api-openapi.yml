@@ -507,425 +507,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Customer:
-      type: object
-      required:
-      - identifier
-      - name
-      properties:
-        identifier:
-          type: string
-          description: Customer number, must be unique within supplier. Alphanumeric.
-          example: C1234
-        display_number:
-          type: string
-          description: Customer display number, Alphanumeric.
-          example: DispNum1234
-        name:
-          type: string
-          description: Customer name.
-          example: Acme Inc.
-        email:
-          type: string
-          format: email
-          description: Email address of the default contact.
-          example: bob.smith@example.com
-        first_name:
-          type: string
-          description: First name of the default contact.
-          example: Bob
-        last_name:
-          type: string
-          description: Last name of the default contact.
-          example: Smith
-        notes:
-          type: string
-          description: Optional text field up to 64K.
-          example: Payment terms will be revised next year.
-        address_1:
-          type: string
-          description: Billing address line 1.
-          example: 200 Main Street
-        address_2:
-          type: string
-          description: Billing address line 2.
-          example: Suite 250
-        city:
-          type: string
-          description: Billing address - city.
-          example: Toronto
-        province:
-          type: string
-          description: Billing address - state or province.
-          example: 'ON'
-        postal_code:
-          type: string
-          description: Billing address - zip or postal code.
-          example: M5M 5M5
-        country:
-          type: string
-          description: Billing address - country.
-          example: CA
-        telephone:
-          type: string
-          description: Customer phone number.
-          example: (416) 123-4567
-        fax:
-          type: string
-          description: Customer fax number.
-          example: (416) 100-1020
-        url:
-          type: string
-          format: uri
-          description: Customer web site.
-          example: www.acmeinc.com
-        business_number:
-          type: string
-          description: Customer EIN or Business Number. 20-character alphanumeric.
-          example: GS324587987
-        locale:
-          type: string
-          description: Customer language, based on ISO 639-1 standard.
-          enum:
-          - en
-          - fr
-          - es
-        parent_identifier:
-          type: string
-          description: Required if the customer is part of a hierarchy, and this customer has a level (parent) above it. This is the identifier of the customer immediately above this customer in the tree.
-          example: P3212
-        pdf_attachment_opt_in:
-          type: boolean
-          description: If `true`, the customer will receive PDFs of invoices and attachments with all invoice notifications.
-          default: false
-        account_status:
-          type: string
-          description: The status of the customer's account with the supplier.
-          enum:
-          - open
-          - closed
-          default: open
-        last_contact_date:
-          type: string
-          format: date
-          description: The last time the customer was contacted. It is ignored if the customer already has a last contact date and it is more recent than this one.
-          example: '2017-12-04'
-        next_contact_date:
-          type: string
-          format: date
-          description: The date of the next planned contact with the customer. This always overwrites what is on the customer.
-          example: '2018-02-15'
-        credit_limit_cents:
-          type: integer
-          description: The customer's credit limit. This is the maximum value of outstanding invoices before the supplier is alerted, if supplier is configured to monitor this. If the customer is a multi-currency customer, this is the total credit limit converted to a single currency (see next field.)
-          example: '2000000'
-        credit_limit_currency:
-          type: string
-          description: Currency of the credit limit. If blank, defaults to the currency of the majority of the customer's invoices. If there are no invoices, defaults to the supplier’s default currency.
-          example: CAD
-        credit_rating:
-          type: string
-          description: Credit rating for the customer.
-          example: AA
-        terms_type:
-          type: string
-          description: This field and `terms_value` specify how to set a customer's due date.
-          enum:
-          - date
-          - day
-        terms_value:
-          type: integer
-          description: 'This field and `terms_type` specify how to set a customer''s invoice due date.
-
-
-            If terms_type is ''day'':
-
-
-            * It means the due date should be <terms_value> days after invoice date.
-
-            * E.g. if terms_value is 30, the due date must be 30 days after the invoice date.
-
-            * It must be a whole number between 0 and 100.
-
-
-            If terms_type is ''date'':
-
-
-            * It means the due date is on a fixed day (terms_value) of the month.
-
-            * E.g. if terms_value is 15, it means the due date should be on the 15th of the month after invoice date.
-
-            * It must be an integer between 1 and 27 inclusive, or -1 to specify the last day of the month, or -2 to specify the second-last day of the month.
-
-            '
-          example: 15
-        company_bio:
-          type: string
-          description: Short description of products and services that the customer offers.
-          example: Acme Inc. sells cutting-edge widgets.
-        ignores_cc_payment_rules:
-          type: boolean
-          description: If this is `true`, it means that the customer is not subject to any credit card payment rules, and is free to use credit cards any time.
-          default: false
-          example: 'false'
-        notification_suppressed:
-          type: boolean
-          description: If this is `true`, all notifications to the customer are suppressed.
-          default: false
-          example: 'false'
-        tags:
-          type: string
-          description: One or more tags separated by semi-colons.
-          example: Blue;Green;Yellow
-        external_id:
-          type: string
-          description: External (ERP-based) identifier for the customer record.
-        external_group_identifier:
-          type: string
-          description: 'External (ERP-based) identifier used to control customer grouping.
-
-
-            If the supplier is configured for restricted grouping, the system will not permit a user to group customers together that have different values for `external_group_identifier`.
-
-
-            If the supplier is not configured for restricted grouping, this value is saved but ignored.
-
-            '
-        replace_contacts:
-          type: boolean
-          description: When `true` for a customer that is re-imported any contacts in the payload that are also in the DB will be updated if they are not signed-up users, and any contacts in the DB that were created by the supplier and are not in the payload will be deleted if not signed up, otherwise they will be disabled.
-          default: false
-        line_item_attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Contact'
-          example:
-          - email: jane.smith@example.com
-            first_name: Jane
-            last_name: Smith
-            telephone: 809-888-1234
-            title: Buyer
-          - email: bob.smith@example.com
-            first_name: Bob
-            last_name: Smith
-            title: Manager
-            department: Accounts Payable
-            telephone: 809-345-9833
-          - email: steve.jobs@example.com
-            first_name: Steve
-            last_name: Jobs
-            title: CEO
-    CustomersResponse:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Customer number, unique within supplier.
-        display_number:
-          type: string
-          description: Customer display number.
-        name:
-          type: string
-          description: Customer name.
-        email:
-          type: string
-          format: email
-          description: Email address of the default contact.
-        business_number:
-          type: string
-          description: Customer EIN or Business Number.
-        first_name:
-          type: string
-          description: First name of the default contact.
-        last_name:
-          type: string
-          description: Last name of the default contact.
-        address_1:
-          type: string
-          description: Billing address line 1.
-        address_2:
-          type: string
-          description: Billing address line 2.
-        postal_code:
-          type: string
-          description: Billing address - zip or postal code.
-        city:
-          type: string
-          description: Billing address - city.
-        province:
-          type: string
-          description: Billing address - state or province.
-        country:
-          type: string
-          description: Billing address - country.
-        telephone:
-          type: string
-          description: Customer phone number.
-        fax:
-          type: string
-          description: Customer fax number.
-        status:
-          type: string
-          description: Customer adoption status.
-        auto_debit:
-          type: string
-          description: AutoPay agreement status.
-        invite_sent:
-          type: string
-          format: date
-          description: The date when invite was sent, in YYYY-MM-DD format.
-        signed_up:
-          type: string
-          format: date
-          description: The date when customer user signed up, in YYYY-MM-DD format.
-        notification_suppressed:
-          type: boolean
-          description: If true, notifications to the customer are suppressed.
-        notification_override:
-          type: boolean
-          description: If true, overdue balance notifications are made optional.
-        paper_invoices:
-          type: boolean
-          description: If true, customer receives paper invoices.
-        paper_statements:
-          type: boolean
-          description: If true, customer receives paper statements.
-        parent_identifier:
-          type: string
-          description: Identifier of the parent customer in a hierarchy.
-        balance_cents:
-          type: integer
-          description: 'Total outstanding balance on the customer account in cents.
-
-            '
-        aging_cents:
-          type: integer
-          description: 'Total overdue balance on the customer account in cents.
-
-            '
-        aging_30_cents:
-          type: integer
-          description: 'Balance overdue (1-30 days) on the customer account in cents.
-
-            '
-        aging_60_cents:
-          type: integer
-          description: 'Balance overdue (31-60 days) on the customer account in cents.
-
-            '
-        aging_90_cents:
-          type: integer
-          description: 'Balance overdue (61-90 days) on the customer account in cents.
-
-            '
-        aging_120_cents:
-          type: integer
-          description: 'Balance overdue (91-120 days) on the customer account in cents.
-
-            '
-        aging_180_cents:
-          type: integer
-          description: 'Balance overdue (121-180 days) on the customer account in cents.
-
-            '
-        aging_older_cents:
-          type: integer
-          description: 'Balance overdue (181+ days) on the customer account in cents.
-
-            '
-        current_cents:
-          type: integer
-          description: 'Current outstanding balance in cents.
-
-            '
-        credit_cents:
-          type: integer
-          description: 'Total outstanding credit balance on the customer account in cents.
-
-            '
-        unapplied_payment_cents:
-          type: integer
-          description: 'Total unapplied payment on the customer account in cents.
-
-            '
-        prepayment_cents:
-          type: integer
-          description: 'Total prepayment on the customer account in cents.
-
-            '
-        owing_cents:
-          type: integer
-          description: Total owing balance in cents.
-        notes:
-          type: string
-          description: Optional notes.
-        adp:
-          type: string
-          description: Average days to pay.
-        adp_arc:
-          type: string
-          description: Average days to pay (checkout).
-        adp_external:
-          type: string
-          description: Average days to pay (external).
-        last_contact_date:
-          type: string
-          format: date
-          description: Last contact date.
-        next_contact_date:
-          type: string
-          format: date
-          description: Next planned contact date.
-        credit_limit_cents:
-          type: integer
-          description: Credit limit in cents.
-        account_status:
-          type: string
-          description: Account status (open/closed).
-        tags:
-          type: string
-          description: Semi-colon delimited list of imported tags.
-        user_tags:
-          type: string
-          description: Semi-colon delimited list of user-assigned tags.
-        attributes_marshal:
-          type: object
-          description: Additional attributes.
-        external_id:
-          type: string
-          description: External (ERP-based) identifier for the customer record.
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
-    Contact:
-      type: object
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          description: Email address of the contact.
-          format: email
-        first_name:
-          type: string
-          description: First name of the contact.
-        last_name:
-          type: string
-          description: Last name of the contact.
-        title:
-          type: string
-          description: Title of the contact.
-        department:
-          type: string
-          description: Department of the contact.
-        telephone:
-          type: string
-          description: Phone number of the contact.
-        bulk_activate:
-          type: boolean
-          description: If this is `true`, the contact is activated or invited (depending on the account configuration) on import.
-          default: false
     CustomerResponse:
       type: object
       properties:
@@ -1451,51 +1032,426 @@ components:
           user_telephone: null
           user_title: null
           user_department: null
+    Contact:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Email address of the contact.
+          format: email
+        first_name:
+          type: string
+          description: First name of the contact.
+        last_name:
+          type: string
+          description: Last name of the contact.
+        title:
+          type: string
+          description: Title of the contact.
+        department:
+          type: string
+          description: Department of the contact.
+        telephone:
+          type: string
+          description: Phone number of the contact.
+        bulk_activate:
+          type: boolean
+          description: If this is `true`, the contact is activated or invited (depending on the account configuration) on import.
+          default: false
+    Customer:
+      type: object
+      required:
+      - identifier
+      - name
+      properties:
+        identifier:
+          type: string
+          description: Customer number, must be unique within supplier. Alphanumeric.
+          example: C1234
+        display_number:
+          type: string
+          description: Customer display number, Alphanumeric.
+          example: DispNum1234
+        name:
+          type: string
+          description: Customer name.
+          example: Acme Inc.
+        email:
+          type: string
+          format: email
+          description: Email address of the default contact.
+          example: bob.smith@example.com
+        first_name:
+          type: string
+          description: First name of the default contact.
+          example: Bob
+        last_name:
+          type: string
+          description: Last name of the default contact.
+          example: Smith
+        notes:
+          type: string
+          description: Optional text field up to 64K.
+          example: Payment terms will be revised next year.
+        address_1:
+          type: string
+          description: Billing address line 1.
+          example: 200 Main Street
+        address_2:
+          type: string
+          description: Billing address line 2.
+          example: Suite 250
+        city:
+          type: string
+          description: Billing address - city.
+          example: Toronto
+        province:
+          type: string
+          description: Billing address - state or province.
+          example: 'ON'
+        postal_code:
+          type: string
+          description: Billing address - zip or postal code.
+          example: M5M 5M5
+        country:
+          type: string
+          description: Billing address - country.
+          example: CA
+        telephone:
+          type: string
+          description: Customer phone number.
+          example: (416) 123-4567
+        fax:
+          type: string
+          description: Customer fax number.
+          example: (416) 100-1020
+        url:
+          type: string
+          format: uri
+          description: Customer web site.
+          example: www.acmeinc.com
+        business_number:
+          type: string
+          description: Customer EIN or Business Number. 20-character alphanumeric.
+          example: GS324587987
+        locale:
+          type: string
+          description: Customer language, based on ISO 639-1 standard.
+          enum:
+          - en
+          - fr
+          - es
+        parent_identifier:
+          type: string
+          description: Required if the customer is part of a hierarchy, and this customer has a level (parent) above it. This is the identifier of the customer immediately above this customer in the tree.
+          example: P3212
+        pdf_attachment_opt_in:
+          type: boolean
+          description: If `true`, the customer will receive PDFs of invoices and attachments with all invoice notifications.
+          default: false
+        account_status:
+          type: string
+          description: The status of the customer's account with the supplier.
+          enum:
+          - open
+          - closed
+          default: open
+        last_contact_date:
+          type: string
+          format: date
+          description: The last time the customer was contacted. It is ignored if the customer already has a last contact date and it is more recent than this one.
+          example: '2017-12-04'
+        next_contact_date:
+          type: string
+          format: date
+          description: The date of the next planned contact with the customer. This always overwrites what is on the customer.
+          example: '2018-02-15'
+        credit_limit_cents:
+          type: integer
+          description: The customer's credit limit. This is the maximum value of outstanding invoices before the supplier is alerted, if supplier is configured to monitor this. If the customer is a multi-currency customer, this is the total credit limit converted to a single currency (see next field.)
+          example: '2000000'
+        credit_limit_currency:
+          type: string
+          description: Currency of the credit limit. If blank, defaults to the currency of the majority of the customer's invoices. If there are no invoices, defaults to the supplier’s default currency.
+          example: CAD
+        credit_rating:
+          type: string
+          description: Credit rating for the customer.
+          example: AA
+        terms_type:
+          type: string
+          description: This field and `terms_value` specify how to set a customer's due date.
+          enum:
+          - date
+          - day
+        terms_value:
+          type: integer
+          description: 'This field and `terms_type` specify how to set a customer''s invoice due date.
+
+
+            If terms_type is ''day'':
+
+
+            * It means the due date should be <terms_value> days after invoice date.
+
+            * E.g. if terms_value is 30, the due date must be 30 days after the invoice date.
+
+            * It must be a whole number between 0 and 100.
+
+
+            If terms_type is ''date'':
+
+
+            * It means the due date is on a fixed day (terms_value) of the month.
+
+            * E.g. if terms_value is 15, it means the due date should be on the 15th of the month after invoice date.
+
+            * It must be an integer between 1 and 27 inclusive, or -1 to specify the last day of the month, or -2 to specify the second-last day of the month.
+
+            '
+          example: 15
+        company_bio:
+          type: string
+          description: Short description of products and services that the customer offers.
+          example: Acme Inc. sells cutting-edge widgets.
+        ignores_cc_payment_rules:
+          type: boolean
+          description: If this is `true`, it means that the customer is not subject to any credit card payment rules, and is free to use credit cards any time.
+          default: false
+          example: 'false'
+        notification_suppressed:
+          type: boolean
+          description: If this is `true`, all notifications to the customer are suppressed.
+          default: false
+          example: 'false'
+        tags:
+          type: string
+          description: One or more tags separated by semi-colons.
+          example: Blue;Green;Yellow
+        external_id:
+          type: string
+          description: External (ERP-based) identifier for the customer record.
+        external_group_identifier:
+          type: string
+          description: 'External (ERP-based) identifier used to control customer grouping.
+
+
+            If the supplier is configured for restricted grouping, the system will not permit a user to group customers together that have different values for `external_group_identifier`.
+
+
+            If the supplier is not configured for restricted grouping, this value is saved but ignored.
+
+            '
+        replace_contacts:
+          type: boolean
+          description: When `true` for a customer that is re-imported any contacts in the payload that are also in the DB will be updated if they are not signed-up users, and any contacts in the DB that were created by the supplier and are not in the payload will be deleted if not signed up, otherwise they will be disabled.
+          default: false
+        line_item_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          example:
+          - email: jane.smith@example.com
+            first_name: Jane
+            last_name: Smith
+            telephone: 809-888-1234
+            title: Buyer
+          - email: bob.smith@example.com
+            first_name: Bob
+            last_name: Smith
+            title: Manager
+            department: Accounts Payable
+            telephone: 809-345-9833
+          - email: steve.jobs@example.com
+            first_name: Steve
+            last_name: Jobs
+            title: CEO
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
+    CustomersResponse:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Customer number, unique within supplier.
+        display_number:
+          type: string
+          description: Customer display number.
+        name:
+          type: string
+          description: Customer name.
+        email:
+          type: string
+          format: email
+          description: Email address of the default contact.
+        business_number:
+          type: string
+          description: Customer EIN or Business Number.
+        first_name:
+          type: string
+          description: First name of the default contact.
+        last_name:
+          type: string
+          description: Last name of the default contact.
+        address_1:
+          type: string
+          description: Billing address line 1.
+        address_2:
+          type: string
+          description: Billing address line 2.
+        postal_code:
+          type: string
+          description: Billing address - zip or postal code.
+        city:
+          type: string
+          description: Billing address - city.
+        province:
+          type: string
+          description: Billing address - state or province.
+        country:
+          type: string
+          description: Billing address - country.
+        telephone:
+          type: string
+          description: Customer phone number.
+        fax:
+          type: string
+          description: Customer fax number.
+        status:
+          type: string
+          description: Customer adoption status.
+        auto_debit:
+          type: string
+          description: AutoPay agreement status.
+        invite_sent:
+          type: string
+          format: date
+          description: The date when invite was sent, in YYYY-MM-DD format.
+        signed_up:
+          type: string
+          format: date
+          description: The date when customer user signed up, in YYYY-MM-DD format.
+        notification_suppressed:
+          type: boolean
+          description: If true, notifications to the customer are suppressed.
+        notification_override:
+          type: boolean
+          description: If true, overdue balance notifications are made optional.
+        paper_invoices:
+          type: boolean
+          description: If true, customer receives paper invoices.
+        paper_statements:
+          type: boolean
+          description: If true, customer receives paper statements.
+        parent_identifier:
+          type: string
+          description: Identifier of the parent customer in a hierarchy.
+        balance_cents:
+          type: integer
+          description: 'Total outstanding balance on the customer account in cents.
+
+            '
+        aging_cents:
+          type: integer
+          description: 'Total overdue balance on the customer account in cents.
+
+            '
+        aging_30_cents:
+          type: integer
+          description: 'Balance overdue (1-30 days) on the customer account in cents.
+
+            '
+        aging_60_cents:
+          type: integer
+          description: 'Balance overdue (31-60 days) on the customer account in cents.
+
+            '
+        aging_90_cents:
+          type: integer
+          description: 'Balance overdue (61-90 days) on the customer account in cents.
+
+            '
+        aging_120_cents:
+          type: integer
+          description: 'Balance overdue (91-120 days) on the customer account in cents.
+
+            '
+        aging_180_cents:
+          type: integer
+          description: 'Balance overdue (121-180 days) on the customer account in cents.
+
+            '
+        aging_older_cents:
+          type: integer
+          description: 'Balance overdue (181+ days) on the customer account in cents.
+
+            '
+        current_cents:
+          type: integer
+          description: 'Current outstanding balance in cents.
+
+            '
+        credit_cents:
+          type: integer
+          description: 'Total outstanding credit balance on the customer account in cents.
+
+            '
+        unapplied_payment_cents:
+          type: integer
+          description: 'Total unapplied payment on the customer account in cents.
+
+            '
+        prepayment_cents:
+          type: integer
+          description: 'Total prepayment on the customer account in cents.
+
+            '
+        owing_cents:
+          type: integer
+          description: Total owing balance in cents.
+        notes:
+          type: string
+          description: Optional notes.
+        adp:
+          type: string
+          description: Average days to pay.
+        adp_arc:
+          type: string
+          description: Average days to pay (checkout).
+        adp_external:
+          type: string
+          description: Average days to pay (external).
+        last_contact_date:
+          type: string
+          format: date
+          description: Last contact date.
+        next_contact_date:
+          type: string
+          format: date
+          description: Next planned contact date.
+        credit_limit_cents:
+          type: integer
+          description: Credit limit in cents.
+        account_status:
+          type: string
+          description: Account status (open/closed).
+        tags:
+          type: string
+          description: Semi-colon delimited list of imported tags.
+        user_tags:
+          type: string
+          description: Semi-colon delimited list of user-assigned tags.
+        attributes_marshal:
+          type: object
+          description: Additional attributes.
+        external_id:
+          type: string
+          description: External (ERP-based) identifier for the customer record.
   responses:
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You have not provided all necessary parameters to make this call.
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: This request is not allowed for this resource.
-    NotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: ActiveRecord::RecordNotFound
     PreconditionFailed:
       description: Precondition Failed
       content:
@@ -1507,6 +1463,50 @@ components:
                 type: string
                 description: Error message
                 example: API token does not have permission for this request. Please contact your account administrator.
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You have not provided all necessary parameters to make this call.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: ActiveRecord::RecordNotFound
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: This request is not allowed for this resource.
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

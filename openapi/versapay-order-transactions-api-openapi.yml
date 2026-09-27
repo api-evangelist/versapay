@@ -373,86 +373,152 @@ paths:
       operationId: getApiExportsTransactionByTokenOrReference
       x-operation-id-source: derived
 components:
+  examples:
+    use_new_bank_account:
+      summary: Amount to process and bank account details to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        bank_account:
+          currency: USD
+          account_type: checking
+          account_holder: Tim Coffee Ltd
+          account_number: '144155167'
+          routing_number: '121000248'
+          external_name: BANK
+          external_number: '777'
+          address:
+            address_1: 123 Abc St
+            city: Beverly Hills
+            province: CA
+            postal_code: '90210'
+            country: US
+    use_existing_credit_card_fee_exempt:
+      summary: Amount to process and credit card reference to pay from (ignore any configured surcharging rules)
+      value:
+        fee_exempt: true
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        credit_card: CC98U7LI8H91
+    use_new_credit_card:
+      summary: Amount to process and full credit card details to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        credit_card:
+          name: Tim Man
+          expiry_month: 12
+          expiry_year: 2025
+          card_number: '4111111111111111'
+          cvv: '123'
+          address:
+            address_1: 123 Abc St
+            city: Beverly Hills
+            province: CA
+            postal_code: '90210'
+            country: US
+    declined:
+      summary: Gateway declined request
+      value:
+        success: false
+        errors:
+        - declined for REASON
+    use_existing_fund:
+      summary: Amount to process and fund reference (eg credit card) to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        fund_token: CC98U7LI8H91
+    use_settlement_routing:
+      summary: Use specific merchant account settlement route to pay order (eg credit card)
+      value:
+        order:
+          identifier: 3SLSC9HX3AHB
+          settlement_token: MA123XYZABCD
+        amount_cents: 4200
+        fund_token: CC98U7LI8H91
+    use_gift_card:
+      summary: Amount to process and gift card details to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        gift_card:
+          name: Tim Man
+          expiry_month: 12
+          expiry_year: 2049
+          card_number: '4775419990420272'
+          pin: '1234'
+    prior_transaction_reference:
+      summary: Directly reference prior transaction and amount to capture
+      value:
+        amount_cents: 4200
+        transaction: 9HWLBLWXXPRX
+    use_cp_emv_terminal:
+      summary: Amount to process via terminal (card present emv)
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        terminal:
+          laneid: '1'
+          enable_manual_entry: false
+    use_existing_credit_card:
+      summary: Amount to process and credit card reference to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        credit_card: CC98U7LI8H91
+    declined_invalid_card:
+      summary: Decline invalid card
+      value:
+        success: false
+    error:
+      summary: Other errors
+      value:
+        success: false
+        errors:
+        - order_not_found
+    use_cp_emv_terminal_prompt:
+      summary: Amount to process via terminal (card present emv) prompting for card number entry via PIN pad
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        terminal:
+          laneid: '1'
+          enable_manual_entry: true
   schemas:
-    WalletBankAccount:
+    SummaryPaymentReference:
       type: object
-      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
-      required:
-      - currency
-      - account_type
-      - account_holder
-      - account_number
-      - routing_number
-      - institution_number
-      - branch_number
-      - check_type
-      - address
+      description: Summary reference of known invoicing payment
       properties:
-        currency:
+        identifier:
           type: string
-          enum:
-          - USD
-          - CAD
-          - AUD
-          - EUR
-          - GBP
-        account_type:
+          description: Associated invoicing payment identifier
+        number:
           type: string
-          enum:
-          - checking
-          - savings
-        account_holder:
-          type: string
-          description: Account holder name
-        account_number:
-          type: string
-          description: Bank account number
-        routing_number:
-          type: string
-          description: For non-CA financial institutions, ABA/bank routing number
-        institution_number:
-          type: string
-          description: For CA financial institutions, 3 digit institution code
-        branch_number:
-          type: string
-          description: For CA financial institutions, transit/branch number
-        check_type:
-          type: string
-          enum:
-          - personal
-          - business
-        external_name:
-          type: string
-        external_number:
-          type: string
-        locked:
-          type: boolean
-        nickname:
-          type: string
-        is_default:
-          type: boolean
-          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
-        is_single_use:
-          type: boolean
-          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
-        address:
-          type: object
-          properties:
-            address_1:
-              type: string
-            city:
-              type: string
-            province:
-              type: string
-              description: US state or CA province code
-            postal_code:
-              type: string
-              description: US zip code or CA postal code
-            country:
-              type: string
-              enum:
-              - US
-              - CA
+          description: Associated invoicing payment number
+        amount_cents:
+          type: number
+          description: Associated invoicing payment amount
     WalletCreditCard:
       type: object
       description: Alternative to fund_token, a credit card object or token reference to an existing credit card
@@ -506,6 +572,68 @@ components:
               enum:
               - US
               - CA
+    UnifiedResponse:
+      type: object
+    OrderTransactionRequest:
+      type: object
+      properties:
+        order:
+          type: object
+          description: An order object or a token reference to an existing order
+        contact:
+          $ref: '#/components/schemas/WalletContact'
+        fund_token:
+          type: string
+          description: A token reference to an existing fund (either credit card or bank account)
+        fee_exempt:
+          type: boolean
+          description: True indicates that any fee related surcharging should be ignored even if the underlying merchant account is configured as such, false inherits any configured fee related behaviour
+        transaction_reference:
+          type:
+          - string
+          - 'null'
+          description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
+        device:
+          type: string
+          description: Optional device name depending on gateway boarding & configuration
+        industry:
+          type: string
+          description: Optional, if not provided defaults to value specified in gateway/account configuration
+          enum:
+          - directmarketing
+          - ecommerce
+          - lodging
+          - restaurant
+          - autorental
+          - retail
+        sec_code:
+          type: string
+          description: Optional, for ACH bank transactions, standard entry class code (if not provided defaults to value specified on payment acceptance config; otherwise defaults to PPD if transaction from bank account check_type is personal & CCD if check_type is business)
+          enum:
+          - CCD
+          - PPD
+          - WEB
+          - POP
+          - TEL
+        credit_card:
+          $ref: '#/components/schemas/WalletCreditCard'
+        bank_account:
+          $ref: '#/components/schemas/WalletBankAccount'
+        gift_card:
+          type: object
+          description: Alternative to fund_token, a gift card
+          properties:
+            expiry_month:
+              type: string
+              description: 2 digit month
+            expiry_year:
+              type: string
+              description: 4 digit year
+            card_number:
+              type: string
+              description: Gift card number
+            pin:
+              type: string
     OrderTransaction:
       type: object
       properties:
@@ -818,107 +946,6 @@ components:
         - identifier: 9U4PK6D11H3D
           display_identifier: 9U4PK6D11H3D
           amount_cents: 100
-    SummaryPaymentReference:
-      type: object
-      description: Summary reference of known invoicing payment
-      properties:
-        identifier:
-          type: string
-          description: Associated invoicing payment identifier
-        number:
-          type: string
-          description: Associated invoicing payment number
-        amount_cents:
-          type: number
-          description: Associated invoicing payment amount
-    OrderTransactionRequest:
-      type: object
-      properties:
-        order:
-          type: object
-          description: An order object or a token reference to an existing order
-        contact:
-          $ref: '#/components/schemas/WalletContact'
-        fund_token:
-          type: string
-          description: A token reference to an existing fund (either credit card or bank account)
-        fee_exempt:
-          type: boolean
-          description: True indicates that any fee related surcharging should be ignored even if the underlying merchant account is configured as such, false inherits any configured fee related behaviour
-        transaction_reference:
-          type:
-          - string
-          - 'null'
-          description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
-        device:
-          type: string
-          description: Optional device name depending on gateway boarding & configuration
-        industry:
-          type: string
-          description: Optional, if not provided defaults to value specified in gateway/account configuration
-          enum:
-          - directmarketing
-          - ecommerce
-          - lodging
-          - restaurant
-          - autorental
-          - retail
-        sec_code:
-          type: string
-          description: Optional, for ACH bank transactions, standard entry class code (if not provided defaults to value specified on payment acceptance config; otherwise defaults to PPD if transaction from bank account check_type is personal & CCD if check_type is business)
-          enum:
-          - CCD
-          - PPD
-          - WEB
-          - POP
-          - TEL
-        credit_card:
-          $ref: '#/components/schemas/WalletCreditCard'
-        bank_account:
-          $ref: '#/components/schemas/WalletBankAccount'
-        gift_card:
-          type: object
-          description: Alternative to fund_token, a gift card
-          properties:
-            expiry_month:
-              type: string
-              description: 2 digit month
-            expiry_year:
-              type: string
-              description: 4 digit year
-            card_number:
-              type: string
-              description: Gift card number
-            pin:
-              type: string
-    SummaryOrderReference:
-      type: object
-      description: Summary reference of known order
-      properties:
-        identifier:
-          type: string
-          description: Associated order identifier
-        number:
-          type: string
-          description: Associated order number
-        amount_cents:
-          type: number
-          description: Associated order amount
-    WalletContact:
-      type: object
-      description: Billing contact
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          description: Email address
-        first_name:
-          type: string
-        last_name:
-          type: string
-    UnifiedResponse:
-      type: object
     OrderTransactionResponse:
       type: object
       properties:
@@ -1040,138 +1067,111 @@ components:
                       token: c500f04b-a61c-44bd-be03-2c3a423cbbaf
             credit_card:
               token: qw288x8dmx00
-  examples:
-    use_existing_credit_card_fee_exempt:
-      summary: Amount to process and credit card reference to pay from (ignore any configured surcharging rules)
-      value:
-        fee_exempt: true
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        credit_card: CC98U7LI8H91
-    use_cp_emv_terminal:
-      summary: Amount to process via terminal (card present emv)
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        contact:
-          email: tim@coffee.com
-          first_name: Tim
-          last_name: Man
-        terminal:
-          laneid: '1'
-          enable_manual_entry: false
-    use_existing_fund:
-      summary: Amount to process and fund reference (eg credit card) to pay from
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        fund_token: CC98U7LI8H91
-    use_new_bank_account:
-      summary: Amount to process and bank account details to pay from
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        contact:
-          email: tim@coffee.com
-          first_name: Tim
-          last_name: Man
-        bank_account:
-          currency: USD
-          account_type: checking
-          account_holder: Tim Coffee Ltd
-          account_number: '144155167'
-          routing_number: '121000248'
-          external_name: BANK
-          external_number: '777'
-          address:
-            address_1: 123 Abc St
-            city: Beverly Hills
-            province: CA
-            postal_code: '90210'
-            country: US
-    declined:
-      summary: Gateway declined request
-      value:
-        success: false
-        errors:
-        - declined for REASON
-    use_gift_card:
-      summary: Amount to process and gift card details to pay from
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        contact:
-          email: tim@coffee.com
-          first_name: Tim
-          last_name: Man
-        gift_card:
-          name: Tim Man
-          expiry_month: 12
-          expiry_year: 2049
-          card_number: '4775419990420272'
-          pin: '1234'
-    use_settlement_routing:
-      summary: Use specific merchant account settlement route to pay order (eg credit card)
-      value:
-        order:
-          identifier: 3SLSC9HX3AHB
-          settlement_token: MA123XYZABCD
-        amount_cents: 4200
-        fund_token: CC98U7LI8H91
-    prior_transaction_reference:
-      summary: Directly reference prior transaction and amount to capture
-      value:
-        amount_cents: 4200
-        transaction: 9HWLBLWXXPRX
-    use_existing_credit_card:
-      summary: Amount to process and credit card reference to pay from
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        credit_card: CC98U7LI8H91
-    error:
-      summary: Other errors
-      value:
-        success: false
-        errors:
-        - order_not_found
-    use_new_credit_card:
-      summary: Amount to process and full credit card details to pay from
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        contact:
-          email: tim@coffee.com
-          first_name: Tim
-          last_name: Man
-        credit_card:
-          name: Tim Man
-          expiry_month: 12
-          expiry_year: 2025
-          card_number: '4111111111111111'
-          cvv: '123'
-          address:
-            address_1: 123 Abc St
-            city: Beverly Hills
-            province: CA
-            postal_code: '90210'
-            country: US
-    use_cp_emv_terminal_prompt:
-      summary: Amount to process via terminal (card present emv) prompting for card number entry via PIN pad
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        contact:
-          email: tim@coffee.com
-          first_name: Tim
-          last_name: Man
-        terminal:
-          laneid: '1'
-          enable_manual_entry: true
-    declined_invalid_card:
-      summary: Decline invalid card
-      value:
-        success: false
+    WalletContact:
+      type: object
+      description: Billing contact
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Email address
+        first_name:
+          type: string
+        last_name:
+          type: string
+    SummaryOrderReference:
+      type: object
+      description: Summary reference of known order
+      properties:
+        identifier:
+          type: string
+          description: Associated order identifier
+        number:
+          type: string
+          description: Associated order number
+        amount_cents:
+          type: number
+          description: Associated order amount
+    WalletBankAccount:
+      type: object
+      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
+      required:
+      - currency
+      - account_type
+      - account_holder
+      - account_number
+      - routing_number
+      - institution_number
+      - branch_number
+      - check_type
+      - address
+      properties:
+        currency:
+          type: string
+          enum:
+          - USD
+          - CAD
+          - AUD
+          - EUR
+          - GBP
+        account_type:
+          type: string
+          enum:
+          - checking
+          - savings
+        account_holder:
+          type: string
+          description: Account holder name
+        account_number:
+          type: string
+          description: Bank account number
+        routing_number:
+          type: string
+          description: For non-CA financial institutions, ABA/bank routing number
+        institution_number:
+          type: string
+          description: For CA financial institutions, 3 digit institution code
+        branch_number:
+          type: string
+          description: For CA financial institutions, transit/branch number
+        check_type:
+          type: string
+          enum:
+          - personal
+          - business
+        external_name:
+          type: string
+        external_number:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
   responses:
     UnauthorizedError:
       description: Unauthorized

@@ -158,7 +158,79 @@ paths:
       operationId: postApiTransactionsByTokenCancel
       x-operation-id-source: derived
 components:
+  responses:
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
   schemas:
+    Transaction:
+      type: object
+      required:
+      - amount_in_cents
+      - email
+      - transaction_type
+      discriminator:
+        propertyName: transaction_type
+        mapping:
+          direct_credit: ./schemas/DirectCreditTransaction
+          direct_debit: ./schemas/DirectDebitTransaction
+          request: ./schemas/RequestTransaction
+          send: ./schemas/SendTransaction
+      properties:
+        transaction_type:
+          type: string
+        amount_in_cents:
+          type: integer
+          description: Transaction amount in cents.
+        email:
+          type: string
+          format: email
+          description: Recipient email address.
+        message:
+          type: string
+          description: A message describing the transaction.
+        transaction_reference:
+          type:
+          - string
+          - 'null'
+          description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
+        unique_reference:
+          type: string
+          description: Similar to transaction_reference, except it must be unique. Can be used as a duplicate transaction check.
+        process_on:
+          type: string
+          format: date
+          description: The date `YYYY-MM-DD` when this transaction should be started.
+        auto_withdraw:
+          type: boolean
+          description: Set `true` to have transaction auto settle from Versapay balance to the specified bank account the night of completion; `false` to settle directly to Versapay balance. Auto withdraw must be enabled for your account. Only applicable to request and pre_authorized_debit transactions.
+      example:
+        transaction_type: send
+        amount_in_cents: 20000
+        email: bob@example.com
+        message: Thank you
+        transaction_reference: Order 3487
+        process_on: '2018-01-05'
+        fund_token: BA9G329DNFPK
     TransactionResponse:
       type: object
       properties:
@@ -258,78 +330,6 @@ components:
         process_on: null
         from_fund: TD Canada Trust
         created_by_user: Uf6TaxzBMBBT_rXjsrN7
-    Transaction:
-      type: object
-      required:
-      - amount_in_cents
-      - email
-      - transaction_type
-      discriminator:
-        propertyName: transaction_type
-        mapping:
-          direct_credit: ./schemas/DirectCreditTransaction
-          direct_debit: ./schemas/DirectDebitTransaction
-          request: ./schemas/RequestTransaction
-          send: ./schemas/SendTransaction
-      properties:
-        transaction_type:
-          type: string
-        amount_in_cents:
-          type: integer
-          description: Transaction amount in cents.
-        email:
-          type: string
-          format: email
-          description: Recipient email address.
-        message:
-          type: string
-          description: A message describing the transaction.
-        transaction_reference:
-          type:
-          - string
-          - 'null'
-          description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
-        unique_reference:
-          type: string
-          description: Similar to transaction_reference, except it must be unique. Can be used as a duplicate transaction check.
-        process_on:
-          type: string
-          format: date
-          description: The date `YYYY-MM-DD` when this transaction should be started.
-        auto_withdraw:
-          type: boolean
-          description: Set `true` to have transaction auto settle from Versapay balance to the specified bank account the night of completion; `false` to settle directly to Versapay balance. Auto withdraw must be enabled for your account. Only applicable to request and pre_authorized_debit transactions.
-      example:
-        transaction_type: send
-        amount_in_cents: 20000
-        email: bob@example.com
-        message: Thank you
-        transaction_reference: Order 3487
-        process_on: '2018-01-05'
-        fund_token: BA9G329DNFPK
-  responses:
-    PreconditionFailed:
-      description: Precondition Failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: API token does not have permission for this request. Please contact your account administrator.
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.
