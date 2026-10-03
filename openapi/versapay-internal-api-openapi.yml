@@ -308,53 +308,85 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    CreditCardTokenUpdate:
-      description: Information for updating an existing credit card token
+    FieldOption:
+      description: Options for a single field
+      required:
+      - name
+      - label
+      additionalProperties:
+        description: Reserved for future use
+        oneOf:
+        - type: boolean
+        - type: integer
+        - type: string
+        - type: number
       properties:
-        accountHolder:
-          $ref: '#/components/schemas/AccountHolder'
-        expirationMonth:
-          $ref: '#/components/schemas/CardExpirationMonth'
-        expirationYear:
-          $ref: '#/components/schemas/CardExpirationYear'
-        cardVerificationValue:
-          $ref: '#/components/schemas/CardVerificationValue'
-    BankAccountNumber:
+        name:
+          type: string
+          example: expDate
+          description: Field name
+        label:
+          type: string
+          example: Expiration Date
+          description: Field display name
+        placeholder:
+          type: string
+          example: MM / YY
+          description: The placeholder shown on the form
+        errorLabel:
+          type: string
+          example: Please check the Expiration Date
+          description: The error message displayed for an invalid entry
+        allowLabelUpdate:
+          type: boolean
+          example: true
+          description: Set to true if the client-side code should be allowed to override the label
+        id:
+          type: string
+          example: ddlExpDate
+          minLength: 1
+          description: The DOM ID of the field
+    Currency:
       type: string
-      example: '123456789'
-      pattern: ^\d{4,34}$
-      description: The demand deposit account number
+      example: USD
+      pattern: ^[A-Z]{3}$
+      description: The uppercase 3-letter ISO currency code
     BankAccountTokenUpdate:
       description: Information for updating an existing bank account token
       properties:
         accountHolder:
           $ref: '#/components/schemas/AccountHolder'
-    PaymentType:
-      description: A payment type or method
-      required:
-      - name
-      - label
+    WalletID:
+      type: string
+      example: BA25BVH5HCRI
+      pattern: ^[0-9A-Z]{12}$
+      description: The wallet ID returned by a POST to /wallets
+    SessionOptionGet:
+      allOf:
+      - type: object
+        properties:
+          wallet:
+            $ref: '#/components/schemas/WalletOptionsGet'
+      - $ref: '#/components/schemas/SessionOptionBase'
+    BankRoutingNumber:
+      type: string
+      example: '123456780'
+      pattern: ^\d{8,9}$
+      description: The routing number of the financial institution
+    AVSOption:
+      description: Merchant defined AVS fraud protection settings
       properties:
-        name:
-          $ref: '#/components/schemas/PaymentMethod'
-        label:
-          type: string
-          example: Credit Card
-          description: The payment method display name
-        promoted:
-          type: boolean
-          example: false
-          description: Set this option to true to display this payment method in a promoted fashion
-        fields:
-          $ref: '#/components/schemas/FieldOptions'
-      additionalProperties:
-        description: Reserved for future use
-        oneOf:
-        - type: object
-        - type: boolean
-        - type: integer
-        - type: string
-        - type: number
+        rejectAddressMismatch:
+          $ref: '#/components/schemas/RejectAddressMismatch'
+        rejectPostCodeMismatch:
+          $ref: '#/components/schemas/RejectPostCodeMismatch'
+        rejectUnknown:
+          $ref: '#/components/schemas/RejectAVSUnknown'
+    CardAccountNumber:
+      type: string
+      example: '4111111111111111'
+      pattern: ^\d{8,19}$
+      description: The card account number
     GiftCard:
       description: Account information for a gift card transaction
       required:
@@ -370,39 +402,6 @@ components:
           $ref: '#/components/schemas/CardExpirationYear'
         pin:
           $ref: '#/components/schemas/PIN'
-    ACH:
-      description: Account information for an ACH transaction
-      required:
-      - accountNumber
-      - routingNumber
-      - checkType
-      - accountType
-      - accountHolder
-      - currency
-      properties:
-        accountNumber:
-          $ref: '#/components/schemas/BankAccountNumber'
-        routingNumber:
-          $ref: '#/components/schemas/BankRoutingNumber'
-        checkType:
-          $ref: '#/components/schemas/CheckType'
-        accountType:
-          $ref: '#/components/schemas/BankAccountType'
-        accountHolder:
-          $ref: '#/components/schemas/AccountHolder'
-        currency:
-          $ref: '#/components/schemas/Currency'
-    RejectPostCodeMismatch:
-      type: boolean
-      example: true
-      description: Set custom avs protection rule to reject or allow credit card transactions with a postal code mismatch
-    CheckType:
-      type: string
-      enum:
-      - business
-      - personal
-      example: business
-      description: The type of account (business or personal)
     ACHPaymentType:
       description: A credit card payment type definition
       properties:
@@ -428,100 +427,22 @@ components:
         - name: achAccountNo
           label: Account Number
           errorLabel: Bank account number
-    SessionOptionGet:
-      allOf:
-      - type: object
-        properties:
-          wallet:
-            $ref: '#/components/schemas/WalletOptionsGet'
-      - $ref: '#/components/schemas/SessionOptionBase'
-    AVSOption:
-      description: Merchant defined AVS fraud protection settings
-      properties:
-        rejectAddressMismatch:
-          $ref: '#/components/schemas/RejectAddressMismatch'
-        rejectPostCodeMismatch:
-          $ref: '#/components/schemas/RejectPostCodeMismatch'
-        rejectUnknown:
-          $ref: '#/components/schemas/RejectAVSUnknown'
-    BankAccountTokens:
-      type: array
-      items:
-        $ref: '#/components/schemas/BankAccountToken'
+    RejectAddressMismatch:
+      type: boolean
+      example: true
+      description: Set custom avs protection rule to reject or allow credit card transactions with an address mismatch
     RejectAVSUnknown:
       type: boolean
       example: true
       description: Set custom avs protection rule to reject or allow credit card transactions with a avs unknown
-    CreditCardTokens:
-      type: array
-      description: A collection of credit card tokens
-      items:
-        $ref: '#/components/schemas/CreditCardToken'
-    CardBrand:
-      type: string
-      example: visa
-      enum:
-      - visa
-      - master
-      - american_express
-      - discover
-      description: The card brand
-    ApplePayPaymentType:
-      description: A credit card payment type definition
-      properties:
-        paymentType:
-          $ref: '#/components/schemas/PaymentType'
-      example:
-        name: applePay
-        label: ApplePay
-        promoted: true
-        fields:
-        - name: applePay
-        - label: applePay
-        - errorLabel: applePay
-    WalletOptionsBase:
-      description: Options for wallet behavior
-      properties:
-        id:
-          $ref: '#/components/schemas/WalletID'
-        customerId:
-          type: string
-          example: 1NQGAW7N4S7H
-          minLength: 1
-          pattern: ^[0-9A-Z]+$
-          description: Set this option to the desired customer id, this can be specified instead of a wallet id
-        tokens:
-          type: array
-          description: An array of payment method tokens associated with the specified wallet ID or customer ID. Use this array to filter the contents of the wallet and only display the specified fund tokens.
-          items:
-            $ref: '#/components/schemas/FundToken'
-        allowAdd:
-          type: boolean
-          example: true
-          description: Set this option to true if the customer should be allowed to add new payment methods to the wallet
-        allowEdit:
-          type: boolean
-          example: true
-          description: Set this option to true if the customer should be allowed to edit existing wallet items
-        allowDelete:
-          type: boolean
-          example: true
-          description: Set this option to true if the customer should be allowed to remove items from the wallet
-        saveByDefault:
-          type: boolean
-          example: true
-          description: Set this option to true if the entry should be saved to the wallet by default
-      example:
-        id: BA25BVH5HCRI
-        customerId: CUST12345
-        tokens:
-        - 1NQGAW7N4S7H
-        allowAdd: true
-        allowEdit: true
-        allowDelete: true
-        saveByDefault: false
-    CreditCardToken:
-      description: Token information for a credit card
+    CardExpirationYear:
+      type: integer
+      example: 2030
+      minimum: 2020
+      maximum: 2099
+      description: The expiration year, expressed as a 4-digit year
+    BankAccountToken:
+      description: Token information for a bank acocunt
       required:
       - token
       properties:
@@ -529,40 +450,27 @@ components:
           $ref: '#/components/schemas/FundToken'
         accountHolder:
           $ref: '#/components/schemas/AccountHolder'
+        routingNumber:
+          $ref: '#/components/schemas/BankRoutingNumber'
         accountNumberLastFour:
           $ref: '#/components/schemas/AccountNumberLastFour'
-        expirationMonth:
-          $ref: '#/components/schemas/CardExpirationMonth'
-        expirationYear:
-          $ref: '#/components/schemas/CardExpirationYear'
-        brand:
-          $ref: '#/components/schemas/CardBrand'
+        currency:
+          $ref: '#/components/schemas/Currency'
         editable:
           type: boolean
           example: true
           description: Set to true if the payment method should be editable by the customer
-    Currency:
-      type: string
-      example: USD
-      pattern: ^[A-Z]{3}$
-      description: The uppercase 3-letter ISO currency code
-    WalletID:
-      type: string
-      example: BA25BVH5HCRI
-      pattern: ^[0-9A-Z]{12}$
-      description: The wallet ID returned by a POST to /wallets
-    AccountNumberLastFour:
-      type: string
-      example: '1234'
-      pattern: ^\d{4}$
-      description: The last four digits of the account number
-    BankAccountType:
-      type: string
-      enum:
-      - checking
-      - savings
-      example: checking
-      description: The type of account (checking or savings)
+    CreditCardTokenUpdate:
+      description: Information for updating an existing credit card token
+      properties:
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolder'
+        expirationMonth:
+          $ref: '#/components/schemas/CardExpirationMonth'
+        expirationYear:
+          $ref: '#/components/schemas/CardExpirationYear'
+        cardVerificationValue:
+          $ref: '#/components/schemas/CardVerificationValue'
     PaymentTypes:
       type: array
       items:
@@ -627,25 +535,75 @@ components:
         - name: applePay
         - label: applePay
         - errorLabel: applePay
-    BankAccountToken:
-      description: Token information for a bank acocunt
+    PaymentType:
+      description: A payment type or method
       required:
-      - token
+      - name
+      - label
       properties:
-        token:
-          $ref: '#/components/schemas/FundToken'
-        accountHolder:
-          $ref: '#/components/schemas/AccountHolder'
-        routingNumber:
-          $ref: '#/components/schemas/BankRoutingNumber'
-        accountNumberLastFour:
-          $ref: '#/components/schemas/AccountNumberLastFour'
-        currency:
-          $ref: '#/components/schemas/Currency'
-        editable:
+        name:
+          $ref: '#/components/schemas/PaymentMethod'
+        label:
+          type: string
+          example: Credit Card
+          description: The payment method display name
+        promoted:
           type: boolean
-          example: true
-          description: Set to true if the payment method should be editable by the customer
+          example: false
+          description: Set this option to true to display this payment method in a promoted fashion
+        fields:
+          $ref: '#/components/schemas/FieldOptions'
+      additionalProperties:
+        description: Reserved for future use
+        oneOf:
+        - type: object
+        - type: boolean
+        - type: integer
+        - type: string
+        - type: number
+    AccountNumberLastFour:
+      type: string
+      example: '1234'
+      pattern: ^\d{4}$
+      description: The last four digits of the account number
+    SessionID:
+      type: string
+      format: uuid
+      example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      description: The session ID returned by a POST to /sessions
+    SessionOptionBase:
+      description: An option for a specific session
+      additionalProperties:
+        oneOf:
+        - type: object
+        - type: boolean
+        - type: integer
+        - type: string
+        - type: number
+      properties:
+        fields:
+          allOf:
+          - $ref: '#/components/schemas/FieldOptions'
+          - deprecated: true
+        paymentTypes:
+          $ref: '#/components/schemas/PaymentTypes'
+        avsRules:
+          $ref: '#/components/schemas/AVSOption'
+    CreditCardTokens:
+      type: array
+      description: A collection of credit card tokens
+      items:
+        $ref: '#/components/schemas/CreditCardToken'
+    CardBrand:
+      type: string
+      example: visa
+      enum:
+      - visa
+      - master
+      - american_express
+      - discover
+      description: The card brand
     AccountHolder:
       type: string
       example: Jane Smith
@@ -653,57 +611,30 @@ components:
       maxLength: 50
       pattern: ^\S(.*\S)?$
       description: The name of the cardholder
-    RejectAddressMismatch:
-      type: boolean
-      example: true
-      description: Set custom avs protection rule to reject or allow credit card transactions with an address mismatch
-    PaymentMethod:
-      type: string
-      enum:
-      - creditCard
-      - ach
-      - giftCard
-      - applePay
-      example: creditCard
-      description: The payment type
-    CardExpirationMonth:
-      type: integer
-      example: 12
-      minimum: 1
-      maximum: 12
-      description: The expiration month, expressed as an integer from 1 (January) to 12 (December)
-    CardAccountNumber:
-      type: string
-      example: '4111111111111111'
-      pattern: ^\d{8,19}$
-      description: The card account number
-    CreditCardPaymentType:
-      description: A credit card payment type definition
+    TokenRequest:
+      description: A request for a new token for the provided payment method
+      required:
+      - type
       properties:
-        paymentType:
-          $ref: '#/components/schemas/PaymentType'
-      example:
-        name: creditCard
-        label: Payment Card
-        promoted: false
-        fields:
-        - name: cardholderName
-          label: Cardholder Name
-          errorLabel: Cardholder name
-        - name: accountNo
-          label: Account Number
-          errorLabel: Credit card number
-        - name: expDate
-          label: Expiration Date
-          errorLabel: Expiration date
-        - name: cvv
-          label: Security Code
-          errorLabel: Security code
-    FundToken:
-      type: string
-      example: 1NQGAW7N4S7H
-      pattern: ^[0-9A-Z]{12}$
-      description: The token associated with a funding source
+        type:
+          $ref: '#/components/schemas/PaymentMethod'
+        addToWallet:
+          type: boolean
+          example: false
+          description: Set this to true to add the payment method to the customer's wallet
+        captchaToken:
+          type: string
+          example: abc123
+          description: Send the Google reCaptcha token for verification.
+      anyOf:
+      - $ref: '#/components/schemas/CreditCard'
+      - $ref: '#/components/schemas/ACH'
+      - $ref: '#/components/schemas/GiftCard'
+    FieldOptions:
+      type: array
+      description: A collection of field options
+      items:
+        $ref: '#/components/schemas/FieldOption'
     Error:
       type: object
       description: Error
@@ -727,12 +658,88 @@ components:
                 type: string
                 example: not found
                 description: The error message
-    SessionID:
+    PaymentMethod:
       type: string
-      format: uuid
-      example: d290f1ee-6c54-4b01-90e6-d701748f0851
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-      description: The session ID returned by a POST to /sessions
+      enum:
+      - creditCard
+      - ach
+      - giftCard
+      - applePay
+      example: creditCard
+      description: The payment type
+    CardVerificationValue:
+      type: string
+      pattern: ^\d{3,4}$
+      example: '123'
+      description: The card verification value
+    CheckType:
+      type: string
+      enum:
+      - business
+      - personal
+      example: business
+      description: The type of account (business or personal)
+    PIN:
+      type: string
+      pattern: ^\d{3,12}$
+      example: '123'
+      description: The PIN
+    CreditCardPaymentType:
+      description: A credit card payment type definition
+      properties:
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+      example:
+        name: creditCard
+        label: Payment Card
+        promoted: false
+        fields:
+        - name: cardholderName
+          label: Cardholder Name
+          errorLabel: Cardholder name
+        - name: accountNo
+          label: Account Number
+          errorLabel: Credit card number
+        - name: expDate
+          label: Expiration Date
+          errorLabel: Expiration date
+        - name: cvv
+          label: Security Code
+          errorLabel: Security code
+    TokenResponse:
+      type: object
+      description: A response containing a token
+      required:
+      - token
+      properties:
+        token:
+          $ref: '#/components/schemas/FundToken'
+    FundToken:
+      type: string
+      example: 1NQGAW7N4S7H
+      pattern: ^[0-9A-Z]{12}$
+      description: The token associated with a funding source
+    CreditCardToken:
+      description: Token information for a credit card
+      required:
+      - token
+      properties:
+        token:
+          $ref: '#/components/schemas/FundToken'
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolder'
+        accountNumberLastFour:
+          $ref: '#/components/schemas/AccountNumberLastFour'
+        expirationMonth:
+          $ref: '#/components/schemas/CardExpirationMonth'
+        expirationYear:
+          $ref: '#/components/schemas/CardExpirationYear'
+        brand:
+          $ref: '#/components/schemas/CardBrand'
+        editable:
+          type: boolean
+          example: true
+          description: Set to true if the payment method should be editable by the customer
     CreditCard:
       description: Account information for a credit card transaction
       required:
@@ -750,106 +757,6 @@ components:
           $ref: '#/components/schemas/CardExpirationYear'
         cardVerificationValue:
           $ref: '#/components/schemas/CardVerificationValue'
-    CardExpirationYear:
-      type: integer
-      example: 2030
-      minimum: 2020
-      maximum: 2099
-      description: The expiration year, expressed as a 4-digit year
-    FieldOptions:
-      type: array
-      description: A collection of field options
-      items:
-        $ref: '#/components/schemas/FieldOption'
-    BankRoutingNumber:
-      type: string
-      example: '123456780'
-      pattern: ^\d{8,9}$
-      description: The routing number of the financial institution
-    TokenResponse:
-      type: object
-      description: A response containing a token
-      required:
-      - token
-      properties:
-        token:
-          $ref: '#/components/schemas/FundToken'
-    PIN:
-      type: string
-      pattern: ^\d{3,12}$
-      example: '123'
-      description: The PIN
-    WalletOptionsGet:
-      allOf:
-      - $ref: '#/components/schemas/WalletOptionsBase'
-      - type: object
-        properties:
-          creditCardTokens:
-            $ref: '#/components/schemas/CreditCardTokens'
-          bankAccountTokens:
-            $ref: '#/components/schemas/BankAccountTokens'
-    FieldOption:
-      description: Options for a single field
-      required:
-      - name
-      - label
-      additionalProperties:
-        description: Reserved for future use
-        oneOf:
-        - type: boolean
-        - type: integer
-        - type: string
-        - type: number
-      properties:
-        name:
-          type: string
-          example: expDate
-          description: Field name
-        label:
-          type: string
-          example: Expiration Date
-          description: Field display name
-        placeholder:
-          type: string
-          example: MM / YY
-          description: The placeholder shown on the form
-        errorLabel:
-          type: string
-          example: Please check the Expiration Date
-          description: The error message displayed for an invalid entry
-        allowLabelUpdate:
-          type: boolean
-          example: true
-          description: Set to true if the client-side code should be allowed to override the label
-        id:
-          type: string
-          example: ddlExpDate
-          minLength: 1
-          description: The DOM ID of the field
-    CardVerificationValue:
-      type: string
-      pattern: ^\d{3,4}$
-      example: '123'
-      description: The card verification value
-    TokenRequest:
-      description: A request for a new token for the provided payment method
-      required:
-      - type
-      properties:
-        type:
-          $ref: '#/components/schemas/PaymentMethod'
-        addToWallet:
-          type: boolean
-          example: false
-          description: Set this to true to add the payment method to the customer's wallet
-        captchaToken:
-          type: string
-          example: abc123
-          description: Send the Google reCaptcha token for verification.
-      anyOf:
-      - $ref: '#/components/schemas/CreditCard'
-      - $ref: '#/components/schemas/ACH'
-      - $ref: '#/components/schemas/GiftCard'
     GiftCardPaymentType:
       description: A credit card payment type definition
       properties:
@@ -869,21 +776,114 @@ components:
         - name: pin
           label: PIN
           errorLabel: PIN
-    SessionOptionBase:
-      description: An option for a specific session
-      additionalProperties:
-        oneOf:
-        - type: object
-        - type: boolean
-        - type: integer
-        - type: string
-        - type: number
+    WalletOptionsGet:
+      allOf:
+      - $ref: '#/components/schemas/WalletOptionsBase'
+      - type: object
+        properties:
+          creditCardTokens:
+            $ref: '#/components/schemas/CreditCardTokens'
+          bankAccountTokens:
+            $ref: '#/components/schemas/BankAccountTokens'
+    RejectPostCodeMismatch:
+      type: boolean
+      example: true
+      description: Set custom avs protection rule to reject or allow credit card transactions with a postal code mismatch
+    CardExpirationMonth:
+      type: integer
+      example: 12
+      minimum: 1
+      maximum: 12
+      description: The expiration month, expressed as an integer from 1 (January) to 12 (December)
+    ApplePayPaymentType:
+      description: A credit card payment type definition
       properties:
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+      example:
+        name: applePay
+        label: ApplePay
+        promoted: true
         fields:
-          allOf:
-          - $ref: '#/components/schemas/FieldOptions'
-          - deprecated: true
-        paymentTypes:
-          $ref: '#/components/schemas/PaymentTypes'
-        avsRules:
-          $ref: '#/components/schemas/AVSOption'
+        - name: applePay
+        - label: applePay
+        - errorLabel: applePay
+    ACH:
+      description: Account information for an ACH transaction
+      required:
+      - accountNumber
+      - routingNumber
+      - checkType
+      - accountType
+      - accountHolder
+      - currency
+      properties:
+        accountNumber:
+          $ref: '#/components/schemas/BankAccountNumber'
+        routingNumber:
+          $ref: '#/components/schemas/BankRoutingNumber'
+        checkType:
+          $ref: '#/components/schemas/CheckType'
+        accountType:
+          $ref: '#/components/schemas/BankAccountType'
+        accountHolder:
+          $ref: '#/components/schemas/AccountHolder'
+        currency:
+          $ref: '#/components/schemas/Currency'
+    BankAccountNumber:
+      type: string
+      example: '123456789'
+      pattern: ^\d{4,34}$
+      description: The demand deposit account number
+    BankAccountTokens:
+      type: array
+      items:
+        $ref: '#/components/schemas/BankAccountToken'
+    WalletOptionsBase:
+      description: Options for wallet behavior
+      properties:
+        id:
+          $ref: '#/components/schemas/WalletID'
+        customerId:
+          type: string
+          example: 1NQGAW7N4S7H
+          minLength: 1
+          pattern: ^[0-9A-Z]+$
+          description: Set this option to the desired customer id, this can be specified instead of a wallet id
+        tokens:
+          type: array
+          description: An array of payment method tokens associated with the specified wallet ID or customer ID. Use this array to filter the contents of the wallet and only display the specified fund tokens.
+          items:
+            $ref: '#/components/schemas/FundToken'
+        allowAdd:
+          type: boolean
+          example: true
+          description: Set this option to true if the customer should be allowed to add new payment methods to the wallet
+        allowEdit:
+          type: boolean
+          example: true
+          description: Set this option to true if the customer should be allowed to edit existing wallet items
+        allowDelete:
+          type: boolean
+          example: true
+          description: Set this option to true if the customer should be allowed to remove items from the wallet
+        saveByDefault:
+          type: boolean
+          example: true
+          description: Set this option to true if the entry should be saved to the wallet by default
+      example:
+        id: BA25BVH5HCRI
+        customerId: CUST12345
+        tokens:
+        - 1NQGAW7N4S7H
+        allowAdd: true
+        allowEdit: true
+        allowDelete: true
+        saveByDefault: false
+    BankAccountType:
+      type: string
+      enum:
+      - checking
+      - savings
+      example: checking
+      description: The type of account (checking or savings)

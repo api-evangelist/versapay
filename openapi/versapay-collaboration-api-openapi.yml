@@ -221,6 +221,10 @@ components:
                 description: Error message
                 example: You need to sign in or create an account before continuing.
   schemas:
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
     Comment:
       type: object
       properties:
@@ -266,10 +270,6 @@ components:
           description: 'Name of the user''s organization – supplier''s name or the customer''s name. <br><br>Note that for comments made by customers, the customer_name and organization will have the same value. When the supplier made the comment, this field will hold the supplier business name.
 
             '
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
     Dispute:
       type: object
       properties:

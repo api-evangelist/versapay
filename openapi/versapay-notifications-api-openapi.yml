@@ -258,6 +258,18 @@ paths:
       operationId: postApiNotificationsDirectMessage
       x-operation-id-source: derived
 components:
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
   schemas:
     SingleReminderResponse:
       type: object
@@ -353,18 +365,6 @@ components:
         credit: 1
         scheduled: 0
         on_plan: 0
-  responses:
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

@@ -510,6 +510,153 @@ components:
           type: string
           description: The ISO8601 timestamp corresponding to completion of the import.
           example: '2016-08-30T15:39:30-04:00'
+    PaymentReconResponse:
+      type: object
+      properties:
+        payment_reconciliation_identifier:
+          type: string
+          description: Identifier of the payment
+        unapplied_amount:
+          type: string
+          description: The unapplied amount from total payment amount in Versapay.
+        unapplied_amount_in_source_system:
+          type: string
+          description: The unapplied amount from total payment amount in source/provided.
+        customer_identifier:
+          type: string
+          description: The customer number recorded on the payment in Versapay.
+          example: CUST123
+        discrepancy_message:
+          type: string
+          description: Message explaining the discrepancy.
+          example: Payment Not Present in Versapay.
+        payment_amount:
+          type: string
+          description: Optional, The payment amount in Versapay if present in uploaded recon csv.
+        payment_amount_in_source_system:
+          type: string
+          description: Optional, The payment amount in source/provided if present in uploaded recon csv.
+        applied_amount:
+          type: string
+          description: Optional, The amount applied from total payment amount in Versapay if present in uploaded recon csv.
+        applied_amount_in_source_system:
+          type: string
+          description: Optional, The amount applied from total payment amount in source/provided if present in uploaded recon csv.
+        external_payment_number:
+          type: string
+          description: Optional, The payment external number in Versapay if present in uploaded recon csv.
+        external_payment_number_in_source_system:
+          type: string
+          description: Optional, The payment external number in source/provided if present in uploaded recon csv.
+        payment_date:
+          type: string
+          description: Optional, Payment date in Versapay
+          example: '2021-12-31'
+        payment_date_in_source_system:
+          type: string
+          description: Optional, Payment date in source/provided if present in uploaded recon csv.
+          example: '2021-12-31'
+        currency:
+          type: string
+          description: Optional, The currency code in Versapay if present in uploaded recon csv.
+        currency_in_source_system:
+          type: string
+          description: Optional, The currency code in source/provided if present in uploaded recon csv.
+    LineItemResponse:
+      type: object
+      properties:
+        number:
+          type: string
+          description: Invoice line-item number.
+        description:
+          type: string
+          description: Invoice line-item description
+        quantity:
+          type: number
+          description: Invoice line-item quantity.
+        unit_cost_cents:
+          type: integer
+          description: Invoice line-item unit price in cents.
+        amount_cents:
+          type: integer
+          description: Invoice line-item total in cents.
+        balance_cents:
+          type: integer
+          description: Line-item balance in cents. Applicable if accepting short payments at line-item level.
+        id:
+          type: number
+          description: Internal id of the line-item record.
+        identifier:
+          type: string
+          description: Unique internal identifier for the line-item. Applicable if accepting short payments at line-item level.
+        invoice_id:
+          type: number
+          description: Internal id of the invoice.
+        purchase_order_number:
+          type: string
+          description: Purchase order number at the line-item level.
+        order_key:
+          type: string
+          description: Sequence number for the line-item to order-by when rendering on the invoice.
+        recurring_invoice_id:
+          type: string
+          description: Internal id of the recurring invoice. Applicable if using recurring invoices.
+        extended_attributes:
+          type: object
+          description: Additional non-standard attribute stored with the line-item record for presentment rendering.
+          properties:
+            key:
+              type: string
+              description: Key-value pair of the extended attribute on the line-item.
+    InvoiceReconResponse:
+      type: object
+      properties:
+        number:
+          type: string
+          description: The invoice number.
+          example: 12
+        division_code:
+          type: string
+          description: The division code associated with the invoice.
+          example: HOM
+        customer_number:
+          type: string
+          description: The customer identifier associated with the invoice.
+          example: 1024
+        customer_name:
+          type: string
+          description: The customer name associated with the invoice.
+          example: Starblux Ltd
+        invoice_date:
+          type: string
+          description: The invoice date.
+          example: '2021-12-31'
+        payment_identifier:
+          type: string
+          description: The identifier of any detected parked/orphan payment associated with the invoice.
+        payment_date:
+          type: string
+          description: The date of any detected parked/orphan payment associated with the invoice.
+        orphaned_payment_amount:
+          type: string
+          description: The amount of any detected parked/orphan payment associated with the invoice.
+          example: $11,200.00
+        balance_in_arc:
+          type: string
+          description: The invoice balance.
+          example: $11,200.00
+        balance_in_source_system:
+          type: string
+          description: The invoice balance in source/provided.
+          example: $11,200.00
+        discrepancy_message:
+          type: string
+          description: Message explaining the discrepancy.
+          example: Invoice Not Present in ARC
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
     InvoiceResponse:
       type: object
       properties:
@@ -919,153 +1066,6 @@ components:
             line_item_dispute_reason_identifier: null
             line_item_dispute_reason: null
             line_item_extended_attributes: {}
-    PaymentReconResponse:
-      type: object
-      properties:
-        payment_reconciliation_identifier:
-          type: string
-          description: Identifier of the payment
-        unapplied_amount:
-          type: string
-          description: The unapplied amount from total payment amount in Versapay.
-        unapplied_amount_in_source_system:
-          type: string
-          description: The unapplied amount from total payment amount in source/provided.
-        customer_identifier:
-          type: string
-          description: The customer number recorded on the payment in Versapay.
-          example: CUST123
-        discrepancy_message:
-          type: string
-          description: Message explaining the discrepancy.
-          example: Payment Not Present in Versapay.
-        payment_amount:
-          type: string
-          description: Optional, The payment amount in Versapay if present in uploaded recon csv.
-        payment_amount_in_source_system:
-          type: string
-          description: Optional, The payment amount in source/provided if present in uploaded recon csv.
-        applied_amount:
-          type: string
-          description: Optional, The amount applied from total payment amount in Versapay if present in uploaded recon csv.
-        applied_amount_in_source_system:
-          type: string
-          description: Optional, The amount applied from total payment amount in source/provided if present in uploaded recon csv.
-        external_payment_number:
-          type: string
-          description: Optional, The payment external number in Versapay if present in uploaded recon csv.
-        external_payment_number_in_source_system:
-          type: string
-          description: Optional, The payment external number in source/provided if present in uploaded recon csv.
-        payment_date:
-          type: string
-          description: Optional, Payment date in Versapay
-          example: '2021-12-31'
-        payment_date_in_source_system:
-          type: string
-          description: Optional, Payment date in source/provided if present in uploaded recon csv.
-          example: '2021-12-31'
-        currency:
-          type: string
-          description: Optional, The currency code in Versapay if present in uploaded recon csv.
-        currency_in_source_system:
-          type: string
-          description: Optional, The currency code in source/provided if present in uploaded recon csv.
-    InvoiceReconResponse:
-      type: object
-      properties:
-        number:
-          type: string
-          description: The invoice number.
-          example: 12
-        division_code:
-          type: string
-          description: The division code associated with the invoice.
-          example: HOM
-        customer_number:
-          type: string
-          description: The customer identifier associated with the invoice.
-          example: 1024
-        customer_name:
-          type: string
-          description: The customer name associated with the invoice.
-          example: Starblux Ltd
-        invoice_date:
-          type: string
-          description: The invoice date.
-          example: '2021-12-31'
-        payment_identifier:
-          type: string
-          description: The identifier of any detected parked/orphan payment associated with the invoice.
-        payment_date:
-          type: string
-          description: The date of any detected parked/orphan payment associated with the invoice.
-        orphaned_payment_amount:
-          type: string
-          description: The amount of any detected parked/orphan payment associated with the invoice.
-          example: $11,200.00
-        balance_in_arc:
-          type: string
-          description: The invoice balance.
-          example: $11,200.00
-        balance_in_source_system:
-          type: string
-          description: The invoice balance in source/provided.
-          example: $11,200.00
-        discrepancy_message:
-          type: string
-          description: Message explaining the discrepancy.
-          example: Invoice Not Present in ARC
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
-    LineItemResponse:
-      type: object
-      properties:
-        number:
-          type: string
-          description: Invoice line-item number.
-        description:
-          type: string
-          description: Invoice line-item description
-        quantity:
-          type: number
-          description: Invoice line-item quantity.
-        unit_cost_cents:
-          type: integer
-          description: Invoice line-item unit price in cents.
-        amount_cents:
-          type: integer
-          description: Invoice line-item total in cents.
-        balance_cents:
-          type: integer
-          description: Line-item balance in cents. Applicable if accepting short payments at line-item level.
-        id:
-          type: number
-          description: Internal id of the line-item record.
-        identifier:
-          type: string
-          description: Unique internal identifier for the line-item. Applicable if accepting short payments at line-item level.
-        invoice_id:
-          type: number
-          description: Internal id of the invoice.
-        purchase_order_number:
-          type: string
-          description: Purchase order number at the line-item level.
-        order_key:
-          type: string
-          description: Sequence number for the line-item to order-by when rendering on the invoice.
-        recurring_invoice_id:
-          type: string
-          description: Internal id of the recurring invoice. Applicable if using recurring invoices.
-        extended_attributes:
-          type: object
-          description: Additional non-standard attribute stored with the line-item record for presentment rendering.
-          properties:
-            key:
-              type: string
-              description: Key-value pair of the extended attribute on the line-item.
   responses:
     UnauthorizedError:
       description: Unauthorized

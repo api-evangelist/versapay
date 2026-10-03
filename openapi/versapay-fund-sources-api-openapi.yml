@@ -98,25 +98,29 @@ components:
                 description: Error message
                 example: You need to sign in or create an account before continuing.
   schemas:
-    VaultResponse:
+    FundSource:
       type: object
       properties:
         type:
           type: string
-          description: ''
+          description: "Type of fund:\n  * `bank_account` - Bank Account\n  * `credit_card` - Credit Card\n  * `balance` - Versapay Account\n"
+          enum:
+          - bank_account
+          - credit_card
+          - balance
         token:
           type: string
-          description: Token of the funding source which can be used as fund_token when creating a transaction, see 'Create Transactions'.
+          description: Fund's unique identifier used to identify fund when using other API calls.
         name:
           type: string
-          description: Display name of funding source.
+          description: Masked display name of the fund source.
         state:
           type: string
-          description: ''
-      example:
-        token: 79VMZNLXCBL9
-        name: TD Canada Trust (1234)
-        type: bank_account
+          enum:
+          - verified
+          - unverified
+          - invalid
+          description: Returned for bank accounts only.
     BankAccount:
       type: object
       properties:
@@ -189,29 +193,25 @@ components:
               enum:
               - US
               - CA
-    FundSource:
+    VaultResponse:
       type: object
       properties:
         type:
           type: string
-          description: "Type of fund:\n  * `bank_account` - Bank Account\n  * `credit_card` - Credit Card\n  * `balance` - Versapay Account\n"
-          enum:
-          - bank_account
-          - credit_card
-          - balance
+          description: ''
         token:
           type: string
-          description: Fund's unique identifier used to identify fund when using other API calls.
+          description: Token of the funding source which can be used as fund_token when creating a transaction, see 'Create Transactions'.
         name:
           type: string
-          description: Masked display name of the fund source.
+          description: Display name of funding source.
         state:
           type: string
-          enum:
-          - verified
-          - unverified
-          - invalid
-          description: Returned for bank accounts only.
+          description: ''
+      example:
+        token: 79VMZNLXCBL9
+        name: TD Canada Trust (1234)
+        type: bank_account
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

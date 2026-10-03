@@ -506,6 +506,62 @@ paths:
       operationId: postApiImportsCustomersByIdentifierUpdateIdentifier
       x-operation-id-source: derived
 components:
+  responses:
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: This request is not allowed for this resource.
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You have not provided all necessary parameters to make this call.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: ActiveRecord::RecordNotFound
   schemas:
     CustomerResponse:
       type: object
@@ -1032,6 +1088,185 @@ components:
           user_telephone: null
           user_title: null
           user_department: null
+    CustomersResponse:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Customer number, unique within supplier.
+        display_number:
+          type: string
+          description: Customer display number.
+        name:
+          type: string
+          description: Customer name.
+        email:
+          type: string
+          format: email
+          description: Email address of the default contact.
+        business_number:
+          type: string
+          description: Customer EIN or Business Number.
+        first_name:
+          type: string
+          description: First name of the default contact.
+        last_name:
+          type: string
+          description: Last name of the default contact.
+        address_1:
+          type: string
+          description: Billing address line 1.
+        address_2:
+          type: string
+          description: Billing address line 2.
+        postal_code:
+          type: string
+          description: Billing address - zip or postal code.
+        city:
+          type: string
+          description: Billing address - city.
+        province:
+          type: string
+          description: Billing address - state or province.
+        country:
+          type: string
+          description: Billing address - country.
+        telephone:
+          type: string
+          description: Customer phone number.
+        fax:
+          type: string
+          description: Customer fax number.
+        status:
+          type: string
+          description: Customer adoption status.
+        auto_debit:
+          type: string
+          description: AutoPay agreement status.
+        invite_sent:
+          type: string
+          format: date
+          description: The date when invite was sent, in YYYY-MM-DD format.
+        signed_up:
+          type: string
+          format: date
+          description: The date when customer user signed up, in YYYY-MM-DD format.
+        notification_suppressed:
+          type: boolean
+          description: If true, notifications to the customer are suppressed.
+        notification_override:
+          type: boolean
+          description: If true, overdue balance notifications are made optional.
+        paper_invoices:
+          type: boolean
+          description: If true, customer receives paper invoices.
+        paper_statements:
+          type: boolean
+          description: If true, customer receives paper statements.
+        parent_identifier:
+          type: string
+          description: Identifier of the parent customer in a hierarchy.
+        balance_cents:
+          type: integer
+          description: 'Total outstanding balance on the customer account in cents.
+
+            '
+        aging_cents:
+          type: integer
+          description: 'Total overdue balance on the customer account in cents.
+
+            '
+        aging_30_cents:
+          type: integer
+          description: 'Balance overdue (1-30 days) on the customer account in cents.
+
+            '
+        aging_60_cents:
+          type: integer
+          description: 'Balance overdue (31-60 days) on the customer account in cents.
+
+            '
+        aging_90_cents:
+          type: integer
+          description: 'Balance overdue (61-90 days) on the customer account in cents.
+
+            '
+        aging_120_cents:
+          type: integer
+          description: 'Balance overdue (91-120 days) on the customer account in cents.
+
+            '
+        aging_180_cents:
+          type: integer
+          description: 'Balance overdue (121-180 days) on the customer account in cents.
+
+            '
+        aging_older_cents:
+          type: integer
+          description: 'Balance overdue (181+ days) on the customer account in cents.
+
+            '
+        current_cents:
+          type: integer
+          description: 'Current outstanding balance in cents.
+
+            '
+        credit_cents:
+          type: integer
+          description: 'Total outstanding credit balance on the customer account in cents.
+
+            '
+        unapplied_payment_cents:
+          type: integer
+          description: 'Total unapplied payment on the customer account in cents.
+
+            '
+        prepayment_cents:
+          type: integer
+          description: 'Total prepayment on the customer account in cents.
+
+            '
+        owing_cents:
+          type: integer
+          description: Total owing balance in cents.
+        notes:
+          type: string
+          description: Optional notes.
+        adp:
+          type: string
+          description: Average days to pay.
+        adp_arc:
+          type: string
+          description: Average days to pay (checkout).
+        adp_external:
+          type: string
+          description: Average days to pay (external).
+        last_contact_date:
+          type: string
+          format: date
+          description: Last contact date.
+        next_contact_date:
+          type: string
+          format: date
+          description: Next planned contact date.
+        credit_limit_cents:
+          type: integer
+          description: Credit limit in cents.
+        account_status:
+          type: string
+          description: Account status (open/closed).
+        tags:
+          type: string
+          description: Semi-colon delimited list of imported tags.
+        user_tags:
+          type: string
+          description: Semi-colon delimited list of user-assigned tags.
+        attributes_marshal:
+          type: object
+          description: Additional attributes.
+        external_id:
+          type: string
+          description: External (ERP-based) identifier for the customer record.
     Contact:
       type: object
       required:
@@ -1060,6 +1295,10 @@ components:
           type: boolean
           description: If this is `true`, the contact is activated or invited (depending on the account configuration) on import.
           default: false
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
     Customer:
       type: object
       required:
@@ -1268,245 +1507,6 @@ components:
             first_name: Steve
             last_name: Jobs
             title: CEO
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
-    CustomersResponse:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Customer number, unique within supplier.
-        display_number:
-          type: string
-          description: Customer display number.
-        name:
-          type: string
-          description: Customer name.
-        email:
-          type: string
-          format: email
-          description: Email address of the default contact.
-        business_number:
-          type: string
-          description: Customer EIN or Business Number.
-        first_name:
-          type: string
-          description: First name of the default contact.
-        last_name:
-          type: string
-          description: Last name of the default contact.
-        address_1:
-          type: string
-          description: Billing address line 1.
-        address_2:
-          type: string
-          description: Billing address line 2.
-        postal_code:
-          type: string
-          description: Billing address - zip or postal code.
-        city:
-          type: string
-          description: Billing address - city.
-        province:
-          type: string
-          description: Billing address - state or province.
-        country:
-          type: string
-          description: Billing address - country.
-        telephone:
-          type: string
-          description: Customer phone number.
-        fax:
-          type: string
-          description: Customer fax number.
-        status:
-          type: string
-          description: Customer adoption status.
-        auto_debit:
-          type: string
-          description: AutoPay agreement status.
-        invite_sent:
-          type: string
-          format: date
-          description: The date when invite was sent, in YYYY-MM-DD format.
-        signed_up:
-          type: string
-          format: date
-          description: The date when customer user signed up, in YYYY-MM-DD format.
-        notification_suppressed:
-          type: boolean
-          description: If true, notifications to the customer are suppressed.
-        notification_override:
-          type: boolean
-          description: If true, overdue balance notifications are made optional.
-        paper_invoices:
-          type: boolean
-          description: If true, customer receives paper invoices.
-        paper_statements:
-          type: boolean
-          description: If true, customer receives paper statements.
-        parent_identifier:
-          type: string
-          description: Identifier of the parent customer in a hierarchy.
-        balance_cents:
-          type: integer
-          description: 'Total outstanding balance on the customer account in cents.
-
-            '
-        aging_cents:
-          type: integer
-          description: 'Total overdue balance on the customer account in cents.
-
-            '
-        aging_30_cents:
-          type: integer
-          description: 'Balance overdue (1-30 days) on the customer account in cents.
-
-            '
-        aging_60_cents:
-          type: integer
-          description: 'Balance overdue (31-60 days) on the customer account in cents.
-
-            '
-        aging_90_cents:
-          type: integer
-          description: 'Balance overdue (61-90 days) on the customer account in cents.
-
-            '
-        aging_120_cents:
-          type: integer
-          description: 'Balance overdue (91-120 days) on the customer account in cents.
-
-            '
-        aging_180_cents:
-          type: integer
-          description: 'Balance overdue (121-180 days) on the customer account in cents.
-
-            '
-        aging_older_cents:
-          type: integer
-          description: 'Balance overdue (181+ days) on the customer account in cents.
-
-            '
-        current_cents:
-          type: integer
-          description: 'Current outstanding balance in cents.
-
-            '
-        credit_cents:
-          type: integer
-          description: 'Total outstanding credit balance on the customer account in cents.
-
-            '
-        unapplied_payment_cents:
-          type: integer
-          description: 'Total unapplied payment on the customer account in cents.
-
-            '
-        prepayment_cents:
-          type: integer
-          description: 'Total prepayment on the customer account in cents.
-
-            '
-        owing_cents:
-          type: integer
-          description: Total owing balance in cents.
-        notes:
-          type: string
-          description: Optional notes.
-        adp:
-          type: string
-          description: Average days to pay.
-        adp_arc:
-          type: string
-          description: Average days to pay (checkout).
-        adp_external:
-          type: string
-          description: Average days to pay (external).
-        last_contact_date:
-          type: string
-          format: date
-          description: Last contact date.
-        next_contact_date:
-          type: string
-          format: date
-          description: Next planned contact date.
-        credit_limit_cents:
-          type: integer
-          description: Credit limit in cents.
-        account_status:
-          type: string
-          description: Account status (open/closed).
-        tags:
-          type: string
-          description: Semi-colon delimited list of imported tags.
-        user_tags:
-          type: string
-          description: Semi-colon delimited list of user-assigned tags.
-        attributes_marshal:
-          type: object
-          description: Additional attributes.
-        external_id:
-          type: string
-          description: External (ERP-based) identifier for the customer record.
-  responses:
-    PreconditionFailed:
-      description: Precondition Failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: API token does not have permission for this request. Please contact your account administrator.
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You have not provided all necessary parameters to make this call.
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
-    NotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: ActiveRecord::RecordNotFound
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: This request is not allowed for this resource.
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

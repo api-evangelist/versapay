@@ -90,17 +90,6 @@ paths:
       x-operation-id-source: derived
 components:
   responses:
-    PreconditionFailed:
-      description: Precondition Failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: API token does not have permission for this request. Please contact your account administrator.
     UnauthorizedError:
       description: Unauthorized
       content:
@@ -112,6 +101,17 @@ components:
                 type: string
                 description: Error message
                 example: You need to sign in or create an account before continuing.
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

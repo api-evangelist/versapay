@@ -574,10 +574,6 @@ components:
         fx_amount_cents:
           type: number
           description: Optional. The amount of the payment in the gateway currency in cents.
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
     PaymentImport:
       type: object
       required:
@@ -978,6 +974,10 @@ components:
         fx_amount_cents:
           type: number
           description: Optional. The amount of the payment in the gateway currency in cents.
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

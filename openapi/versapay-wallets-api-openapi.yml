@@ -620,518 +620,19 @@ paths:
       operationId: getApiExportsWalletsRecent
       x-operation-id-source: derived
 components:
-  schemas:
-    Address:
-      type: object
-      required:
-      - address1
-      - city
-      - post_code
-      - country
-      properties:
-        address1:
-          type: string
-          example: 1314 NW GLISAN ST
-          minLength: 1
-          maxLength: 25
-        address2:
-          type: string
-          example: Apartment 1
-          maxLength: 25
-        city:
-          type: string
-          example: Portland
-          minLength: 1
-          maxLength: 20
-        state_province:
-          type: string
-          example: OR
-          pattern: ^[a-z]{2}$
-          maxLength: 2
-          minLength: 2
-        post_code:
-          type: string
-          example: '97209'
-          maxLength: 5
-        country:
-          type: string
-          pattern: ^[a-z]{2}$
-          example: us
-          maxLength: 2
-          minLength: 2
-        override_validation:
-          $ref: '#/components/schemas/OverrideValidation'
-    WalletPaymentMethodPatch:
-      type: object
-      properties:
-        credit_card:
-          $ref: '#/components/schemas/WalletCreditCardPatch'
-        bank_account:
-          $ref: '#/components/schemas/WalletBankAccountPatch'
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
-    WalletPaymentMethodRequest:
-      type: object
-      properties:
-        credit_card:
-          $ref: '#/components/schemas/WalletCreditCard'
-        bank_account:
-          $ref: '#/components/schemas/WalletBankAccount'
-    WalletRequest:
-      type: object
-      properties:
-        customer:
-          $ref: '#/components/schemas/WalletCustomer'
-        contact:
-          $ref: '#/components/schemas/WalletContact'
-        credit_card:
-          $ref: '#/components/schemas/WalletCreditCard'
-        bank_account:
-          $ref: '#/components/schemas/WalletBankAccount'
-    WalletCreditCard:
-      type: object
-      description: Alternative to fund_token, a credit card object or token reference to an existing credit card
-      required:
-      - name
-      - expiry_month
-      - expiry_year
-      - card_number
-      - cvv
-      - address
-      properties:
-        name:
-          type: string
-          description: Cardholder name
-        expiry_month:
-          type: string
-          description: 2 digit month
-        expiry_year:
-          type: string
-          description: 4 digit year
-        card_number:
-          type: string
-          description: Credit card number
-        cvv:
-          type: string
-        locked:
-          type: boolean
-        nickname:
-          type: string
-        is_default:
-          type: boolean
-          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
-        is_single_use:
-          type: boolean
-          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
-        address:
-          type: object
-          properties:
-            address_1:
-              type: string
-            city:
-              type: string
-            province:
-              type: string
-              description: US state or CA province code
-            postal_code:
-              type: string
-              description: US zip code or CA postal code
-            country:
-              type: string
-              enum:
-              - US
-              - CA
-    OverrideValidation:
-      type: boolean
-      example: true
-    WalletCustomer:
-      type: object
-      description: Invoicing customer reference
-      required:
-      - identifier
-      properties:
-        identifier:
-          type: string
-          description: Customer number, must be unique within supplier. Alphanumeric.
-          example: C1234
-        name:
-          type: string
-          description: Customer name.
-          example: Acme Inc.
-    ContactReference:
-      type: object
-      properties:
-        email:
-          type: string
-    CustomerReference:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Customer number, must be unique within supplier. Alphanumeric.
-          example: C1234
-        contacts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactReference'
-    WalletCreditCardPatch:
-      type: object
-      description: Alternative to fund_token, a credit card object or token reference to an existing credit card
-      properties:
-        name:
-          type: string
-          description: Cardholder name
-        expiry_month:
-          type: string
-          description: 2 digit month
-        expiry_year:
-          type: string
-          description: 4 digit year
-        cvv:
-          type: string
-        locked:
-          type: boolean
-        nickname:
-          type: string
-        is_default:
-          type: boolean
-          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
-        is_single_use:
-          type: boolean
-          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
-        address:
-          type: object
-          properties:
-            address_1:
-              type: string
-            city:
-              type: string
-            province:
-              type: string
-              description: US state or CA province code
-            postal_code:
-              type: string
-              description: US zip code or CA postal code
-            country:
-              type: string
-              enum:
-              - US
-              - CA
-    BankAccount:
-      type: object
-      properties:
-        currency:
-          type: string
-          enum:
-          - usd
-          - gbp
-          - eur
-          - cad
-          - aud
-        business_name:
-          description: Name of account holder.
-          type: string
-          example: John Doe
-        country:
-          description: CA (default), US, AU
-          type: string
-          example: CA
-        account_number:
-          description: Bank account number.
-          type: string
-          example: '10101234'
-        account_type:
-          description: checking or savings, defaults checking (required country = US)
-          type: string
-          example: checking
-        institution_number:
-          description: Financial institution number (required country = CA).
-          type: string
-          example: '001'
-        branch_number:
-          description: Financial institution branch/transit (required country = CA).
-          type: string
-          example: '03662'
-        routing_number:
-          description: Financial institution branch/location (required country = US, AU).
-          type: string
-          example: ''
-        token:
-          type: string
-          description: the bank account token
-        nickname:
-          type: string
-          description: optional value that describes the bank account
-        masked_account_number:
-          type: string
-          description: a masked version of the account number
-        routing_account_hash_function:
-          type: string
-          description: the hash function used to mask the routing number and account number
-        routing_account_hash:
-          type: string
-          description: the hash value used to mask the routing number and account number.
-        address:
-          type: object
-          properties:
-            address_1:
-              type: string
-            city:
-              type: string
-            province:
-              type: string
-              description: US state or CA province code
-            postal_code:
-              type: string
-              description: US zip code or CA postal code
-            country:
-              type: string
-              enum:
-              - US
-              - CA
-    WalletContact:
-      type: object
-      description: Billing contact
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          description: Email address
-        first_name:
-          type: string
-        last_name:
-          type: string
-    CreditCard:
-      type: object
-      properties:
-        token:
-          type: string
-          description: Fund token identifying the credit card
-          example: CC54QRN1CLDX
-        gateway_token:
-          type: string
-          description: Vault token representing the underlying secured/tokenized primary account number (PAN)
-        cardholder:
-          type: string
-        card_number:
-          type: string
-          description: Display name of payment method
-        display_name:
-          type: string
-          description: Display name of payment method
-        nickname:
-          type: string
-        expiry_month:
-          type: integer
-        expiry_year:
-          type: integer
-        is_debit:
-          type: boolean
-        is_default:
-          type: boolean
-          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
-        is_single_use:
-          type: boolean
-          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
-        brand:
-          type: string
-        created:
-          type: string
-          format: date-time
-        locked:
-          type: boolean
-          description: Indicates if the payment method is visible but locked from being used
-        inactive:
-          type: boolean
-          description: Indicates if the payment method is deleted
-        last_transaction_date:
-          type: string
-          format: date-time
-        last_transaction:
-          type: string
-          description: Transaction token of the last payment transaction made with this payment method
-        last_payment:
-          type: string
-          description: Payment identifier of the last payment transaction made with this payment method
-        address:
-          $ref: '#/components/schemas/Address'
-    WalletResponse:
-      type: object
-      properties:
-        wallet_token:
-          type: string
-          description: The token representing the wallet.
-        fund_token:
-          type:
-          - string
-          - 'null'
-          description: The token representing the fund, if a payment method was added.
-        wallets:
-          type: array
-          description: List of wallets.
-          items:
-            $ref: '#/components/schemas/Wallet'
-    WalletBankAccountPatch:
-      type: object
-      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
-      properties:
-        account_type:
-          type: string
-          enum:
-          - checking
-          - savings
-        account_holder:
-          type: string
-          description: Account holder name
-        check_type:
-          type: string
-          enum:
-          - personal
-          - business
-        external_name:
-          type: string
-        external_number:
-          type: string
-        locked:
-          type: boolean
-        nickname:
-          type: string
-        is_default:
-          type: boolean
-          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
-        is_single_use:
-          type: boolean
-          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
-        address:
-          type: object
-          properties:
-            address_1:
-              type: string
-            city:
-              type: string
-            province:
-              type: string
-              description: US state or CA province code
-            postal_code:
-              type: string
-              description: US zip code or CA postal code
-            country:
-              type: string
-              enum:
-              - US
-              - CA
-    Wallet:
-      type: object
-      properties:
-        token:
-          type: string
-          description: Token identifying the wallet
-          example: 77A81025AC3A
-        credit_cards:
-          description: Credit card payment methods in wallet
-          type: array
-          items:
-            $ref: '#/components/schemas/CreditCard'
-        bank_accounts:
-          description: Bank account payment methods in wallet
-          type: array
-          items:
-            $ref: '#/components/schemas/BankAccount'
-        customers:
-          description: Invoicing customers associated linked/using this wallet
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerReference'
-    WalletBankAccount:
-      type: object
-      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
-      required:
-      - currency
-      - account_type
-      - account_holder
-      - account_number
-      - routing_number
-      - institution_number
-      - branch_number
-      - check_type
-      - address
-      properties:
-        currency:
-          type: string
-          enum:
-          - USD
-          - CAD
-          - AUD
-          - EUR
-          - GBP
-        account_type:
-          type: string
-          enum:
-          - checking
-          - savings
-        account_holder:
-          type: string
-          description: Account holder name
-        account_number:
-          type: string
-          description: Bank account number
-        routing_number:
-          type: string
-          description: For non-CA financial institutions, ABA/bank routing number
-        institution_number:
-          type: string
-          description: For CA financial institutions, 3 digit institution code
-        branch_number:
-          type: string
-          description: For CA financial institutions, transit/branch number
-        check_type:
-          type: string
-          enum:
-          - personal
-          - business
-        external_name:
-          type: string
-        external_number:
-          type: string
-        locked:
-          type: boolean
-        nickname:
-          type: string
-        is_default:
-          type: boolean
-          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
-        is_single_use:
-          type: boolean
-          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
-        address:
-          type: object
-          properties:
-            address_1:
-              type: string
-            city:
-              type: string
-            province:
-              type: string
-              description: US state or CA province code
-            postal_code:
-              type: string
-              description: US zip code or CA postal code
-            country:
-              type: string
-              enum:
-              - US
-              - CA
   examples:
-    credit_card_not_found:
-      summary: credit_card_not_found
+    new_wallet_empty:
+      summary: New empty wallet
       value:
-        wallet_token: null
+        wallet_token: 5EJQM2RL4K2G
         fund_token: null
         wallets:
-          error: credit_card_not_found
+        - token: 5EJQM2RL4K2G
+          credit_cards: []
+          bank_accounts: []
+          customers:
+          - identifier: API-PTwDRl1PoialcnEHGv54V7Nj
+            contacts: []
     fund_address_unspecified:
       summary: fund_address_unspecified
       value:
@@ -1139,6 +640,41 @@ components:
         fund_token: null
         wallets:
           error: fund_address_unspecified
+    name_unspecified:
+      summary: name_unspecified
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: name_unspecified
+    buyer_account_protected:
+      summary: buyer_account_protected
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: buyer_account_protected
+    gift_card_not_found:
+      summary: gift_card_not_found
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: gift_card_not_found
+    payment_method_not_found:
+      summary: payment_method_not_found
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: payment_method_not_found
+    fund_protected:
+      summary: fund_protected
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: fund_protected
     buyer_account_not_found:
       summary: buyer_account_not_found
       value:
@@ -1146,6 +682,20 @@ components:
         fund_token: null
         wallets:
           error: buyer_account_not_found
+    customer_not_found:
+      summary: customer_not_found
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: customer_not_found
+    payment_method_inactive:
+      summary: payment_method_inactive
+      value:
+        wallet_token: null
+        fund_token: null
+        wallets:
+          error: payment_method_inactive
     list_of_wallets:
       summary: List of wallets
       value:
@@ -1382,34 +932,63 @@ components:
             contacts:
             - email: versapayinvoices@gmail.com
             - email: jdoe@versapay.com
-    buyer_account_protected:
-      summary: buyer_account_protected
+    credit_card_not_found:
+      summary: credit_card_not_found
       value:
         wallet_token: null
         fund_token: null
         wallets:
-          error: buyer_account_protected
-    name_unspecified:
-      summary: name_unspecified
+          error: credit_card_not_found
+    fund_not_authorized:
+      summary: fund_not_authorized
       value:
         wallet_token: null
         fund_token: null
         wallets:
-          error: name_unspecified
-    customer_not_found:
-      summary: customer_not_found
+          error: fund_not_authorized
+    new_wallet_fund:
+      summary: New wallet with payment method added
       value:
-        wallet_token: null
-        fund_token: null
+        wallet_token: 5EJQM2RL4K2G
+        fund_token: CC54QRN1CLDX
         wallets:
-          error: customer_not_found
-    payment_method_not_found:
-      summary: payment_method_not_found
-      value:
-        wallet_token: null
-        fund_token: null
-        wallets:
-          error: payment_method_not_found
+        - token: 5EJQM2RL4K2G
+          credit_cards:
+          - token: CC54QRN1CLDX
+            gateway_token: k8oz6mz8w0ma
+            cardholder: John Adam
+            card_number: Visa **1111
+            display_name: Visa **1111
+            nickname: null
+            expiry_month: 12
+            expiry_year: 2025
+            is_debit: false
+            is_default: false
+            brand: visa
+            created: '2020-09-02T10:50:54.000-04:00'
+            locked: false
+            inactive: false
+            last_transaction_date: null
+            last_transaction: null
+            last_payment: null
+            address:
+              address_1: null
+              address_2: null
+              city: null
+              state: null
+              province: null
+              country: null
+              country_name: null
+              zip: ''
+              postal_code: ''
+              line_1: ''
+              line_2: ''
+              created_at: '2020-09-02T10:50:54.000-04:00'
+              updated_at: '2020-09-02T10:50:54.000-04:00'
+          bank_accounts: []
+          customers:
+          - identifier: API-PTwDRl1PoialcnEHGv54V7Nj
+            contacts: []
     export_wallets:
       summary: Export wallets
       value:
@@ -1585,20 +1164,6 @@ components:
               contacts:
               - email: josechild@solupay.com
             watermark: 42329
-    payment_method_conflict:
-      summary: payment_method_conflict
-      value:
-        wallet_token: null
-        fund_token: null
-        wallets:
-          error: payment_method_conflict
-    fund_not_authorized:
-      summary: fund_not_authorized
-      value:
-        wallet_token: null
-        fund_token: null
-        wallets:
-          error: fund_not_authorized
     buyer_customer_not_found:
       summary: buyer_customer_not_found
       value:
@@ -1606,83 +1171,57 @@ components:
         fund_token: null
         wallets:
           error: buyer_customer_not_found
-    new_wallet_empty:
-      summary: New empty wallet
-      value:
-        wallet_token: 5EJQM2RL4K2G
-        fund_token: null
-        wallets:
-        - token: 5EJQM2RL4K2G
-          credit_cards: []
-          bank_accounts: []
-          customers:
-          - identifier: API-PTwDRl1PoialcnEHGv54V7Nj
-            contacts: []
-    new_wallet_fund:
-      summary: New wallet with payment method added
-      value:
-        wallet_token: 5EJQM2RL4K2G
-        fund_token: CC54QRN1CLDX
-        wallets:
-        - token: 5EJQM2RL4K2G
-          credit_cards:
-          - token: CC54QRN1CLDX
-            gateway_token: k8oz6mz8w0ma
-            cardholder: John Adam
-            card_number: Visa **1111
-            display_name: Visa **1111
-            nickname: null
-            expiry_month: 12
-            expiry_year: 2025
-            is_debit: false
-            is_default: false
-            brand: visa
-            created: '2020-09-02T10:50:54.000-04:00'
-            locked: false
-            inactive: false
-            last_transaction_date: null
-            last_transaction: null
-            last_payment: null
-            address:
-              address_1: null
-              address_2: null
-              city: null
-              state: null
-              province: null
-              country: null
-              country_name: null
-              zip: ''
-              postal_code: ''
-              line_1: ''
-              line_2: ''
-              created_at: '2020-09-02T10:50:54.000-04:00'
-              updated_at: '2020-09-02T10:50:54.000-04:00'
-          bank_accounts: []
-          customers:
-          - identifier: API-PTwDRl1PoialcnEHGv54V7Nj
-            contacts: []
-    fund_protected:
-      summary: fund_protected
+    payment_method_conflict:
+      summary: payment_method_conflict
       value:
         wallet_token: null
         fund_token: null
         wallets:
-          error: fund_protected
-    gift_card_not_found:
-      summary: gift_card_not_found
-      value:
-        wallet_token: null
-        fund_token: null
-        wallets:
-          error: gift_card_not_found
-    payment_method_inactive:
-      summary: payment_method_inactive
-      value:
-        wallet_token: null
-        fund_token: null
-        wallets:
-          error: payment_method_inactive
+          error: payment_method_conflict
   responses:
+    WalletErrors:
+      description: Precondition Failed - Wallet related errors
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              wallet_token:
+                type: string
+              fund_token:
+                type: string
+              wallets:
+                type: object
+                properties:
+                  error:
+                    type: string
+          examples:
+            buyer_account_not_found:
+              $ref: '#/components/examples/buyer_account_not_found'
+            buyer_account_protected:
+              $ref: '#/components/examples/buyer_account_protected'
+            buyer_customer_not_found:
+              $ref: '#/components/examples/buyer_customer_not_found'
+            customer_not_found:
+              $ref: '#/components/examples/customer_not_found'
+            name_unspecified:
+              $ref: '#/components/examples/name_unspecified'
+            fund_address_unspecified:
+              $ref: '#/components/examples/fund_address_unspecified'
+            payment_method_not_found:
+              $ref: '#/components/examples/payment_method_not_found'
+            fund_protected:
+              $ref: '#/components/examples/fund_protected'
+            fund_not_authorized:
+              $ref: '#/components/examples/fund_not_authorized'
+            payment_method_inactive:
+              $ref: '#/components/examples/payment_method_inactive'
+            credit_card_not_found:
+              $ref: '#/components/examples/credit_card_not_found'
+            gift_card_not_found:
+              $ref: '#/components/examples/gift_card_not_found'
+            payment_method_conflict:
+              $ref: '#/components/examples/payment_method_conflict'
     UnauthorizedError:
       description: Unauthorized
       content:
@@ -1756,49 +1295,510 @@ components:
               summary: payment_method_conflict
               value:
                 error: payment_method_conflict
-    WalletErrors:
-      description: Precondition Failed - Wallet related errors
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              wallet_token:
-                type: string
-              fund_token:
-                type: string
-              wallets:
-                type: object
-                properties:
-                  error:
-                    type: string
-          examples:
-            buyer_account_not_found:
-              $ref: '#/components/examples/buyer_account_not_found'
-            buyer_account_protected:
-              $ref: '#/components/examples/buyer_account_protected'
-            buyer_customer_not_found:
-              $ref: '#/components/examples/buyer_customer_not_found'
-            customer_not_found:
-              $ref: '#/components/examples/customer_not_found'
-            name_unspecified:
-              $ref: '#/components/examples/name_unspecified'
-            fund_address_unspecified:
-              $ref: '#/components/examples/fund_address_unspecified'
-            payment_method_not_found:
-              $ref: '#/components/examples/payment_method_not_found'
-            fund_protected:
-              $ref: '#/components/examples/fund_protected'
-            fund_not_authorized:
-              $ref: '#/components/examples/fund_not_authorized'
-            payment_method_inactive:
-              $ref: '#/components/examples/payment_method_inactive'
-            credit_card_not_found:
-              $ref: '#/components/examples/credit_card_not_found'
-            gift_card_not_found:
-              $ref: '#/components/examples/gift_card_not_found'
-            payment_method_conflict:
-              $ref: '#/components/examples/payment_method_conflict'
+  schemas:
+    WalletCustomer:
+      type: object
+      description: Invoicing customer reference
+      required:
+      - identifier
+      properties:
+        identifier:
+          type: string
+          description: Customer number, must be unique within supplier. Alphanumeric.
+          example: C1234
+        name:
+          type: string
+          description: Customer name.
+          example: Acme Inc.
+    WalletCreditCardPatch:
+      type: object
+      description: Alternative to fund_token, a credit card object or token reference to an existing credit card
+      properties:
+        name:
+          type: string
+          description: Cardholder name
+        expiry_month:
+          type: string
+          description: 2 digit month
+        expiry_year:
+          type: string
+          description: 4 digit year
+        cvv:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    WalletPaymentMethodPatch:
+      type: object
+      properties:
+        credit_card:
+          $ref: '#/components/schemas/WalletCreditCardPatch'
+        bank_account:
+          $ref: '#/components/schemas/WalletBankAccountPatch'
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
+    WalletResponse:
+      type: object
+      properties:
+        wallet_token:
+          type: string
+          description: The token representing the wallet.
+        fund_token:
+          type:
+          - string
+          - 'null'
+          description: The token representing the fund, if a payment method was added.
+        wallets:
+          type: array
+          description: List of wallets.
+          items:
+            $ref: '#/components/schemas/Wallet'
+    WalletBankAccountPatch:
+      type: object
+      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
+      properties:
+        account_type:
+          type: string
+          enum:
+          - checking
+          - savings
+        account_holder:
+          type: string
+          description: Account holder name
+        check_type:
+          type: string
+          enum:
+          - personal
+          - business
+        external_name:
+          type: string
+        external_number:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    Wallet:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token identifying the wallet
+          example: 77A81025AC3A
+        credit_cards:
+          description: Credit card payment methods in wallet
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditCard'
+        bank_accounts:
+          description: Bank account payment methods in wallet
+          type: array
+          items:
+            $ref: '#/components/schemas/BankAccount'
+        customers:
+          description: Invoicing customers associated linked/using this wallet
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerReference'
+    WalletCreditCard:
+      type: object
+      description: Alternative to fund_token, a credit card object or token reference to an existing credit card
+      required:
+      - name
+      - expiry_month
+      - expiry_year
+      - card_number
+      - cvv
+      - address
+      properties:
+        name:
+          type: string
+          description: Cardholder name
+        expiry_month:
+          type: string
+          description: 2 digit month
+        expiry_year:
+          type: string
+          description: 4 digit year
+        card_number:
+          type: string
+          description: Credit card number
+        cvv:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    BankAccount:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        business_name:
+          description: Name of account holder.
+          type: string
+          example: John Doe
+        country:
+          description: CA (default), US, AU
+          type: string
+          example: CA
+        account_number:
+          description: Bank account number.
+          type: string
+          example: '10101234'
+        account_type:
+          description: checking or savings, defaults checking (required country = US)
+          type: string
+          example: checking
+        institution_number:
+          description: Financial institution number (required country = CA).
+          type: string
+          example: '001'
+        branch_number:
+          description: Financial institution branch/transit (required country = CA).
+          type: string
+          example: '03662'
+        routing_number:
+          description: Financial institution branch/location (required country = US, AU).
+          type: string
+          example: ''
+        token:
+          type: string
+          description: the bank account token
+        nickname:
+          type: string
+          description: optional value that describes the bank account
+        masked_account_number:
+          type: string
+          description: a masked version of the account number
+        routing_account_hash_function:
+          type: string
+          description: the hash function used to mask the routing number and account number
+        routing_account_hash:
+          type: string
+          description: the hash value used to mask the routing number and account number.
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    CustomerReference:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Customer number, must be unique within supplier. Alphanumeric.
+          example: C1234
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactReference'
+    CreditCard:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Fund token identifying the credit card
+          example: CC54QRN1CLDX
+        gateway_token:
+          type: string
+          description: Vault token representing the underlying secured/tokenized primary account number (PAN)
+        cardholder:
+          type: string
+        card_number:
+          type: string
+          description: Display name of payment method
+        display_name:
+          type: string
+          description: Display name of payment method
+        nickname:
+          type: string
+        expiry_month:
+          type: integer
+        expiry_year:
+          type: integer
+        is_debit:
+          type: boolean
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        brand:
+          type: string
+        created:
+          type: string
+          format: date-time
+        locked:
+          type: boolean
+          description: Indicates if the payment method is visible but locked from being used
+        inactive:
+          type: boolean
+          description: Indicates if the payment method is deleted
+        last_transaction_date:
+          type: string
+          format: date-time
+        last_transaction:
+          type: string
+          description: Transaction token of the last payment transaction made with this payment method
+        last_payment:
+          type: string
+          description: Payment identifier of the last payment transaction made with this payment method
+        address:
+          $ref: '#/components/schemas/Address'
+    WalletPaymentMethodRequest:
+      type: object
+      properties:
+        credit_card:
+          $ref: '#/components/schemas/WalletCreditCard'
+        bank_account:
+          $ref: '#/components/schemas/WalletBankAccount'
+    Address:
+      type: object
+      required:
+      - address1
+      - city
+      - post_code
+      - country
+      properties:
+        address1:
+          type: string
+          example: 1314 NW GLISAN ST
+          minLength: 1
+          maxLength: 25
+        address2:
+          type: string
+          example: Apartment 1
+          maxLength: 25
+        city:
+          type: string
+          example: Portland
+          minLength: 1
+          maxLength: 20
+        state_province:
+          type: string
+          example: OR
+          pattern: ^[a-z]{2}$
+          maxLength: 2
+          minLength: 2
+        post_code:
+          type: string
+          example: '97209'
+          maxLength: 5
+        country:
+          type: string
+          pattern: ^[a-z]{2}$
+          example: us
+          maxLength: 2
+          minLength: 2
+        override_validation:
+          $ref: '#/components/schemas/OverrideValidation'
+    WalletBankAccount:
+      type: object
+      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
+      required:
+      - currency
+      - account_type
+      - account_holder
+      - account_number
+      - routing_number
+      - institution_number
+      - branch_number
+      - check_type
+      - address
+      properties:
+        currency:
+          type: string
+          enum:
+          - USD
+          - CAD
+          - AUD
+          - EUR
+          - GBP
+        account_type:
+          type: string
+          enum:
+          - checking
+          - savings
+        account_holder:
+          type: string
+          description: Account holder name
+        account_number:
+          type: string
+          description: Bank account number
+        routing_number:
+          type: string
+          description: For non-CA financial institutions, ABA/bank routing number
+        institution_number:
+          type: string
+          description: For CA financial institutions, 3 digit institution code
+        branch_number:
+          type: string
+          description: For CA financial institutions, transit/branch number
+        check_type:
+          type: string
+          enum:
+          - personal
+          - business
+        external_name:
+          type: string
+        external_number:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
+    WalletContact:
+      type: object
+      description: Billing contact
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Email address
+        first_name:
+          type: string
+        last_name:
+          type: string
+    WalletRequest:
+      type: object
+      properties:
+        customer:
+          $ref: '#/components/schemas/WalletCustomer'
+        contact:
+          $ref: '#/components/schemas/WalletContact'
+        credit_card:
+          $ref: '#/components/schemas/WalletCreditCard'
+        bank_account:
+          $ref: '#/components/schemas/WalletBankAccount'
+    OverrideValidation:
+      type: boolean
+      example: true
+    ContactReference:
+      type: object
+      properties:
+        email:
+          type: string
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

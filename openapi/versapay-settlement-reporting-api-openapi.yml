@@ -420,6 +420,188 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    SummaryBatchTransaction:
+      type: object
+      description: Summary reference of known transaction
+      properties:
+        token:
+          type: string
+          description: Token identifier for the transaction.
+        amount_cents:
+          type: integer
+          description: Transaction amount in cents.
+        currency:
+          type: string
+          description: Currency code, based on ISO-4217. E.g. `CAD`, `USD`, `AUD`
+        transaction_reference:
+          type:
+          - string
+          - 'null'
+          description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
+        payment_method:
+          type: string
+          enum:
+          - credit_card
+          - bank_account
+          - gift_card
+          - pos_terminal
+        settlement_token:
+          type: string
+          description: Token corresponding to the settlement routing/processor profile as enumerated in whoami eg bank transfer processor for ACH/EFT, merchant account for CC, gift card processor, pos/terminal processor
+        transaction_date:
+          type: string
+          format: date
+          description: Date of the transaction.
+        surcharge_cents:
+          type: integer
+          description: Surcharge amount in cents.
+        fx_account_currency:
+          type: string
+          description: Currency of the payment gateway account
+        fx_currency:
+          type: string
+          description: Currency of the transaction, according to the payment gateway
+        fx_amount_cents:
+          type: integer
+          description: The processed amount in cents after conversion to the gateway account currency
+        fx_rate:
+          type: string
+          description: The exchange rate used to convert between the transaction currency and the gateway account currency
+        orders:
+          type: array
+          description: The order associated with this transaction, if any, for reference detail only (the order information does not impact settlement deposit batch)
+          items:
+            $ref: '#/components/schemas/SummaryOrderReference'
+        payments:
+          type: array
+          description: Any C-AR invoicing payments associated with this transaction, if any, for reference detail only (the invoicing payments information does not impact settlement deposit batch)
+          items:
+            $ref: '#/components/schemas/SummaryPaymentReference'
+    SettlementBatchResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token identifier for the monthly statement.
+        merchant_account_token:
+          type: string
+          description: Token identifier representing the owing merchant account.
+        mid:
+          type: string
+          description: The merchant id (MID) associated with the batch deposit or withdrawal
+        batch_close_date:
+          type: string
+          description: Date batch was marked closed.
+          format: date
+          example: '2022-01-15'
+        batch_deposit_date:
+          type: string
+          description: Date batch was deposited into deposit account.
+          format: date
+          example: '2022-01-15'
+        batch_net_amount_cents:
+          type: integer
+          description: Amount in cents, less fees.
+        fee_withdrawal_amount_cents:
+          type: integer
+          description: Amount in cents, gross fee amount withdrawn separately to the reported batch deposit.
+        deposit_amount_cents:
+          type: integer
+          description: Amount in cents deposited into deposit account.
+        deposit_currency:
+          type: string
+          description: Deposit currency
+          enum:
+          - usd
+          - eur
+          - gbp
+          - cad
+          - aud
+          example: usd
+        deposit_routing_number:
+          type: string
+          description: Deposit account routing number
+        deposit_account_number:
+          type: string
+          description: Masked deposit account number
+        deposit_routing_account_hash:
+          type: string
+          description: 'A hash of the deposit account routing number concatenated with the actual/unmasked deposit account number
+
+            '
+        deposit_routing_account_hash_function:
+          type: string
+          description: 'The hash function used to mask the deposit routing and account number per deposit_routing_account_hash
+
+            '
+          enum:
+          - sha-1
+        fees:
+          type: array
+          items:
+            type: object
+            properties:
+              token:
+                type: string
+                description: Token representing the fee transaction
+              fee_type:
+                type: string
+                enum:
+                - interchange
+                - payfac
+                - network
+                - processor
+              included_in_batch_deposit:
+                type: boolean
+                description: '`true` when fees are included in the batch deposit i.e. a single deposit and its processing proceeds less fees; `false` when there is one deposit for the processing proceeds and a separate deposit for fees'
+              fee_withdrawal_date:
+                type: string
+                format: date
+                example: '2022-01-15'
+              fee_amount_cents:
+                type: integer
+                description: Amount in cents, less fees.
+              fee_currency:
+                type: string
+                description: Fee currency
+                enum:
+                - usd
+                - eur
+                - gbp
+                - cad
+                - aud
+                example: usd
+              fee_withdrawal_routing_number:
+                type: string
+                description: Fee account routing number
+              fee_withdrawal_account_number:
+                type: string
+                description: Masked fee account number
+              fee_routing_account_hash:
+                type: string
+                description: 'A hash of the fee withdrawal account routing number concatenated with the actual/unmasked fee withdrawal account number
+
+                  '
+              fee_routing_account_hash_function:
+                type: string
+                description: 'The hash function used to mask the fee withdrawal routing and account number per fee_routing_account_hash
+
+                  '
+                enum:
+                - sha-1
+        transactions:
+          type: array
+          description: List of transaction amounts contributing to the deposit batch
+          items:
+            $ref: '#/components/schemas/SummaryBatchTransaction'
+        exceptions:
+          type: array
+          description: List of exception transactions including ACH return/reject and CC chargeback contributing to the deposit batch
+          items:
+            $ref: '#/components/schemas/SettlementExceptionResponse'
+        watermark:
+          $ref: '#/components/schemas/Watermark'
+          description: Watermark value for subsequent calls.
     OrderItem:
       type: object
       properties:
@@ -486,32 +668,6 @@ components:
         discount_amount_cents: 0
         orderitem_attr1: '1111111'
         orderitem2_attr2: '222222'
-    SettlementExceptionResponse:
-      type: object
-      properties:
-        exception_type:
-          type: string
-          description: Type of exception.
-          enum:
-          - chargeback
-          - return
-          - reject
-        exception_description:
-          type: string
-          description: Description of the exception_type
-        exception_date:
-          type: string
-          description: Date of the exception transaction
-          format: date
-          example: '2022-01-15'
-        exception_amount_in_cents:
-          type: integer
-          description: Transaction amount in cents.
-        exception_transaction:
-          $ref: '#/components/schemas/SummaryExceptionTransaction'
-        watermark:
-          $ref: '#/components/schemas/Watermark'
-          description: Watermark value for subsequent calls.
     SummaryOrderReference:
       type: object
       description: Summary reference of known order
@@ -632,179 +788,317 @@ components:
         fx_amount_cents:
           type: number
           description: Optional. The amount of the payment in the gateway currency in cents.
-    Order:
+    SettlementExceptionResponse:
+      type: object
       properties:
+        exception_type:
+          type: string
+          description: Type of exception.
+          enum:
+          - chargeback
+          - return
+          - reject
+        exception_description:
+          type: string
+          description: Description of the exception_type
+        exception_date:
+          type: string
+          description: Date of the exception transaction
+          format: date
+          example: '2022-01-15'
+        exception_amount_in_cents:
+          type: integer
+          description: Transaction amount in cents.
+        exception_transaction:
+          $ref: '#/components/schemas/SummaryExceptionTransaction'
         watermark:
           $ref: '#/components/schemas/Watermark'
-          description: This cannot be an imported attribute, the import will fail
-        identifier:
+          description: Watermark value for subsequent calls.
+    PaymentAmount:
+      type: object
+      properties:
+        payment_reference:
           type: string
-          description: order identifier, this may be imported or if not provided it will be generated by cds
-        number:
+          description: The payment identifier
+        checkout_token:
           type: string
-          description: Order number, may be unique within supplier., supplied by client.
-        currency:
+          description: Correlation key for payment amounts applied during the same payment portal session
+        invoice_number:
           type: string
-          description: Currency code, based on ISO-4217. E.g. `CAD`, `USD`, `AUD`
-        amount_cents:
-          type: integer
-          description: amount of order in cents.
+          description: The display number of the invoice for which the payment was made.  If the display number is not available, the number of the invoice for which the payment was made.
         date:
           type: string
-          description: order date
-        billing_name:
+          format: date
+          description: The payment date, in YYYY-MM-DD format.
+        amount:
           type: string
-          description: The billing addressee
-        billing_address:
+          description: The amount of the payment applied to the invoice, in dollars and cents.
+        plan_fee:
           type: string
-          description: The first line of the billing street address
-        billing_address2:
+          description: Payment plan fee amount, in dollars and cents, associated to this invoice.
+        payment_amount:
           type: string
-          description: The second line of the billing street address
-        billing_city:
+          description: The amount of the total payment, excluding fees.
+        payment_transaction_amount:
           type: string
-          description: The billing city
-        billing_country:
+          description: The amount of the total payment, including fees.
+        payment_transaction_token:
           type: string
-          description: The 3-character alphabetic ISO billing country code
-        billing_email:
+          description: The payment transaction token.
+        payment_method:
           type: string
-          description: The billing email address associated with the addressee
-        billing_telephone:
+          description: The method used to make payment.
+        payment_from_bank_account:
           type: string
-          description: The billing phone number associated with the addressee
-        billing_postalcode:
+          description: '`true` if the payment was made using a bank account.
+
+            '
+        payment_from_credit_card:
           type: string
-          description: The billing post code or ZIP code
-        billing_state_province:
+          description: '`true` if the payment was made using a credit card.
+
+            '
+        payment_institution_name:
           type: string
-          description: The billing state or province
-        shipping_name:
+          description: Institution name, if the payment was made using a bank account.
+        payment_credit_card_brand:
           type: string
-          description: The shipping addressee
-        shipping_address:
-          type: string
-          description: The first line of the shipping street address
-        shipping_address2:
-          type: string
-          description: The second line of the shipping street address
-        shipping_city:
-          type: string
-          description: The shipping city
-        shipping_country:
-          type: string
-          description: The 3-character alphabetic ISO shipping country code
-        shipping_email:
-          type: string
-          description: The shipping email address associated with the addressee
-        shipping_telephone:
-          type: string
-          description: The shipping phone number associated with the addressee
-        shipping_postalcode:
-          type: string
-          description: The shipping post code or ZIP code
-        shipping_state_province:
-          type: string
-          description: The shipping state or province
-        customer_identifier:
-          type: string
-          description: customer identifier, if it was imported
-        draft:
-          type: boolean
-          description: if true order is a draft else can be published
+          description: 'Credit card "association brand", if the payment was made using a credit card. Example: VISA, MASTER
+
+            '
         settlement_token:
           type: string
-          description: A settlement token reference (see whoami response structure) representing the merchant/bank processor configuration that should be used for transaction settlement.
-          example: MA123XYZABCD
-        attributes:
-          type: object
-          properties: {}
-          description: array of key pair items.
-        L3_po_number:
+          description: Token corresponding to the settlement routing/processor profile as enumerated in whoami eg bank transfer processor for ACH/EFT, merchant account for CC, gift card processor, pos/terminal processor
+        short_pay_indicator:
           type: string
-          description: Purchase order number.
-          example: PO12345
-        L3_tax:
+          description: '`Y` if a short payment was made.
+
+            '
+        payment_note:
           type: string
-          description: Total tax amount.
-          example: '5.00'
-        L3_duty:
+          description: Note accompanying the payment.
+        auto_debit_indicator:
           type: string
-          description: Duty amount (if applicable).
-          example: '2.00'
-        L3_shipping:
+          description: '`Y` if the payment was made via AutoPay agreement.
+
+            '
+        invoice_balance:
           type: string
-          description: Shipping amount.
-          example: '1.50'
-        L3_ship_from_zip:
+          description: Remaining balance on the invoice (after the payment is processed).
+        payment_timestamp:
           type: string
-          description: Origin ZIP code.
-          example: '90210'
-        L3_ship_from_country:
+          description: The ISO8601 timestamp corresponding to payment.
+        invoice_division:
           type: string
-          description: Origin country code (ISO-2).
-          example: US
-        order_items:
+          description: The division code if any associated with the invoice.
+        invoice_division_number:
+          type: string
+          description: The external division identifier if any associated with the invoice.
+        invoice_division_name:
+          type: string
+          description: The division name if any associated with the invoice.
+        pay_to_bank_account:
+          type: string
+          description: The GL number of the settlement account receiving the payment.
+        pay_to_bank_account_name:
+          type: string
+          description: The display name of the settlement account receiving the payment.
+        customer_identifier:
+          type: string
+          description: The invoice customer identifier.
+        customer_name:
+          type: string
+          description: The invoice customer name.
+        status:
+          type: string
+          description: The payment status.
+          enum:
+          - IN PROGRESS
+          - PAID (UNVERIFIED)
+          - REVERSAL
+          - ERROR (NSF)
+          - ERROR (DECLINED)
+          - PAID
+        status_reason:
+          type: string
+          description: Additional information explaining when the payment has failed.
+        payment_source:
+          type: string
+          description: The source of the payment.
+        payment_code:
+          type: string
+          description: The back office payment code (applicable to externally sourced payments).
+        payment_description:
+          type: string
+          description: The back office payment description (applicable to externally sourced payments).
+        gateway_authorization_code:
+          type: string
+          description: The underlying gateway authorization code.
+        purchase_order_number:
+          type: string
+          description: The purchase order number entered at the time of making a prepayment.
+        ref1:
+          type: string
+          description: The reference number or string entered at the time of making a prepayment.
+        ref2:
+          type: string
+          description: Same as above.
+        ref3:
+          type: string
+          description: Same as above.
+        short_pay_reason_identifier:
+          type: string
+          description: Short pay reason code, if set up.
+        short_pay_reason:
+          type: string
+          description: Short pay reason description, if set up.
+        dispute_reason_identifier:
+          type: string
+          description: Dispute reason code, if set up.
+        dispute_reason:
+          type: string
+          description: Dispute reason description, if set up.
+        invoice_amount_paid:
+          type: string
+          description: The total amount of payments, in dollars and cents, made to date via Collaborative AR towards this invoice.
+        invoice_identifier:
+          type: string
+          description: The identifier of the invoice for which the payment was made.
+        invoice_date:
+          type: string
+          format: date
+          description: Invoice date, in the format YYYY-MM-DD.
+        invoice_external_id:
+          type: string
+          description: The external identifier/reference, if any, of the invoice for which the payment was made.
+        invoice_currency:
+          type: string
+          description: The currency of the invoice for which the payment was made.
+        invoice_purchase_order_number:
+          type: string
+          description: The purchase order number associated to the invoice.
+        invoice_ref1:
+          type: string
+          description: Reference number or string associated to the invoice.
+        invoice_ref2:
+          type: string
+          description: Same as above.
+        invoice_ref3:
+          type: string
+          description: Same as above.
+        cumulative_customer_amount:
+          type: string
+          description: 'The total payment processed for *this* customer under *this* `payment_reference`.
+
+            '
+        display_identifier:
+          type: string
+          description: The value of display_identifier that was provided for the payment; if this was null, this will be the the value of the payment_reference
+        line_item_transactional_amounts:
           type: array
           items:
-            $ref: '#/components/schemas/OrderItem'
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderTransaction'
-      example:
-        watermark: 1
-        identifier: ABCDF
-        number: sh763-h3454-dh3432
-        amount_cents: 20000
-        currency: cad
-        date: '2020-11-01'
-        shipping_name: Acme Inc.
-        shipping_address: 123 First Lane
-        shipping_address2: Suite 600
-        shipping_city: New York
-        shipping_state_province: NY
-        shipping_country: USA
-        shipping_email: acme@gmail.com
-        shipping_telephone: 555-555-5555
-        shipping_postalcode: '90210'
-        billing_name: Acme Inc.
-        billing_address: 123 First Lane
-        billing_address2: Suite 600
-        billing_city: New York
-        billing_state_province: NY
-        billing_country: USA
-        billing_email: acme@gmail.com
-        billing_telephone: 555-555-5555
-        billing_postalcode: '90210'
-        order_att1: att1value1
-        order_att2: att1value2
-        customer_identifier: '123'
-        draft: false
-        order_items:
-        - number: '1'
-          amount_cents: 10000
-          description: description
-          product_code: product_code
-          category: category
-          quantity: 1
-          unit_cost_cents: 10000
-          tax_amount_cents: 100
-          discount_amount_cents: 0
-          orderitem_attr1: '1111111'
-          orderitem2_attr2: '222222'
-        - number: '2'
-          amount_cents: 20000
-          description: description
-          product_code: product_code
-          category: category
-          quantity: 1
-          unit_cost_cents: 20000
-          tax_amount_cents: 200
-          discount_amount_cents: 0
-          orderitem_attr1: '32222222'
-          orderitem2_attr2: '422222'
-        transactions: []
+            type: object
+            properties:
+              line_item_number:
+                type: string
+                description: Invoice line-item number
+              line_item_payment_amount:
+                type: string
+                description: The amount of the payment applied to the line-item, in dollars and cents.
+              line_item_balance:
+                type: string
+                description: Remaining balance on the line-item (after the payment is processed), in dollars and cents.
+              line_item_short_pay_indicator:
+                type: string
+                description: '`Y` if a short payment was made.
+
+                  '
+              line_item_payment_note:
+                type: string
+                description: Note accompanying the payment at the line-item level.
+              line_item_short_pay_reason_identifier:
+                type: string
+                description: Short pay reason code, if set up.
+              line_item_short_pay_reason:
+                type: string
+                description: Short pay reason description, if set up.
+              line_item_dispute_reason_identifier:
+                type: string
+                description: Dispute reason code, if set up.
+              line_item_dispute_reason:
+                type: string
+                description: Dispute reason description, if set up.
+          description: 'Payments applied to invoice line-items. Applicable if accepting short payments at line-item level.
+
+            '
+        batch_number:
+          type: string
+          description: The batch number associated with the payment, if any. If none, the value will be null.
+        batch_amount:
+          type: string
+          description: The batch amount of the batch associated with the payment, if any. If none, the value will be an empty string ""
+        invoice_display_number:
+          type: string
+          description: The display number of the invoice for which the payment was made.
+        invoice_internal_number:
+          type: string
+          description: The number of the invoice for which the payment was made.
+        fx_rate:
+          type: string
+          description: Optional. The exchange rate used for the payment.
+        fx_amount:
+          type: string
+          description: Optional. The amount of the payment in the gateway currency.
+        fx_amount_cents:
+          type: number
+          description: Optional. The amount of the payment in the gateway currency in cents.
+    SummaryPaymentReference:
+      type: object
+      description: Summary reference of known invoicing payment
+      properties:
+        identifier:
+          type: string
+          description: Associated invoicing payment identifier
+        number:
+          type: string
+          description: Associated invoicing payment number
+        amount_cents:
+          type: number
+          description: Associated invoicing payment amount
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
+    MonthlyStatementResponse:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Token identifier for the monthly statement.
+        start_date:
+          type: string
+          description: Start date of the statement reporting period.
+          format: date
+          example: '2022-01-15'
+        end_date:
+          type: string
+          description: End date of the statement reporting period.
+          format: date
+          example: '2022-01-15'
+        statement_date:
+          type: string
+          description: Generation date of the statement.
+          format: date
+          example: '2022-01-15'
+        merchant_account_token:
+          type: string
+          description: Token identifier representing the owing merchant account.
+        merchant_account_identifier:
+          type: string
+          description: MID (merchant identifier) of the owing merchant account.
+        watermark:
+          $ref: '#/components/schemas/Watermark'
+          description: Watermark value for subsequent calls.
     OrderTransaction:
       type: object
       properties:
@@ -1216,80 +1510,179 @@ components:
         process_on: null
         from_fund: TD Canada Trust
         created_by_user: Uf6TaxzBMBBT_rXjsrN7
-    SummaryPaymentReference:
-      type: object
-      description: Summary reference of known invoicing payment
+    Order:
       properties:
+        watermark:
+          $ref: '#/components/schemas/Watermark'
+          description: This cannot be an imported attribute, the import will fail
         identifier:
           type: string
-          description: Associated invoicing payment identifier
+          description: order identifier, this may be imported or if not provided it will be generated by cds
         number:
           type: string
-          description: Associated invoicing payment number
-        amount_cents:
-          type: number
-          description: Associated invoicing payment amount
-    SummaryBatchTransaction:
-      type: object
-      description: Summary reference of known transaction
-      properties:
-        token:
-          type: string
-          description: Token identifier for the transaction.
-        amount_cents:
-          type: integer
-          description: Transaction amount in cents.
+          description: Order number, may be unique within supplier., supplied by client.
         currency:
           type: string
           description: Currency code, based on ISO-4217. E.g. `CAD`, `USD`, `AUD`
-        transaction_reference:
-          type:
-          - string
-          - 'null'
-          description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
-        payment_method:
+        amount_cents:
+          type: integer
+          description: amount of order in cents.
+        date:
           type: string
-          enum:
-          - credit_card
-          - bank_account
-          - gift_card
-          - pos_terminal
+          description: order date
+        billing_name:
+          type: string
+          description: The billing addressee
+        billing_address:
+          type: string
+          description: The first line of the billing street address
+        billing_address2:
+          type: string
+          description: The second line of the billing street address
+        billing_city:
+          type: string
+          description: The billing city
+        billing_country:
+          type: string
+          description: The 3-character alphabetic ISO billing country code
+        billing_email:
+          type: string
+          description: The billing email address associated with the addressee
+        billing_telephone:
+          type: string
+          description: The billing phone number associated with the addressee
+        billing_postalcode:
+          type: string
+          description: The billing post code or ZIP code
+        billing_state_province:
+          type: string
+          description: The billing state or province
+        shipping_name:
+          type: string
+          description: The shipping addressee
+        shipping_address:
+          type: string
+          description: The first line of the shipping street address
+        shipping_address2:
+          type: string
+          description: The second line of the shipping street address
+        shipping_city:
+          type: string
+          description: The shipping city
+        shipping_country:
+          type: string
+          description: The 3-character alphabetic ISO shipping country code
+        shipping_email:
+          type: string
+          description: The shipping email address associated with the addressee
+        shipping_telephone:
+          type: string
+          description: The shipping phone number associated with the addressee
+        shipping_postalcode:
+          type: string
+          description: The shipping post code or ZIP code
+        shipping_state_province:
+          type: string
+          description: The shipping state or province
+        customer_identifier:
+          type: string
+          description: customer identifier, if it was imported
+        draft:
+          type: boolean
+          description: if true order is a draft else can be published
         settlement_token:
           type: string
-          description: Token corresponding to the settlement routing/processor profile as enumerated in whoami eg bank transfer processor for ACH/EFT, merchant account for CC, gift card processor, pos/terminal processor
-        transaction_date:
+          description: A settlement token reference (see whoami response structure) representing the merchant/bank processor configuration that should be used for transaction settlement.
+          example: MA123XYZABCD
+        attributes:
+          type: object
+          properties: {}
+          description: array of key pair items.
+        L3_po_number:
           type: string
-          format: date
-          description: Date of the transaction.
-        surcharge_cents:
-          type: integer
-          description: Surcharge amount in cents.
-        fx_account_currency:
+          description: Purchase order number.
+          example: PO12345
+        L3_tax:
           type: string
-          description: Currency of the payment gateway account
-        fx_currency:
+          description: Total tax amount.
+          example: '5.00'
+        L3_duty:
           type: string
-          description: Currency of the transaction, according to the payment gateway
-        fx_amount_cents:
-          type: integer
-          description: The processed amount in cents after conversion to the gateway account currency
-        fx_rate:
+          description: Duty amount (if applicable).
+          example: '2.00'
+        L3_shipping:
           type: string
-          description: The exchange rate used to convert between the transaction currency and the gateway account currency
-        orders:
+          description: Shipping amount.
+          example: '1.50'
+        L3_ship_from_zip:
+          type: string
+          description: Origin ZIP code.
+          example: '90210'
+        L3_ship_from_country:
+          type: string
+          description: Origin country code (ISO-2).
+          example: US
+        order_items:
           type: array
-          description: The order associated with this transaction, if any, for reference detail only (the order information does not impact settlement deposit batch)
           items:
-            $ref: '#/components/schemas/SummaryOrderReference'
-        payments:
+            $ref: '#/components/schemas/OrderItem'
+        transactions:
           type: array
-          description: Any C-AR invoicing payments associated with this transaction, if any, for reference detail only (the invoicing payments information does not impact settlement deposit batch)
           items:
-            $ref: '#/components/schemas/SummaryPaymentReference'
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
+            $ref: '#/components/schemas/OrderTransaction'
+      example:
+        watermark: 1
+        identifier: ABCDF
+        number: sh763-h3454-dh3432
+        amount_cents: 20000
+        currency: cad
+        date: '2020-11-01'
+        shipping_name: Acme Inc.
+        shipping_address: 123 First Lane
+        shipping_address2: Suite 600
+        shipping_city: New York
+        shipping_state_province: NY
+        shipping_country: USA
+        shipping_email: acme@gmail.com
+        shipping_telephone: 555-555-5555
+        shipping_postalcode: '90210'
+        billing_name: Acme Inc.
+        billing_address: 123 First Lane
+        billing_address2: Suite 600
+        billing_city: New York
+        billing_state_province: NY
+        billing_country: USA
+        billing_email: acme@gmail.com
+        billing_telephone: 555-555-5555
+        billing_postalcode: '90210'
+        order_att1: att1value1
+        order_att2: att1value2
+        customer_identifier: '123'
+        draft: false
+        order_items:
+        - number: '1'
+          amount_cents: 10000
+          description: description
+          product_code: product_code
+          category: category
+          quantity: 1
+          unit_cost_cents: 10000
+          tax_amount_cents: 100
+          discount_amount_cents: 0
+          orderitem_attr1: '1111111'
+          orderitem2_attr2: '222222'
+        - number: '2'
+          amount_cents: 20000
+          description: description
+          product_code: product_code
+          category: category
+          quantity: 1
+          unit_cost_cents: 20000
+          tax_amount_cents: 200
+          discount_amount_cents: 0
+          orderitem_attr1: '32222222'
+          orderitem2_attr2: '422222'
+        transactions: []
     SummaryExceptionTransaction:
       type: object
       description: Summary reference of known transaction
@@ -1318,399 +1711,6 @@ components:
         settlement_token:
           type: string
           description: Token corresponding to the settlement routing/processor profile as enumerated in whoami eg bank transfer processor for ACH/EFT, merchant account for CC, gift card processor, pos/terminal processor
-    PaymentAmount:
-      type: object
-      properties:
-        payment_reference:
-          type: string
-          description: The payment identifier
-        checkout_token:
-          type: string
-          description: Correlation key for payment amounts applied during the same payment portal session
-        invoice_number:
-          type: string
-          description: The display number of the invoice for which the payment was made.  If the display number is not available, the number of the invoice for which the payment was made.
-        date:
-          type: string
-          format: date
-          description: The payment date, in YYYY-MM-DD format.
-        amount:
-          type: string
-          description: The amount of the payment applied to the invoice, in dollars and cents.
-        plan_fee:
-          type: string
-          description: Payment plan fee amount, in dollars and cents, associated to this invoice.
-        payment_amount:
-          type: string
-          description: The amount of the total payment, excluding fees.
-        payment_transaction_amount:
-          type: string
-          description: The amount of the total payment, including fees.
-        payment_transaction_token:
-          type: string
-          description: The payment transaction token.
-        payment_method:
-          type: string
-          description: The method used to make payment.
-        payment_from_bank_account:
-          type: string
-          description: '`true` if the payment was made using a bank account.
-
-            '
-        payment_from_credit_card:
-          type: string
-          description: '`true` if the payment was made using a credit card.
-
-            '
-        payment_institution_name:
-          type: string
-          description: Institution name, if the payment was made using a bank account.
-        payment_credit_card_brand:
-          type: string
-          description: 'Credit card "association brand", if the payment was made using a credit card. Example: VISA, MASTER
-
-            '
-        settlement_token:
-          type: string
-          description: Token corresponding to the settlement routing/processor profile as enumerated in whoami eg bank transfer processor for ACH/EFT, merchant account for CC, gift card processor, pos/terminal processor
-        short_pay_indicator:
-          type: string
-          description: '`Y` if a short payment was made.
-
-            '
-        payment_note:
-          type: string
-          description: Note accompanying the payment.
-        auto_debit_indicator:
-          type: string
-          description: '`Y` if the payment was made via AutoPay agreement.
-
-            '
-        invoice_balance:
-          type: string
-          description: Remaining balance on the invoice (after the payment is processed).
-        payment_timestamp:
-          type: string
-          description: The ISO8601 timestamp corresponding to payment.
-        invoice_division:
-          type: string
-          description: The division code if any associated with the invoice.
-        invoice_division_number:
-          type: string
-          description: The external division identifier if any associated with the invoice.
-        invoice_division_name:
-          type: string
-          description: The division name if any associated with the invoice.
-        pay_to_bank_account:
-          type: string
-          description: The GL number of the settlement account receiving the payment.
-        pay_to_bank_account_name:
-          type: string
-          description: The display name of the settlement account receiving the payment.
-        customer_identifier:
-          type: string
-          description: The invoice customer identifier.
-        customer_name:
-          type: string
-          description: The invoice customer name.
-        status:
-          type: string
-          description: The payment status.
-          enum:
-          - IN PROGRESS
-          - PAID (UNVERIFIED)
-          - REVERSAL
-          - ERROR (NSF)
-          - ERROR (DECLINED)
-          - PAID
-        status_reason:
-          type: string
-          description: Additional information explaining when the payment has failed.
-        payment_source:
-          type: string
-          description: The source of the payment.
-        payment_code:
-          type: string
-          description: The back office payment code (applicable to externally sourced payments).
-        payment_description:
-          type: string
-          description: The back office payment description (applicable to externally sourced payments).
-        gateway_authorization_code:
-          type: string
-          description: The underlying gateway authorization code.
-        purchase_order_number:
-          type: string
-          description: The purchase order number entered at the time of making a prepayment.
-        ref1:
-          type: string
-          description: The reference number or string entered at the time of making a prepayment.
-        ref2:
-          type: string
-          description: Same as above.
-        ref3:
-          type: string
-          description: Same as above.
-        short_pay_reason_identifier:
-          type: string
-          description: Short pay reason code, if set up.
-        short_pay_reason:
-          type: string
-          description: Short pay reason description, if set up.
-        dispute_reason_identifier:
-          type: string
-          description: Dispute reason code, if set up.
-        dispute_reason:
-          type: string
-          description: Dispute reason description, if set up.
-        invoice_amount_paid:
-          type: string
-          description: The total amount of payments, in dollars and cents, made to date via Collaborative AR towards this invoice.
-        invoice_identifier:
-          type: string
-          description: The identifier of the invoice for which the payment was made.
-        invoice_date:
-          type: string
-          format: date
-          description: Invoice date, in the format YYYY-MM-DD.
-        invoice_external_id:
-          type: string
-          description: The external identifier/reference, if any, of the invoice for which the payment was made.
-        invoice_currency:
-          type: string
-          description: The currency of the invoice for which the payment was made.
-        invoice_purchase_order_number:
-          type: string
-          description: The purchase order number associated to the invoice.
-        invoice_ref1:
-          type: string
-          description: Reference number or string associated to the invoice.
-        invoice_ref2:
-          type: string
-          description: Same as above.
-        invoice_ref3:
-          type: string
-          description: Same as above.
-        cumulative_customer_amount:
-          type: string
-          description: 'The total payment processed for *this* customer under *this* `payment_reference`.
-
-            '
-        display_identifier:
-          type: string
-          description: The value of display_identifier that was provided for the payment; if this was null, this will be the the value of the payment_reference
-        line_item_transactional_amounts:
-          type: array
-          items:
-            type: object
-            properties:
-              line_item_number:
-                type: string
-                description: Invoice line-item number
-              line_item_payment_amount:
-                type: string
-                description: The amount of the payment applied to the line-item, in dollars and cents.
-              line_item_balance:
-                type: string
-                description: Remaining balance on the line-item (after the payment is processed), in dollars and cents.
-              line_item_short_pay_indicator:
-                type: string
-                description: '`Y` if a short payment was made.
-
-                  '
-              line_item_payment_note:
-                type: string
-                description: Note accompanying the payment at the line-item level.
-              line_item_short_pay_reason_identifier:
-                type: string
-                description: Short pay reason code, if set up.
-              line_item_short_pay_reason:
-                type: string
-                description: Short pay reason description, if set up.
-              line_item_dispute_reason_identifier:
-                type: string
-                description: Dispute reason code, if set up.
-              line_item_dispute_reason:
-                type: string
-                description: Dispute reason description, if set up.
-          description: 'Payments applied to invoice line-items. Applicable if accepting short payments at line-item level.
-
-            '
-        batch_number:
-          type: string
-          description: The batch number associated with the payment, if any. If none, the value will be null.
-        batch_amount:
-          type: string
-          description: The batch amount of the batch associated with the payment, if any. If none, the value will be an empty string ""
-        invoice_display_number:
-          type: string
-          description: The display number of the invoice for which the payment was made.
-        invoice_internal_number:
-          type: string
-          description: The number of the invoice for which the payment was made.
-        fx_rate:
-          type: string
-          description: Optional. The exchange rate used for the payment.
-        fx_amount:
-          type: string
-          description: Optional. The amount of the payment in the gateway currency.
-        fx_amount_cents:
-          type: number
-          description: Optional. The amount of the payment in the gateway currency in cents.
-    MonthlyStatementResponse:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Token identifier for the monthly statement.
-        start_date:
-          type: string
-          description: Start date of the statement reporting period.
-          format: date
-          example: '2022-01-15'
-        end_date:
-          type: string
-          description: End date of the statement reporting period.
-          format: date
-          example: '2022-01-15'
-        statement_date:
-          type: string
-          description: Generation date of the statement.
-          format: date
-          example: '2022-01-15'
-        merchant_account_token:
-          type: string
-          description: Token identifier representing the owing merchant account.
-        merchant_account_identifier:
-          type: string
-          description: MID (merchant identifier) of the owing merchant account.
-        watermark:
-          $ref: '#/components/schemas/Watermark'
-          description: Watermark value for subsequent calls.
-    SettlementBatchResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: Token identifier for the monthly statement.
-        merchant_account_token:
-          type: string
-          description: Token identifier representing the owing merchant account.
-        mid:
-          type: string
-          description: The merchant id (MID) associated with the batch deposit or withdrawal
-        batch_close_date:
-          type: string
-          description: Date batch was marked closed.
-          format: date
-          example: '2022-01-15'
-        batch_deposit_date:
-          type: string
-          description: Date batch was deposited into deposit account.
-          format: date
-          example: '2022-01-15'
-        batch_net_amount_cents:
-          type: integer
-          description: Amount in cents, less fees.
-        fee_withdrawal_amount_cents:
-          type: integer
-          description: Amount in cents, gross fee amount withdrawn separately to the reported batch deposit.
-        deposit_amount_cents:
-          type: integer
-          description: Amount in cents deposited into deposit account.
-        deposit_currency:
-          type: string
-          description: Deposit currency
-          enum:
-          - usd
-          - eur
-          - gbp
-          - cad
-          - aud
-          example: usd
-        deposit_routing_number:
-          type: string
-          description: Deposit account routing number
-        deposit_account_number:
-          type: string
-          description: Masked deposit account number
-        deposit_routing_account_hash:
-          type: string
-          description: 'A hash of the deposit account routing number concatenated with the actual/unmasked deposit account number
-
-            '
-        deposit_routing_account_hash_function:
-          type: string
-          description: 'The hash function used to mask the deposit routing and account number per deposit_routing_account_hash
-
-            '
-          enum:
-          - sha-1
-        fees:
-          type: array
-          items:
-            type: object
-            properties:
-              token:
-                type: string
-                description: Token representing the fee transaction
-              fee_type:
-                type: string
-                enum:
-                - interchange
-                - payfac
-                - network
-                - processor
-              included_in_batch_deposit:
-                type: boolean
-                description: '`true` when fees are included in the batch deposit i.e. a single deposit and its processing proceeds less fees; `false` when there is one deposit for the processing proceeds and a separate deposit for fees'
-              fee_withdrawal_date:
-                type: string
-                format: date
-                example: '2022-01-15'
-              fee_amount_cents:
-                type: integer
-                description: Amount in cents, less fees.
-              fee_currency:
-                type: string
-                description: Fee currency
-                enum:
-                - usd
-                - eur
-                - gbp
-                - cad
-                - aud
-                example: usd
-              fee_withdrawal_routing_number:
-                type: string
-                description: Fee account routing number
-              fee_withdrawal_account_number:
-                type: string
-                description: Masked fee account number
-              fee_routing_account_hash:
-                type: string
-                description: 'A hash of the fee withdrawal account routing number concatenated with the actual/unmasked fee withdrawal account number
-
-                  '
-              fee_routing_account_hash_function:
-                type: string
-                description: 'The hash function used to mask the fee withdrawal routing and account number per fee_routing_account_hash
-
-                  '
-                enum:
-                - sha-1
-        transactions:
-          type: array
-          description: List of transaction amounts contributing to the deposit batch
-          items:
-            $ref: '#/components/schemas/SummaryBatchTransaction'
-        exceptions:
-          type: array
-          description: List of exception transactions including ACH return/reject and CC chargeback contributing to the deposit batch
-          items:
-            $ref: '#/components/schemas/SettlementExceptionResponse'
-        watermark:
-          $ref: '#/components/schemas/Watermark'
-          description: Watermark value for subsequent calls.
   responses:
     UnauthorizedError:
       description: Unauthorized

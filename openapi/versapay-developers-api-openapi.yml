@@ -319,60 +319,222 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Address:
-      type: object
-      description: An Address
+    FieldOption:
+      description: Options for a single field
+      required:
+      - name
+      - label
+      additionalProperties:
+        description: Reserved for future use
+        oneOf:
+        - type: boolean
+        - type: integer
+        - type: string
+        - type: number
       properties:
-        contactFirstName:
+        name:
           type: string
-          example: Alice
-          description: The contact's first name
-        contactLastName:
+          example: expDate
+          description: Field name
+        label:
           type: string
-          example: Smith
-          description: The contact's last name
-        companyName:
+          example: Expiration Date
+          description: Field display name
+        placeholder:
           type: string
-          example: My Company
-          description: The company name
-        address1:
+          example: MM / YY
+          description: The placeholder shown on the form
+        errorLabel:
           type: string
-          example: 123 Main Street
+          example: Please check the Expiration Date
+          description: The error message displayed for an invalid entry
+        allowLabelUpdate:
+          type: boolean
+          example: true
+          description: Set to true if the client-side code should be allowed to override the label
+        id:
+          type: string
+          example: ddlExpDate
           minLength: 1
-          description: The first address line
-        address2:
+          description: The DOM ID of the field
+    Currency:
+      type: string
+      example: USD
+      pattern: ^[A-Z]{3}$
+      description: The uppercase 3-letter ISO currency code
+    WalletID:
+      type: string
+      example: BA25BVH5HCRI
+      pattern: ^[0-9A-Z]{12}$
+      description: The wallet ID returned by a POST to /wallets
+    SessionOptionPost:
+      allOf:
+      - type: object
+        properties:
+          wallet:
+            $ref: '#/components/schemas/WalletOptionsBase'
+      - $ref: '#/components/schemas/SessionOptionBase'
+    AVSOption:
+      description: Merchant defined AVS fraud protection settings
+      properties:
+        rejectAddressMismatch:
+          $ref: '#/components/schemas/RejectAddressMismatch'
+        rejectPostCodeMismatch:
+          $ref: '#/components/schemas/RejectPostCodeMismatch'
+        rejectUnknown:
+          $ref: '#/components/schemas/RejectAVSUnknown'
+    ACHPaymentType:
+      description: A credit card payment type definition
+      properties:
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+      example:
+        name: ach
+        label: Bank Account
+        promoted: false
+        fields:
+        - name: accountType
+          label: Account Type
+          errorLabel: Account type
+        - name: checkType
+          label: Check Type
+          errorLabel: Check type
+        - name: accountHolder
+          label: Account Holder
+          errorLabel: Account holder
+        - name: routingNo
+          label: Routing Number
+          errorLabel: Routing number
+        - name: achAccountNo
+          label: Account Number
+          errorLabel: Bank account number
+    RejectAddressMismatch:
+      type: boolean
+      example: true
+      description: Set custom avs protection rule to reject or allow credit card transactions with an address mismatch
+    RejectAVSUnknown:
+      type: boolean
+      example: true
+      description: Set custom avs protection rule to reject or allow credit card transactions with a avs unknown
+    WalletResponse:
+      type: object
+      description: A response containing wallet information
+      required:
+      - walletId
+      properties:
+        walletId:
+          $ref: '#/components/schemas/WalletID'
+    PaymentError:
+      type: object
+      description: Error
+      properties:
+        message:
           type: string
-          example: Apartment 1
-          description: The second address line
-        city:
-          type: string
-          example: Anytown
-          minLength: 1
-          description: The city
-        stateOrProvince:
-          type: string
-          example: CA
-          description: The state or province code
-        postCode:
-          type: string
-          minLength: 1
-          maxLength: 10
-          example: '55555'
-          description: The ZIP or post code
-        country:
-          type: string
-          pattern: ^[A-Z]{2}$
-          example: US
-          description: The uppercase 2-character ISO country code
-        phone:
-          type: string
-          example: 555-555-5555
-          description: The phone number
-        email:
-          type: string
-          format: email
-          example: me@example.com
-          description: The email address for the contact
+          example: not found
+          description: The error message
+        errors:
+          type: array
+          description: A collection of errors
+          items:
+            type: object
+            description: An error
+            properties:
+              path:
+                type: string
+                example: /foo
+                description: The path that generated the error
+              response_code:
+                type: string
+                example: '999'
+                description: The error response code from the gateway
+              message:
+                type: string
+                example: not found
+                description: The error message
+    SessionRequest:
+      type: object
+      description: A new session request
+      required:
+      - gatewayAuthorization
+      - options
+      properties:
+        gatewayAuthorization:
+          $ref: '#/components/schemas/GatewayAuthorization'
+        options:
+          $ref: '#/components/schemas/SessionOptionPost'
+    Balance:
+      description: Balance of payment method
+      properties:
+        balance:
+          type: number
+          format: float
+          example: 10.5
+          minimum: 0
+          description: The balance of the payment method.
+    PaymentTypes:
+      type: array
+      items:
+        anyOf:
+        - $ref: '#/components/schemas/CreditCardPaymentType'
+        - $ref: '#/components/schemas/ACHPaymentType'
+        - $ref: '#/components/schemas/GiftCardPaymentType'
+        - $ref: '#/components/schemas/ApplePayPaymentType'
+      example:
+      - name: creditCard
+        label: Payment Card
+        promoted: false
+        fields:
+        - name: cardholderName
+          label: Cardholder Name
+          errorLabel: Cardholder name
+        - name: accountNo
+          label: Account Number
+          errorLabel: Credit card number
+        - name: expDate
+          label: Expiration Date
+          errorLabel: Expiration date
+        - name: cvv
+          label: Security Code
+          errorLabel: Security code
+      - name: ach
+        label: Bank Account
+        promoted: false
+        fields:
+        - name: accountType
+          label: Account Type
+          errorLabel: Account type
+        - name: checkType
+          label: Check Type
+          errorLabel: Check type
+        - name: accountHolder
+          label: Account Holder
+          errorLabel: Account holder
+        - name: routingNo
+          label: Routing Number
+          errorLabel: Routing number
+        - name: achAccountNo
+          label: Account Number
+          errorLabel: Bank account number
+      - name: giftCard
+        label: Gift Card
+        promoted: false
+        fields:
+        - name: gcAccountNo
+          label: Account Number
+          errorLabel: Gift card number
+        - name: expDate
+          label: Expiration Date
+          errorLabel: Expiration date
+        - name: pin
+          label: PIN
+          errorLabel: PIN
+      - name: applePay
+        label: ApplePay
+        promoted: true
+        fields:
+        - name: applePay
+        - label: applePay
+        - errorLabel: applePay
     Sale:
       required:
       - gatewayAuthorization
@@ -490,31 +652,6 @@ components:
           $ref: '#/components/schemas/Payments'
         applePayPayment:
           $ref: '#/components/schemas/ApplePayPayment'
-    Payment:
-      type: object
-      description: A Payment
-      required:
-      - type
-      - token
-      - amount
-      - capture
-      properties:
-        type:
-          $ref: '#/components/schemas/PaymentMethod'
-        settlementToken:
-          $ref: '#/components/schemas/SettlementToken'
-        token:
-          $ref: '#/components/schemas/FundToken'
-        amount:
-          type: number
-          format: float
-          example: 6.85
-          minimum: 0
-          description: The payment amount, expressed in the currency of the current sale
-        capture:
-          type: boolean
-          example: false
-          description: Indicates if the gateway should capture the funds or just reserve the funds via an authorization
     PaymentType:
       description: A payment type or method
       required:
@@ -541,10 +678,219 @@ components:
         - type: integer
         - type: string
         - type: number
-    RejectPostCodeMismatch:
-      type: boolean
-      example: true
-      description: Set custom avs protection rule to reject or allow credit card transactions with a postal code mismatch
+    SessionID:
+      type: string
+      format: uuid
+      example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      description: The session ID returned by a POST to /sessions
+    SessionOptionBase:
+      description: An option for a specific session
+      additionalProperties:
+        oneOf:
+        - type: object
+        - type: boolean
+        - type: integer
+        - type: string
+        - type: number
+      properties:
+        fields:
+          allOf:
+          - $ref: '#/components/schemas/FieldOptions'
+          - deprecated: true
+        paymentTypes:
+          $ref: '#/components/schemas/PaymentTypes'
+        avsRules:
+          $ref: '#/components/schemas/AVSOption'
+    UnifiedAuthorization:
+      type: object
+      description: Versapay authentication credentials
+      required:
+      - apiToken
+      - apiKey
+      properties:
+        apiToken:
+          type: string
+          example: 1a2B345ZYx0987yYuiTr
+          minLength: 1
+          description: The API Token for the gateway
+        apiKey:
+          type: string
+          example: 1a2B345ZYx0987yYuiTr
+          minLength: 1
+          description: The API Key for the gateway
+    OrderID:
+      type: string
+      minLength: 1
+      maxLength: 255
+      pattern: ^\S(.*\S)?$
+      example: 22A4IMSVNN9T
+      description: The order ID returned by a POST to /sessions/{id}/sales
+    FieldOptions:
+      type: array
+      description: A collection of field options
+      items:
+        $ref: '#/components/schemas/FieldOption'
+    Error:
+      type: object
+      description: Error
+      properties:
+        message:
+          type: string
+          example: not found
+          description: The error message
+        errors:
+          type: array
+          description: A collection of errors
+          items:
+            type: object
+            description: An error
+            properties:
+              path:
+                type: string
+                example: /foo
+                description: The path that generated the error
+              message:
+                type: string
+                example: not found
+                description: The error message
+    PaymentMethod:
+      type: string
+      enum:
+      - creditCard
+      - ach
+      - giftCard
+      - applePay
+      example: creditCard
+      description: The payment type
+    Payment:
+      type: object
+      description: A Payment
+      required:
+      - type
+      - token
+      - amount
+      - capture
+      properties:
+        type:
+          $ref: '#/components/schemas/PaymentMethod'
+        settlementToken:
+          $ref: '#/components/schemas/SettlementToken'
+        token:
+          $ref: '#/components/schemas/FundToken'
+        amount:
+          type: number
+          format: float
+          example: 6.85
+          minimum: 0
+          description: The payment amount, expressed in the currency of the current sale
+        capture:
+          type: boolean
+          example: false
+          description: Indicates if the gateway should capture the funds or just reserve the funds via an authorization
+    Payments:
+      type: array
+      minItems: 1
+      description: The collection of payments
+      items:
+        $ref: '#/components/schemas/Payment'
+    SettlementToken:
+      type: string
+      example: MA1F8B2E87AM
+      pattern: ^[0-9A-Z]{12}$
+      description: The token associated with the MID to use for settlement in Collaborative AR
+    ApplePayMerchantValidationRequest:
+      type: object
+      required:
+      - validationUrl
+      - applePayConfig
+      properties:
+        validationUrl:
+          type: string
+          format: uri
+          description: The URL provided by Apple for merchant validation.
+          example: https://apple-pay-gateway.apple.com/paymentservices/startSession
+        applePayConfig:
+          type: object
+          description: The configuration details for Apple Pay validation.
+          properties:
+            merchantIdentifier:
+              type: string
+              description: The unique merchant identifier for Apple Pay.
+              example: merchant.com.example
+            displayName:
+              type: string
+              description: Display name of the merchant or store.
+              example: Versapay Example Store
+            initiativeContext:
+              type: string
+              description: A value provided based on the initiative.
+              example: example.com
+            merchantCapabilities:
+              type: array
+              items:
+                type: string
+              description: Capabilities supported by the merchant, e.g., 3D Secure.
+              example:
+              - supports3DS
+            supportedNetworks:
+              type: array
+              items:
+                type: string
+              description: Supported card networks for Apple Pay.
+              example:
+              - amex
+              - masterCard
+              - visa
+            ecommSubdomain:
+              type: string
+              description: The subdomain used for ecommerce API.
+              example: ecommerce-api-uat
+            countryCode:
+              type: string
+              description: The country code for the transaction.
+              example: US
+            currencyCode:
+              type: string
+              description: The currency code for transaction.
+              example: USD
+    SaleResponse:
+      type: object
+      description: A response containing order identification information
+      required:
+      - orderId
+      - finalized
+      properties:
+        orderId:
+          $ref: '#/components/schemas/OrderID'
+        finalized:
+          type: boolean
+          example: true
+          description: The finalization status of the order (only finalized orders will be imported into the ERP)
+        payment:
+          $ref: '#/components/schemas/PaymentResponse'
+    CreditCardPaymentType:
+      description: A credit card payment type definition
+      properties:
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+      example:
+        name: creditCard
+        label: Payment Card
+        promoted: false
+        fields:
+        - name: cardholderName
+          label: Cardholder Name
+          errorLabel: Cardholder name
+        - name: accountNo
+          label: Account Number
+          errorLabel: Credit card number
+        - name: expDate
+          label: Expiration Date
+          errorLabel: Expiration date
+        - name: cvv
+          label: Security Code
+          errorLabel: Security code
     SaleLine:
       type: object
       description: A line item for an order
@@ -618,232 +964,44 @@ components:
           example:
             line_attribute1: attribute1value
             line_attribute2: attribute2value
-    SimpleRequest:
-      type: object
-      description: A simple request
-      required:
-      - gatewayAuthorization
-      properties:
-        gatewayAuthorization:
-          $ref: '#/components/schemas/GatewayAuthorization'
-    ApplePayMerchantValidationResponse:
-      type: object
-      properties:
-        epochTimestamp:
-          type: integer
-          format: int64
-          description: Timestamp when the session starts (in milliseconds since epoch).
-        expiresAt:
-          type: integer
-          format: int64
-          description: Timestamp when the session expires (in milliseconds since epoch).
-        merchantSessionIdentifier:
-          type: string
-          description: Unique identifier for the merchant session.
-        nonce:
-          type: string
-          description: Unique random value for session validation.
-        merchantIdentifier:
-          type: string
-          description: Merchant identifier used for Apple Pay.
-        domainName:
-          type: string
-          description: Domain name for the merchant performing validation.
-        displayName:
-          type: string
-          description: Display name of the merchant or store.
-        signature:
-          type: string
-          description: Base64-encoded cryptographic signature for the session.
-        operationalAnalyticsIdentifier:
-          type: string
-          description: Identifier for operational analytics tracking.
-        retries:
-          type: integer
-          format: int32
-          description: Number of retries for the validation request.
-        pspId:
-          type: string
-          description: Payment service provider identifier.
-      required:
-      - epochTimestamp
-      - expiresAt
-      - merchantSessionIdentifier
-      - nonce
-      - merchantIdentifier
-      - domainName
-      - displayName
-      - signature
-      - operationalAnalyticsIdentifier
-      - retries
-      - pspId
-      example:
-        epochTimestamp: 1732209660630
-        expiresAt: 1732209660630
-        merchantSessionIdentifier: SSHF3882F91426C4F868702059B47B0XXX
-        nonce: 5ec8xxxx
-        merchantIdentifier: 8C421777BCD9BEDAB86991B8EXXXX
-        domainName: example.com
-        displayName: Versapay Example Store
-        signature: base64EncodedSignature
-        operationalAnalyticsIdentifier: identifier
-        retries: 0
-        pspId: 8C421777BCD9BEDAB86991B8EXXXX
-    ACHPaymentType:
-      description: A credit card payment type definition
-      properties:
-        paymentType:
-          $ref: '#/components/schemas/PaymentType'
-      example:
-        name: ach
-        label: Bank Account
-        promoted: false
-        fields:
-        - name: accountType
-          label: Account Type
-          errorLabel: Account type
-        - name: checkType
-          label: Check Type
-          errorLabel: Check type
-        - name: accountHolder
-          label: Account Holder
-          errorLabel: Account holder
-        - name: routingNo
-          label: Routing Number
-          errorLabel: Routing number
-        - name: achAccountNo
-          label: Account Number
-          errorLabel: Bank account number
-    ApplePayMerchantValidationRequest:
+    FundToken:
+      type: string
+      example: 1NQGAW7N4S7H
+      pattern: ^[0-9A-Z]{12}$
+      description: The token associated with a funding source
+    SessionResponse:
       type: object
       required:
-      - validationUrl
-      - applePayConfig
+      - id
       properties:
-        validationUrl:
-          type: string
-          format: uri
-          description: The URL provided by Apple for merchant validation.
-          example: https://apple-pay-gateway.apple.com/paymentservices/startSession
-        applePayConfig:
-          type: object
-          description: The configuration details for Apple Pay validation.
-          properties:
-            merchantIdentifier:
-              type: string
-              description: The unique merchant identifier for Apple Pay.
-              example: merchant.com.example
-            displayName:
-              type: string
-              description: Display name of the merchant or store.
-              example: Versapay Example Store
-            initiativeContext:
-              type: string
-              description: A value provided based on the initiative.
-              example: example.com
-            merchantCapabilities:
-              type: array
-              items:
-                type: string
-              description: Capabilities supported by the merchant, e.g., 3D Secure.
-              example:
-              - supports3DS
-            supportedNetworks:
-              type: array
-              items:
-                type: string
-              description: Supported card networks for Apple Pay.
-              example:
-              - amex
-              - masterCard
-              - visa
-            ecommSubdomain:
-              type: string
-              description: The subdomain used for ecommerce API.
-              example: ecommerce-api-uat
-            countryCode:
-              type: string
-              description: The country code for the transaction.
-              example: US
-            currencyCode:
-              type: string
-              description: The currency code for transaction.
-              example: USD
+        id:
+          $ref: '#/components/schemas/SessionID'
     GatewayAuthorization:
       oneOf:
       - $ref: '#/components/schemas/UnifiedAuthorization'
-    Balance:
-      description: Balance of payment method
-      properties:
-        balance:
-          type: number
-          format: float
-          example: 10.5
-          minimum: 0
-          description: The balance of the payment method.
-    RejectAVSUnknown:
-      type: boolean
-      example: true
-      description: Set custom avs protection rule to reject or allow credit card transactions with a avs unknown
-    ApplePayPaymentType:
+    GiftCardPaymentType:
       description: A credit card payment type definition
       properties:
         paymentType:
           $ref: '#/components/schemas/PaymentType'
       example:
-        name: applePay
-        label: ApplePay
-        promoted: true
+        name: giftCard
+        label: Gift Card
+        promoted: false
         fields:
-        - name: applePay
-        - label: applePay
-        - errorLabel: applePay
-    WalletOptionsBase:
-      description: Options for wallet behavior
-      properties:
-        id:
-          $ref: '#/components/schemas/WalletID'
-        customerId:
-          type: string
-          example: 1NQGAW7N4S7H
-          minLength: 1
-          pattern: ^[0-9A-Z]+$
-          description: Set this option to the desired customer id, this can be specified instead of a wallet id
-        tokens:
-          type: array
-          description: An array of payment method tokens associated with the specified wallet ID or customer ID. Use this array to filter the contents of the wallet and only display the specified fund tokens.
-          items:
-            $ref: '#/components/schemas/FundToken'
-        allowAdd:
-          type: boolean
-          example: true
-          description: Set this option to true if the customer should be allowed to add new payment methods to the wallet
-        allowEdit:
-          type: boolean
-          example: true
-          description: Set this option to true if the customer should be allowed to edit existing wallet items
-        allowDelete:
-          type: boolean
-          example: true
-          description: Set this option to true if the customer should be allowed to remove items from the wallet
-        saveByDefault:
-          type: boolean
-          example: true
-          description: Set this option to true if the entry should be saved to the wallet by default
-      example:
-        id: BA25BVH5HCRI
-        customerId: CUST12345
-        tokens:
-        - 1NQGAW7N4S7H
-        allowAdd: true
-        allowEdit: true
-        allowDelete: true
-        saveByDefault: false
-    Currency:
-      type: string
-      example: USD
-      pattern: ^[A-Z]{3}$
-      description: The uppercase 3-letter ISO currency code
+        - name: gcAccountNo
+          label: Account Number
+          errorLabel: Gift card number
+        - name: expDate
+          label: Expiration Date
+          errorLabel: Expiration date
+        - name: pin
+          label: PIN
+          errorLabel: PIN
+    RejectPostCodeMismatch:
+      type: boolean
+      example: true
+      description: Set custom avs protection rule to reject or allow credit card transactions with a postal code mismatch
     ApplePayPayment:
       type: object
       description: Apple Pay payment details
@@ -936,11 +1094,122 @@ components:
           description: The payment amount, expressed in the currency of the current sale
           example: 6.85
           minimum: 0
-    WalletID:
-      type: string
-      example: BA25BVH5HCRI
-      pattern: ^[0-9A-Z]{12}$
-      description: The wallet ID returned by a POST to /wallets
+    ApplePayPaymentType:
+      description: A credit card payment type definition
+      properties:
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+      example:
+        name: applePay
+        label: ApplePay
+        promoted: true
+        fields:
+        - name: applePay
+        - label: applePay
+        - errorLabel: applePay
+    Address:
+      type: object
+      description: An Address
+      properties:
+        contactFirstName:
+          type: string
+          example: Alice
+          description: The contact's first name
+        contactLastName:
+          type: string
+          example: Smith
+          description: The contact's last name
+        companyName:
+          type: string
+          example: My Company
+          description: The company name
+        address1:
+          type: string
+          example: 123 Main Street
+          minLength: 1
+          description: The first address line
+        address2:
+          type: string
+          example: Apartment 1
+          description: The second address line
+        city:
+          type: string
+          example: Anytown
+          minLength: 1
+          description: The city
+        stateOrProvince:
+          type: string
+          example: CA
+          description: The state or province code
+        postCode:
+          type: string
+          minLength: 1
+          maxLength: 10
+          example: '55555'
+          description: The ZIP or post code
+        country:
+          type: string
+          pattern: ^[A-Z]{2}$
+          example: US
+          description: The uppercase 2-character ISO country code
+        phone:
+          type: string
+          example: 555-555-5555
+          description: The phone number
+        email:
+          type: string
+          format: email
+          example: me@example.com
+          description: The email address for the contact
+    WalletOptionsBase:
+      description: Options for wallet behavior
+      properties:
+        id:
+          $ref: '#/components/schemas/WalletID'
+        customerId:
+          type: string
+          example: 1NQGAW7N4S7H
+          minLength: 1
+          pattern: ^[0-9A-Z]+$
+          description: Set this option to the desired customer id, this can be specified instead of a wallet id
+        tokens:
+          type: array
+          description: An array of payment method tokens associated with the specified wallet ID or customer ID. Use this array to filter the contents of the wallet and only display the specified fund tokens.
+          items:
+            $ref: '#/components/schemas/FundToken'
+        allowAdd:
+          type: boolean
+          example: true
+          description: Set this option to true if the customer should be allowed to add new payment methods to the wallet
+        allowEdit:
+          type: boolean
+          example: true
+          description: Set this option to true if the customer should be allowed to edit existing wallet items
+        allowDelete:
+          type: boolean
+          example: true
+          description: Set this option to true if the customer should be allowed to remove items from the wallet
+        saveByDefault:
+          type: boolean
+          example: true
+          description: Set this option to true if the entry should be saved to the wallet by default
+      example:
+        id: BA25BVH5HCRI
+        customerId: CUST12345
+        tokens:
+        - 1NQGAW7N4S7H
+        allowAdd: true
+        allowEdit: true
+        allowDelete: true
+        saveByDefault: false
+    SimpleRequest:
+      type: object
+      description: A simple request
+      required:
+      - gatewayAuthorization
+      properties:
+        gatewayAuthorization:
+          $ref: '#/components/schemas/GatewayAuthorization'
     PaymentResponse:
       type: object
       description: A response containing payment details
@@ -979,335 +1248,66 @@ components:
         transactionId:
           type: string
           description: The transaction ID
-    OrderID:
-      type: string
-      minLength: 1
-      maxLength: 255
-      pattern: ^\S(.*\S)?$
-      example: 22A4IMSVNN9T
-      description: The order ID returned by a POST to /sessions/{id}/sales
-    SessionOptionBase:
-      description: An option for a specific session
-      additionalProperties:
-        oneOf:
-        - type: object
-        - type: boolean
-        - type: integer
-        - type: string
-        - type: number
+    ApplePayMerchantValidationResponse:
+      type: object
       properties:
-        fields:
-          allOf:
-          - $ref: '#/components/schemas/FieldOptions'
-          - deprecated: true
-        paymentTypes:
-          $ref: '#/components/schemas/PaymentTypes'
-        avsRules:
-          $ref: '#/components/schemas/AVSOption'
-    PaymentTypes:
-      type: array
-      items:
-        anyOf:
-        - $ref: '#/components/schemas/CreditCardPaymentType'
-        - $ref: '#/components/schemas/ACHPaymentType'
-        - $ref: '#/components/schemas/GiftCardPaymentType'
-        - $ref: '#/components/schemas/ApplePayPaymentType'
+        epochTimestamp:
+          type: integer
+          format: int64
+          description: Timestamp when the session starts (in milliseconds since epoch).
+        expiresAt:
+          type: integer
+          format: int64
+          description: Timestamp when the session expires (in milliseconds since epoch).
+        merchantSessionIdentifier:
+          type: string
+          description: Unique identifier for the merchant session.
+        nonce:
+          type: string
+          description: Unique random value for session validation.
+        merchantIdentifier:
+          type: string
+          description: Merchant identifier used for Apple Pay.
+        domainName:
+          type: string
+          description: Domain name for the merchant performing validation.
+        displayName:
+          type: string
+          description: Display name of the merchant or store.
+        signature:
+          type: string
+          description: Base64-encoded cryptographic signature for the session.
+        operationalAnalyticsIdentifier:
+          type: string
+          description: Identifier for operational analytics tracking.
+        retries:
+          type: integer
+          format: int32
+          description: Number of retries for the validation request.
+        pspId:
+          type: string
+          description: Payment service provider identifier.
+      required:
+      - epochTimestamp
+      - expiresAt
+      - merchantSessionIdentifier
+      - nonce
+      - merchantIdentifier
+      - domainName
+      - displayName
+      - signature
+      - operationalAnalyticsIdentifier
+      - retries
+      - pspId
       example:
-      - name: creditCard
-        label: Payment Card
-        promoted: false
-        fields:
-        - name: cardholderName
-          label: Cardholder Name
-          errorLabel: Cardholder name
-        - name: accountNo
-          label: Account Number
-          errorLabel: Credit card number
-        - name: expDate
-          label: Expiration Date
-          errorLabel: Expiration date
-        - name: cvv
-          label: Security Code
-          errorLabel: Security code
-      - name: ach
-        label: Bank Account
-        promoted: false
-        fields:
-        - name: accountType
-          label: Account Type
-          errorLabel: Account type
-        - name: checkType
-          label: Check Type
-          errorLabel: Check type
-        - name: accountHolder
-          label: Account Holder
-          errorLabel: Account holder
-        - name: routingNo
-          label: Routing Number
-          errorLabel: Routing number
-        - name: achAccountNo
-          label: Account Number
-          errorLabel: Bank account number
-      - name: giftCard
-        label: Gift Card
-        promoted: false
-        fields:
-        - name: gcAccountNo
-          label: Account Number
-          errorLabel: Gift card number
-        - name: expDate
-          label: Expiration Date
-          errorLabel: Expiration date
-        - name: pin
-          label: PIN
-          errorLabel: PIN
-      - name: applePay
-        label: ApplePay
-        promoted: true
-        fields:
-        - name: applePay
-        - label: applePay
-        - errorLabel: applePay
-    SaleResponse:
-      type: object
-      description: A response containing order identification information
-      required:
-      - orderId
-      - finalized
-      properties:
-        orderId:
-          $ref: '#/components/schemas/OrderID'
-        finalized:
-          type: boolean
-          example: true
-          description: The finalization status of the order (only finalized orders will be imported into the ERP)
-        payment:
-          $ref: '#/components/schemas/PaymentResponse'
-    PaymentError:
-      type: object
-      description: Error
-      properties:
-        message:
-          type: string
-          example: not found
-          description: The error message
-        errors:
-          type: array
-          description: A collection of errors
-          items:
-            type: object
-            description: An error
-            properties:
-              path:
-                type: string
-                example: /foo
-                description: The path that generated the error
-              response_code:
-                type: string
-                example: '999'
-                description: The error response code from the gateway
-              message:
-                type: string
-                example: not found
-                description: The error message
-    RejectAddressMismatch:
-      type: boolean
-      example: true
-      description: Set custom avs protection rule to reject or allow credit card transactions with an address mismatch
-    SessionID:
-      type: string
-      format: uuid
-      example: d290f1ee-6c54-4b01-90e6-d701748f0851
-      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-      description: The session ID returned by a POST to /sessions
-    PaymentMethod:
-      type: string
-      enum:
-      - creditCard
-      - ach
-      - giftCard
-      - applePay
-      example: creditCard
-      description: The payment type
-    FundToken:
-      type: string
-      example: 1NQGAW7N4S7H
-      pattern: ^[0-9A-Z]{12}$
-      description: The token associated with a funding source
-    CreditCardPaymentType:
-      description: A credit card payment type definition
-      properties:
-        paymentType:
-          $ref: '#/components/schemas/PaymentType'
-      example:
-        name: creditCard
-        label: Payment Card
-        promoted: false
-        fields:
-        - name: cardholderName
-          label: Cardholder Name
-          errorLabel: Cardholder name
-        - name: accountNo
-          label: Account Number
-          errorLabel: Credit card number
-        - name: expDate
-          label: Expiration Date
-          errorLabel: Expiration date
-        - name: cvv
-          label: Security Code
-          errorLabel: Security code
-    Error:
-      type: object
-      description: Error
-      properties:
-        message:
-          type: string
-          example: not found
-          description: The error message
-        errors:
-          type: array
-          description: A collection of errors
-          items:
-            type: object
-            description: An error
-            properties:
-              path:
-                type: string
-                example: /foo
-                description: The path that generated the error
-              message:
-                type: string
-                example: not found
-                description: The error message
-    SessionResponse:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          $ref: '#/components/schemas/SessionID'
-    Payments:
-      type: array
-      minItems: 1
-      description: The collection of payments
-      items:
-        $ref: '#/components/schemas/Payment'
-    FieldOptions:
-      type: array
-      description: A collection of field options
-      items:
-        $ref: '#/components/schemas/FieldOption'
-    UnifiedAuthorization:
-      type: object
-      description: Versapay authentication credentials
-      required:
-      - apiToken
-      - apiKey
-      properties:
-        apiToken:
-          type: string
-          example: 1a2B345ZYx0987yYuiTr
-          minLength: 1
-          description: The API Token for the gateway
-        apiKey:
-          type: string
-          example: 1a2B345ZYx0987yYuiTr
-          minLength: 1
-          description: The API Key for the gateway
-    SessionOptionPost:
-      allOf:
-      - type: object
-        properties:
-          wallet:
-            $ref: '#/components/schemas/WalletOptionsBase'
-      - $ref: '#/components/schemas/SessionOptionBase'
-    WalletResponse:
-      type: object
-      description: A response containing wallet information
-      required:
-      - walletId
-      properties:
-        walletId:
-          $ref: '#/components/schemas/WalletID'
-    SessionRequest:
-      type: object
-      description: A new session request
-      required:
-      - gatewayAuthorization
-      - options
-      properties:
-        gatewayAuthorization:
-          $ref: '#/components/schemas/GatewayAuthorization'
-        options:
-          $ref: '#/components/schemas/SessionOptionPost'
-    FieldOption:
-      description: Options for a single field
-      required:
-      - name
-      - label
-      additionalProperties:
-        description: Reserved for future use
-        oneOf:
-        - type: boolean
-        - type: integer
-        - type: string
-        - type: number
-      properties:
-        name:
-          type: string
-          example: expDate
-          description: Field name
-        label:
-          type: string
-          example: Expiration Date
-          description: Field display name
-        placeholder:
-          type: string
-          example: MM / YY
-          description: The placeholder shown on the form
-        errorLabel:
-          type: string
-          example: Please check the Expiration Date
-          description: The error message displayed for an invalid entry
-        allowLabelUpdate:
-          type: boolean
-          example: true
-          description: Set to true if the client-side code should be allowed to override the label
-        id:
-          type: string
-          example: ddlExpDate
-          minLength: 1
-          description: The DOM ID of the field
-    SettlementToken:
-      type: string
-      example: MA1F8B2E87AM
-      pattern: ^[0-9A-Z]{12}$
-      description: The token associated with the MID to use for settlement in Collaborative AR
-    GiftCardPaymentType:
-      description: A credit card payment type definition
-      properties:
-        paymentType:
-          $ref: '#/components/schemas/PaymentType'
-      example:
-        name: giftCard
-        label: Gift Card
-        promoted: false
-        fields:
-        - name: gcAccountNo
-          label: Account Number
-          errorLabel: Gift card number
-        - name: expDate
-          label: Expiration Date
-          errorLabel: Expiration date
-        - name: pin
-          label: PIN
-          errorLabel: PIN
-    AVSOption:
-      description: Merchant defined AVS fraud protection settings
-      properties:
-        rejectAddressMismatch:
-          $ref: '#/components/schemas/RejectAddressMismatch'
-        rejectPostCodeMismatch:
-          $ref: '#/components/schemas/RejectPostCodeMismatch'
-        rejectUnknown:
-          $ref: '#/components/schemas/RejectAVSUnknown'
+        epochTimestamp: 1732209660630
+        expiresAt: 1732209660630
+        merchantSessionIdentifier: SSHF3882F91426C4F868702059B47B0XXX
+        nonce: 5ec8xxxx
+        merchantIdentifier: 8C421777BCD9BEDAB86991B8EXXXX
+        domainName: example.com
+        displayName: Versapay Example Store
+        signature: base64EncodedSignature
+        operationalAnalyticsIdentifier: identifier
+        retries: 0
+        pspId: 8C421777BCD9BEDAB86991B8EXXXX
