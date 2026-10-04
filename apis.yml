@@ -664,6 +664,9 @@ apis:
   - type: APIReference
     url: https://developers.versapay.com/ecommerce/
 common:
+- type: CapabilityMap
+  url: capabilities/versapay-capability-edges.yml
+  name: Versapay Business Capability Map
 - type: Overlay
   url: overlays/versapay-api-reference-overlay.yaml
 - type: Overlay

@@ -1,0 +1,86 @@
+slug: versapay
+provider: Versapay
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 7
+edges:
+- tag: Invoices
+  spec_file: versapay-invoices-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.9
+  evidence: '"As a supplier invoices are your receivables"; Create and Update Invoice; Export Open Invoices'
+  reason: Operations create, update and export customer invoices and open receivables — accounts receivable
+    invoicing.
+- tag: Invoicing Payments
+  spec_file: versapay-invoicing-payments-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.85
+  evidence: '"payments are made by customers for invoices issued to them"; Create a Payment; Export Payment
+    Allocations'
+  reason: Customer payments against issued invoices with allocation export — cash application within accounts
+    receivable management.
+- tag: Customers
+  spec_file: versapay-customers-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.8
+  evidence: Create and Update Customer; Export Customers Recently Updated; schemas CustomerResponse, Contact,
+    Customer
+  reason: CRUD and export of customer master records with contacts and identifier updates — customer data
+    management.
+- tag: Notifications
+  spec_file: versapay-notifications-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.75
+  evidence: Single Invoice Reminder; Bulk Invoice Reminder; "you can notify customers about their invoices"
+  reason: Invoice reminder dispatch to customers is receivables collections activity, not generic messaging
+    infrastructure; the operations are explicitly invoice reminders.
+- tag: Agreements
+  spec_file: versapay-agreements-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.7
+  evidence: POST /api/debit_agreements  Create an Agreement; POST /api/debit_agreements/{token}/approve  Approve
+    an Agreement
+  reason: These are pre-authorised debit agreements between a supplier and its buyers on an AR-automation
+    platform, i.e. authorisation to collect receivables. Accounts Receivable Management (collections/cash
+    application) is the honest fit; some ambiguity versus a pure payment-method-management reading keeps
+    confidence at 0.7.
+- tag: Autopay
+  spec_file: versapay-autopay-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.7
+  evidence: Autopays are a digital analog to paper pre-authorized debit agreements that businesses could
+    use, for instance, for monthly billing
+  reason: Create/update/revoke recurring automatic debit mandates on a B2B accounts-receivable platform
+    — automated collection of customer payments, which sits under Accounts Receivable Management. Could
+    alternatively be read as payment-method management, hence 0.7.
+- tag: Collaboration
+  spec_file: versapay-collaboration-api-openapi.yml
+  capability_id: BC-430.20
+  capability_id_l1: BC-430
+  capability_name: Complaints & Issue Management
+  confidence: 0.7
+  evidence: Close a Dispute; Export Open and Closed Disputes; "your customers collaborate with you through
+    comments about invoices and/or payments"
+  reason: Operations manage customer disputes and comments on invoices — dispute/complaint capture and
+    resolution. Could also be read as AR invoicing dispute handling (BC-200.30), hence moderate confidence.
