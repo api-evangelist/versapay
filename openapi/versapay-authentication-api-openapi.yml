@@ -328,6 +328,244 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
 components:
   schemas:
+    Divisions:
+      type: object
+      properties:
+        division_code:
+          type: string
+          description: The division code
+        division_name:
+          type: string
+          description: The division name
+        parent_code:
+          type:
+          - string
+          - 'null'
+          description: The parent division code of the division
+        company_name:
+          type:
+          - string
+          - 'null'
+          description: The division-specific company_name of the division
+        address_1:
+          type:
+          - string
+          - 'null'
+          description: The division-specific address_1 of the division
+        address_2:
+          type:
+          - string
+          - 'null'
+          description: The division-specific address_2 of the division
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The division-specific postal_code of the division
+        city:
+          type:
+          - string
+          - 'null'
+          description: The division-specific city of the division
+        province:
+          type:
+          - string
+          - 'null'
+          description: The division-specific state or province of the division
+        country:
+          type:
+          - string
+          - 'null'
+          description: The division-specific country of the division
+    TerminalProcessor:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        token:
+          type: string
+          description: The terminal processor token
+        deposit_account_masked_number:
+          type:
+          - string
+          - 'null'
+          description: 'A masked version of the deposit account number associated with the terminal processor
+
+            '
+        deposit_routing_account_hash:
+          type: string
+          description: 'A hash of the deposit routing number and deposit account number
+
+            '
+        deposit_routing_account_hash_function:
+          type: string
+          description: 'The hash function used to mask the routing number and account number
+
+            '
+        deposit_account_routing_number:
+          type:
+          - string
+          - 'null'
+          description: 'The routing number (if USD) of the deposit account associated with the terminal processor. If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits), If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.
+
+            '
+        nickname:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the terminal processor
+
+            '
+        gl_account:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that is the general ledger account number that is associated with the terminal processor deposits
+
+            '
+        mid:
+          type:
+          - string
+          - 'null'
+          description: 'The merchant id of the terminal processor
+
+            '
+        tid:
+          type:
+          - string
+          - 'null'
+          description: 'The terminal id of the terminal processor
+
+            '
+        is_default:
+          type: boolean
+          description: 'Default account for the account type for the specified currency
+
+            '
+    DepositAccount:
+      type: object
+      description: A deposit account
+      properties:
+        purpose:
+          type: string
+          description: The purpose of the deposit account
+        deposit_account_routing_number:
+          type: string
+          description: The routing number (if USD) of the deposit account associated with the merchant account
+        deposit_account_masked_number:
+          type: string
+          description: A masked version of the deposit account number associated with the merchant account
+        deposit_routing_account_hash_function:
+          type: string
+          description: The hash function used to mask the routing number and account number
+        deposit_routing_account_hash:
+          type: string
+          description: A hash of the deposit routing number and deposit account number
+    BankProcessor:
+      type: object
+      properties:
+        token:
+          type: string
+          description: the bank account token
+        currency:
+          type: string
+          enum:
+          - usd
+          - gbp
+          - eur
+          - cad
+          - aud
+        account_type:
+          description: checking or savings, defaults checking (required country = US)
+          type: string
+          example: checking
+        routing_number:
+          description: "Financial institution branch/location. If USD, it is the routing number.\n  If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits),\n  If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.\n"
+          type: string
+          example: ''
+        masked_account_number:
+          type: string
+          description: a masked version of the account number
+        routing_account_hash_function:
+          type: string
+          description: the hash function used to mask the routing number and account number
+        routing_account_hash:
+          type: string
+          description: the hash value used to mask the routing number and account number.
+        nickname:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the bank account
+
+            '
+        reference_token:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that describes the reference token provided by the source of the merchant application that resulted in this settlement bank account
+
+            '
+        gl_number:
+          type:
+          - string
+          - 'null'
+          description: 'Optional value that is the general ledger account number that is associated with the merchant account deposits
+
+            '
+        external_name:
+          type:
+          - string
+          - 'null'
+        external_number:
+          type:
+          - string
+          - 'null'
+        is_default:
+          type: boolean
+          description: 'Default account for the account type for the specified currency
+
+            '
+        address:
+          type:
+          - object
+          - 'null'
+          properties:
+            address_1:
+              type:
+              - string
+              - 'null'
+            address_2:
+              type:
+              - string
+              - 'null'
+            city:
+              type:
+              - string
+              - 'null'
+            province:
+              type:
+              - string
+              - 'null'
+              description: US state or CA province code
+            postal_code:
+              type:
+              - string
+              - 'null'
+              description: US zip code or CA postal code
+            country:
+              type:
+              - string
+              - 'null'
+              enum:
+              - US
+              - CA
     MerchantAccount:
       type: object
       properties:
@@ -571,244 +809,6 @@ components:
         external_payment_auto_match_mode:
           type: boolean
           description: External Payments Auto Match Mode
-    DepositAccount:
-      type: object
-      description: A deposit account
-      properties:
-        purpose:
-          type: string
-          description: The purpose of the deposit account
-        deposit_account_routing_number:
-          type: string
-          description: The routing number (if USD) of the deposit account associated with the merchant account
-        deposit_account_masked_number:
-          type: string
-          description: A masked version of the deposit account number associated with the merchant account
-        deposit_routing_account_hash_function:
-          type: string
-          description: The hash function used to mask the routing number and account number
-        deposit_routing_account_hash:
-          type: string
-          description: A hash of the deposit routing number and deposit account number
-    BankProcessor:
-      type: object
-      properties:
-        token:
-          type: string
-          description: the bank account token
-        currency:
-          type: string
-          enum:
-          - usd
-          - gbp
-          - eur
-          - cad
-          - aud
-        account_type:
-          description: checking or savings, defaults checking (required country = US)
-          type: string
-          example: checking
-        routing_number:
-          description: "Financial institution branch/location. If USD, it is the routing number.\n  If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits),\n  If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.\n"
-          type: string
-          example: ''
-        masked_account_number:
-          type: string
-          description: a masked version of the account number
-        routing_account_hash_function:
-          type: string
-          description: the hash function used to mask the routing number and account number
-        routing_account_hash:
-          type: string
-          description: the hash value used to mask the routing number and account number.
-        nickname:
-          type:
-          - string
-          - 'null'
-          description: 'Optional value that describes the bank account
-
-            '
-        reference_token:
-          type:
-          - string
-          - 'null'
-          description: 'Optional value that describes the reference token provided by the source of the merchant application that resulted in this settlement bank account
-
-            '
-        gl_number:
-          type:
-          - string
-          - 'null'
-          description: 'Optional value that is the general ledger account number that is associated with the merchant account deposits
-
-            '
-        external_name:
-          type:
-          - string
-          - 'null'
-        external_number:
-          type:
-          - string
-          - 'null'
-        is_default:
-          type: boolean
-          description: 'Default account for the account type for the specified currency
-
-            '
-        address:
-          type:
-          - object
-          - 'null'
-          properties:
-            address_1:
-              type:
-              - string
-              - 'null'
-            address_2:
-              type:
-              - string
-              - 'null'
-            city:
-              type:
-              - string
-              - 'null'
-            province:
-              type:
-              - string
-              - 'null'
-              description: US state or CA province code
-            postal_code:
-              type:
-              - string
-              - 'null'
-              description: US zip code or CA postal code
-            country:
-              type:
-              - string
-              - 'null'
-              enum:
-              - US
-              - CA
-    Divisions:
-      type: object
-      properties:
-        division_code:
-          type: string
-          description: The division code
-        division_name:
-          type: string
-          description: The division name
-        parent_code:
-          type:
-          - string
-          - 'null'
-          description: The parent division code of the division
-        company_name:
-          type:
-          - string
-          - 'null'
-          description: The division-specific company_name of the division
-        address_1:
-          type:
-          - string
-          - 'null'
-          description: The division-specific address_1 of the division
-        address_2:
-          type:
-          - string
-          - 'null'
-          description: The division-specific address_2 of the division
-        postal_code:
-          type:
-          - string
-          - 'null'
-          description: The division-specific postal_code of the division
-        city:
-          type:
-          - string
-          - 'null'
-          description: The division-specific city of the division
-        province:
-          type:
-          - string
-          - 'null'
-          description: The division-specific state or province of the division
-        country:
-          type:
-          - string
-          - 'null'
-          description: The division-specific country of the division
-    TerminalProcessor:
-      type: object
-      properties:
-        currency:
-          type: string
-          enum:
-          - usd
-          - gbp
-          - eur
-          - cad
-          - aud
-        token:
-          type: string
-          description: The terminal processor token
-        deposit_account_masked_number:
-          type:
-          - string
-          - 'null'
-          description: 'A masked version of the deposit account number associated with the terminal processor
-
-            '
-        deposit_routing_account_hash:
-          type: string
-          description: 'A hash of the deposit routing number and deposit account number
-
-            '
-        deposit_routing_account_hash_function:
-          type: string
-          description: 'The hash function used to mask the routing number and account number
-
-            '
-        deposit_account_routing_number:
-          type:
-          - string
-          - 'null'
-          description: 'The routing number (if USD) of the deposit account associated with the terminal processor. If CAD, it is the concatenated institution number (3 digits) plus transit number (5 digits), If AUD, it is the BSB number. If GBP, it is the Sort Code. If EUR, it is “000000000”.
-
-            '
-        nickname:
-          type:
-          - string
-          - 'null'
-          description: 'Optional value that describes the terminal processor
-
-            '
-        gl_account:
-          type:
-          - string
-          - 'null'
-          description: 'Optional value that is the general ledger account number that is associated with the terminal processor deposits
-
-            '
-        mid:
-          type:
-          - string
-          - 'null'
-          description: 'The merchant id of the terminal processor
-
-            '
-        tid:
-          type:
-          - string
-          - 'null'
-          description: 'The terminal id of the terminal processor
-
-            '
-        is_default:
-          type: boolean
-          description: 'Default account for the account type for the specified currency
-
-            '
     GiftCardProcessor:
       type: object
       properties:

@@ -72,7 +72,54 @@ paths:
       operationId: postApiGatewayV1Terminal
       x-operation-id-source: derived
 components:
+  examples:
+    tc_device_setup:
+      summary: Device setup
+      value:
+        laneid: '1'
+        command: DeviceSetup
+    error:
+      summary: Other errors
+      value:
+        success: false
+        errors:
+        - order_not_found
+    tc_request_signature:
+      summary: Request signature
+      value:
+        laneid: '1'
+        command: RequestSignature
+    declined:
+      summary: Gateway declined request
+      value:
+        success: false
+        errors:
+        - declined for REASON
+    declined_invalid_card:
+      summary: Decline invalid card
+      value:
+        success: false
+    tc_cancel:
+      summary: Cancel
+      value:
+        laneid: '1'
+        command: Cancel
+    tc_device_status:
+      summary: Device status
+      value:
+        laneid: '1'
+        command: DeviceStatus
   schemas:
+    UnifiedResponse:
+      type: object
+    TerminalResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: true|false
+      example:
+        success: true
     TerminalRequest:
       type: object
       properties:
@@ -88,53 +135,6 @@ components:
           - Cancel
           - DeviceStatus
       example:
-        laneid: '1'
-        command: DeviceSetup
-    UnifiedResponse:
-      type: object
-    TerminalResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: true|false
-      example:
-        success: true
-  examples:
-    tc_device_status:
-      summary: Device status
-      value:
-        laneid: '1'
-        command: DeviceStatus
-    tc_request_signature:
-      summary: Request signature
-      value:
-        laneid: '1'
-        command: RequestSignature
-    error:
-      summary: Other errors
-      value:
-        success: false
-        errors:
-        - order_not_found
-    declined:
-      summary: Gateway declined request
-      value:
-        success: false
-        errors:
-        - declined for REASON
-    tc_cancel:
-      summary: Cancel
-      value:
-        laneid: '1'
-        command: Cancel
-    declined_invalid_card:
-      summary: Decline invalid card
-      value:
-        success: false
-    tc_device_setup:
-      summary: Device setup
-      value:
         laneid: '1'
         command: DeviceSetup
 x-tagGroups:

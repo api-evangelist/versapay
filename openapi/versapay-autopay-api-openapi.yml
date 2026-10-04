@@ -163,6 +163,29 @@ paths:
         '200':
           description: Successful Operation
 components:
+  responses:
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
   schemas:
     AutopayResponse:
       type: object
@@ -204,29 +227,6 @@ components:
           description: The agreement token.
       example:
         token: TOKEN123
-  responses:
-    PreconditionFailed:
-      description: Precondition Failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: API token does not have permission for this request. Please contact your account administrator.
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

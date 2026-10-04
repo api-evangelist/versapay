@@ -432,40 +432,6 @@ paths:
       operationId: getApiExportsPaymentsRecent
       x-operation-id-source: derived
 components:
-  responses:
-    PreconditionFailed:
-      description: Precondition Failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: API token does not have permission for this request. Please contact your account administrator.
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
-    NotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: ActiveRecord::RecordNotFound
   schemas:
     PaymentResponse:
       type: object
@@ -978,6 +944,40 @@ components:
       type: integer
       format: int64
       example: 0
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: API token does not have permission for this request. Please contact your account administrator.
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: ActiveRecord::RecordNotFound
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

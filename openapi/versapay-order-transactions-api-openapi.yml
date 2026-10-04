@@ -374,12 +374,6 @@ paths:
       x-operation-id-source: derived
 components:
   examples:
-    use_existing_fund:
-      summary: Amount to process and fund reference (eg credit card) to pay from
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        fund_token: CC98U7LI8H91
     use_gift_card:
       summary: Amount to process and gift card details to pay from
       value:
@@ -395,11 +389,27 @@ components:
           expiry_year: 2049
           card_number: '4775419990420272'
           pin: '1234'
-    prior_transaction_reference:
-      summary: Directly reference prior transaction and amount to capture
+    use_settlement_routing:
+      summary: Use specific merchant account settlement route to pay order (eg credit card)
       value:
+        order:
+          identifier: 3SLSC9HX3AHB
+          settlement_token: MA123XYZABCD
         amount_cents: 4200
-        transaction: 9HWLBLWXXPRX
+        fund_token: CC98U7LI8H91
+    use_existing_credit_card_fee_exempt:
+      summary: Amount to process and credit card reference to pay from (ignore any configured surcharging rules)
+      value:
+        fee_exempt: true
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        credit_card: CC98U7LI8H91
+    use_existing_fund:
+      summary: Amount to process and fund reference (eg credit card) to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        fund_token: CC98U7LI8H91
     use_new_credit_card:
       summary: Amount to process and full credit card details to pay from
       value:
@@ -421,47 +431,6 @@ components:
             province: CA
             postal_code: '90210'
             country: US
-    declined_invalid_card:
-      summary: Decline invalid card
-      value:
-        success: false
-    use_existing_credit_card:
-      summary: Amount to process and credit card reference to pay from
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        credit_card: CC98U7LI8H91
-    error:
-      summary: Other errors
-      value:
-        success: false
-        errors:
-        - order_not_found
-    use_existing_credit_card_fee_exempt:
-      summary: Amount to process and credit card reference to pay from (ignore any configured surcharging rules)
-      value:
-        fee_exempt: true
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        credit_card: CC98U7LI8H91
-    declined:
-      summary: Gateway declined request
-      value:
-        success: false
-        errors:
-        - declined for REASON
-    use_cp_emv_terminal:
-      summary: Amount to process via terminal (card present emv)
-      value:
-        order: 3SLSC9HX3AHB
-        amount_cents: 4200
-        contact:
-          email: tim@coffee.com
-          first_name: Tim
-          last_name: Man
-        terminal:
-          laneid: '1'
-          enable_manual_entry: false
     use_new_bank_account:
       summary: Amount to process and bank account details to pay from
       value:
@@ -497,98 +466,195 @@ components:
         terminal:
           laneid: '1'
           enable_manual_entry: true
-    use_settlement_routing:
-      summary: Use specific merchant account settlement route to pay order (eg credit card)
+    declined:
+      summary: Gateway declined request
       value:
-        order:
-          identifier: 3SLSC9HX3AHB
-          settlement_token: MA123XYZABCD
+        success: false
+        errors:
+        - declined for REASON
+    declined_invalid_card:
+      summary: Decline invalid card
+      value:
+        success: false
+    prior_transaction_reference:
+      summary: Directly reference prior transaction and amount to capture
+      value:
         amount_cents: 4200
-        fund_token: CC98U7LI8H91
-  responses:
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
-    NotFoundError:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: ActiveRecord::RecordNotFound
+        transaction: 9HWLBLWXXPRX
+    error:
+      summary: Other errors
+      value:
+        success: false
+        errors:
+        - order_not_found
+    use_cp_emv_terminal:
+      summary: Amount to process via terminal (card present emv)
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        contact:
+          email: tim@coffee.com
+          first_name: Tim
+          last_name: Man
+        terminal:
+          laneid: '1'
+          enable_manual_entry: false
+    use_existing_credit_card:
+      summary: Amount to process and credit card reference to pay from
+      value:
+        order: 3SLSC9HX3AHB
+        amount_cents: 4200
+        credit_card: CC98U7LI8H91
   schemas:
-    OrderTransactionRequest:
+    SummaryOrderReference:
+      type: object
+      description: Summary reference of known order
+      properties:
+        identifier:
+          type: string
+          description: Associated order identifier
+        number:
+          type: string
+          description: Associated order number
+        amount_cents:
+          type: number
+          description: Associated order amount
+    OrderTransactionResponse:
       type: object
       properties:
-        order:
-          type: object
-          description: An order object or a token reference to an existing order
-        contact:
-          $ref: '#/components/schemas/WalletContact'
-        fund_token:
-          type: string
-          description: A token reference to an existing fund (either credit card or bank account)
-        fee_exempt:
+        success:
           type: boolean
-          description: True indicates that any fee related surcharging should be ignored even if the underlying merchant account is configured as such, false inherits any configured fee related behaviour
-        transaction_reference:
-          type:
-          - string
-          - 'null'
-          description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
-        device:
+          description: true|false
+        transaction:
           type: string
-          description: Optional device name depending on gateway boarding & configuration
-        industry:
+          description: Token referencing this transaction (used for void/refund)
+        order:
           type: string
-          description: Optional, if not provided defaults to value specified in gateway/account configuration
-          enum:
-          - directmarketing
-          - ecommerce
-          - lodging
-          - restaurant
-          - autorental
-          - retail
-        sec_code:
+          description: Token representing the order
+        wallet:
           type: string
-          description: Optional, for ACH bank transactions, standard entry class code (if not provided defaults to value specified on payment acceptance config; otherwise defaults to PPD if transaction from bank account check_type is personal & CCD if check_type is business)
-          enum:
-          - CCD
-          - PPD
-          - WEB
-          - POP
-          - TEL
+          description: Token representing the wallet holding the payment method
         credit_card:
-          $ref: '#/components/schemas/WalletCreditCard'
+          type: string
+          description: Token representing the payment method
         bank_account:
-          $ref: '#/components/schemas/WalletBankAccount'
+          type: string
+          description: Token representing the payment method
         gift_card:
-          type: object
-          description: Alternative to fund_token, a gift card
-          properties:
-            expiry_month:
-              type: string
-              description: 2 digit month
-            expiry_year:
-              type: string
-              description: 4 digit year
-            card_number:
-              type: string
-              description: Gift card number
-            pin:
-              type: string
+          type: string
+          description: Token representing the payment method
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderTransaction'
+      example:
+        success: true
+        transaction: 1TQ7L54E5L9R
+        order: 53HP8ILUK3E8
+        wallet: 2JN6JSR7IBML
+        credit_card: CC9DIRFZE61U
+        transactions:
+        - token: 1TQ7L54E5L9R
+          amount_in_cents: 100
+          message: null
+          link_url: null
+          type: transaction
+          transaction_type: request_money
+          email: customer+abcmedia@versapay.com
+          state: completed
+          transaction_reference: null
+          unique_reference: null
+          from_account: avscvv2b Test
+          to_account: ABC Media
+          process_on: null
+          created_by_user: zoM2xjrzczmgbbGhfHFh
+          auto_withdraw: false
+          auto_withdrawal_token: null
+          action: verify
+          payment_method: credit_card
+          settlement_token: MAY7USR7KABC
+          currency: usd
+          step_types:
+          - TransactionSteps::CardVerifyStep
+          wallet: 2JN6JSR7IBML
+          credit_card: CC9DIRFZE61U
+          authorization_response: APPROVAL
+          avs_response: A
+          cvv_response: N
+          approved_amount_cents: 100
+          gateway_response:
+            token: msjhrhcfbily
+            gateway_token: '39052'
+            authorization_response: APPROVAL
+            avs_response: A
+            cvv_response: N
+            gateway_response:
+              response:
+                authentication:
+                  responsestatus: success
+                  sessionid: DH6rQ0CRxuScK9ZDJjcuhXBodyadb^ae
+                content:
+                  refname: '90144'
+                  update:
+                  - customer:
+                      refname: customer
+                      responsestatus: failure
+                      errors:
+                        error:
+                          number: '102.021'
+                          description: name is invalid
+                  - contact:
+                      refname: contact
+                      responsestatus: failure
+                      errors:
+                        error:
+                          number: '102.021'
+                          description: name is invalid
+                  create:
+                  - customer:
+                      refname: customer
+                      responsestatus: success
+                      id: '10485'
+                      name: avs_cvv2b Test
+                  - contact:
+                      refname: contact
+                      responsestatus: success
+                      id: '11611'
+                  - salesdocument:
+                      refname: invoice
+                      responsestatus: success
+                      id: '34054'
+                  - transaction:
+                      refname: 0d18e9e7-f7f6-4ee8-a1f9-6a78219bca01
+                      responsestatus: success
+                      authorizationcode: '280278'
+                      avsresponse: A
+                      cvvresponse: N
+                      authorizationresponse: APPROVAL
+                      id: '39052'
+                      hash: '######1111'
+                      cardtype.name: Visa
+                      accountholder: avs_cvv2b Test
+                      amount: '0.00'
+                      account.id: '2013'
+                      token: c500f04b-a61c-44bd-be03-2c3a423cbbaf
+            credit_card:
+              token: qw288x8dmx00
+    UnifiedResponse:
+      type: object
+    WalletContact:
+      type: object
+      description: Billing contact
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Email address
+        first_name:
+          type: string
+        last_name:
+          type: string
     WalletCreditCard:
       type: object
       description: Alternative to fund_token, a credit card object or token reference to an existing credit card
@@ -655,6 +721,145 @@ components:
         amount_cents:
           type: number
           description: Associated invoicing payment amount
+    OrderTransactionRequest:
+      type: object
+      properties:
+        order:
+          type: object
+          description: An order object or a token reference to an existing order
+        contact:
+          $ref: '#/components/schemas/WalletContact'
+        fund_token:
+          type: string
+          description: A token reference to an existing fund (either credit card or bank account)
+        fee_exempt:
+          type: boolean
+          description: True indicates that any fee related surcharging should be ignored even if the underlying merchant account is configured as such, false inherits any configured fee related behaviour
+        transaction_reference:
+          type:
+          - string
+          - 'null'
+          description: Extra useful data to help link transactions to other systems e.g. PO numbers, account numbers etc.
+        device:
+          type: string
+          description: Optional device name depending on gateway boarding & configuration
+        industry:
+          type: string
+          description: Optional, if not provided defaults to value specified in gateway/account configuration
+          enum:
+          - directmarketing
+          - ecommerce
+          - lodging
+          - restaurant
+          - autorental
+          - retail
+        sec_code:
+          type: string
+          description: Optional, for ACH bank transactions, standard entry class code (if not provided defaults to value specified on payment acceptance config; otherwise defaults to PPD if transaction from bank account check_type is personal & CCD if check_type is business)
+          enum:
+          - CCD
+          - PPD
+          - WEB
+          - POP
+          - TEL
+        credit_card:
+          $ref: '#/components/schemas/WalletCreditCard'
+        bank_account:
+          $ref: '#/components/schemas/WalletBankAccount'
+        gift_card:
+          type: object
+          description: Alternative to fund_token, a gift card
+          properties:
+            expiry_month:
+              type: string
+              description: 2 digit month
+            expiry_year:
+              type: string
+              description: 4 digit year
+            card_number:
+              type: string
+              description: Gift card number
+            pin:
+              type: string
+    WalletBankAccount:
+      type: object
+      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
+      required:
+      - currency
+      - account_type
+      - account_holder
+      - account_number
+      - routing_number
+      - institution_number
+      - branch_number
+      - check_type
+      - address
+      properties:
+        currency:
+          type: string
+          enum:
+          - USD
+          - CAD
+          - AUD
+          - EUR
+          - GBP
+        account_type:
+          type: string
+          enum:
+          - checking
+          - savings
+        account_holder:
+          type: string
+          description: Account holder name
+        account_number:
+          type: string
+          description: Bank account number
+        routing_number:
+          type: string
+          description: For non-CA financial institutions, ABA/bank routing number
+        institution_number:
+          type: string
+          description: For CA financial institutions, 3 digit institution code
+        branch_number:
+          type: string
+          description: For CA financial institutions, transit/branch number
+        check_type:
+          type: string
+          enum:
+          - personal
+          - business
+        external_name:
+          type: string
+        external_number:
+          type: string
+        locked:
+          type: boolean
+        nickname:
+          type: string
+        is_default:
+          type: boolean
+          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
+        is_single_use:
+          type: boolean
+          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
+        address:
+          type: object
+          properties:
+            address_1:
+              type: string
+            city:
+              type: string
+            province:
+              type: string
+              description: US state or CA province code
+            postal_code:
+              type: string
+              description: US zip code or CA postal code
+            country:
+              type: string
+              enum:
+              - US
+              - CA
     OrderTransaction:
       type: object
       properties:
@@ -967,234 +1172,29 @@ components:
         - identifier: 9U4PK6D11H3D
           display_identifier: 9U4PK6D11H3D
           amount_cents: 100
-    SummaryOrderReference:
-      type: object
-      description: Summary reference of known order
-      properties:
-        identifier:
-          type: string
-          description: Associated order identifier
-        number:
-          type: string
-          description: Associated order number
-        amount_cents:
-          type: number
-          description: Associated order amount
-    UnifiedResponse:
-      type: object
-    WalletBankAccount:
-      type: object
-      description: Alternative to fund_token, a bank account object or token reference to an existing credit card
-      required:
-      - currency
-      - account_type
-      - account_holder
-      - account_number
-      - routing_number
-      - institution_number
-      - branch_number
-      - check_type
-      - address
-      properties:
-        currency:
-          type: string
-          enum:
-          - USD
-          - CAD
-          - AUD
-          - EUR
-          - GBP
-        account_type:
-          type: string
-          enum:
-          - checking
-          - savings
-        account_holder:
-          type: string
-          description: Account holder name
-        account_number:
-          type: string
-          description: Bank account number
-        routing_number:
-          type: string
-          description: For non-CA financial institutions, ABA/bank routing number
-        institution_number:
-          type: string
-          description: For CA financial institutions, 3 digit institution code
-        branch_number:
-          type: string
-          description: For CA financial institutions, transit/branch number
-        check_type:
-          type: string
-          enum:
-          - personal
-          - business
-        external_name:
-          type: string
-        external_number:
-          type: string
-        locked:
-          type: boolean
-        nickname:
-          type: string
-        is_default:
-          type: boolean
-          description: Indicates if this payment method is a wallet default (used by ERP only supplier integrations)
-        is_single_use:
-          type: boolean
-          description: Indicates if this payment method is eligible for single use (used by ERP only supplier integrations)
-        address:
-          type: object
-          properties:
-            address_1:
-              type: string
-            city:
-              type: string
-            province:
-              type: string
-              description: US state or CA province code
-            postal_code:
-              type: string
-              description: US zip code or CA postal code
-            country:
-              type: string
-              enum:
-              - US
-              - CA
-    WalletContact:
-      type: object
-      description: Billing contact
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          description: Email address
-        first_name:
-          type: string
-        last_name:
-          type: string
-    OrderTransactionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: true|false
-        transaction:
-          type: string
-          description: Token referencing this transaction (used for void/refund)
-        order:
-          type: string
-          description: Token representing the order
-        wallet:
-          type: string
-          description: Token representing the wallet holding the payment method
-        credit_card:
-          type: string
-          description: Token representing the payment method
-        bank_account:
-          type: string
-          description: Token representing the payment method
-        gift_card:
-          type: string
-          description: Token representing the payment method
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderTransaction'
-      example:
-        success: true
-        transaction: 1TQ7L54E5L9R
-        order: 53HP8ILUK3E8
-        wallet: 2JN6JSR7IBML
-        credit_card: CC9DIRFZE61U
-        transactions:
-        - token: 1TQ7L54E5L9R
-          amount_in_cents: 100
-          message: null
-          link_url: null
-          type: transaction
-          transaction_type: request_money
-          email: customer+abcmedia@versapay.com
-          state: completed
-          transaction_reference: null
-          unique_reference: null
-          from_account: avscvv2b Test
-          to_account: ABC Media
-          process_on: null
-          created_by_user: zoM2xjrzczmgbbGhfHFh
-          auto_withdraw: false
-          auto_withdrawal_token: null
-          action: verify
-          payment_method: credit_card
-          settlement_token: MAY7USR7KABC
-          currency: usd
-          step_types:
-          - TransactionSteps::CardVerifyStep
-          wallet: 2JN6JSR7IBML
-          credit_card: CC9DIRFZE61U
-          authorization_response: APPROVAL
-          avs_response: A
-          cvv_response: N
-          approved_amount_cents: 100
-          gateway_response:
-            token: msjhrhcfbily
-            gateway_token: '39052'
-            authorization_response: APPROVAL
-            avs_response: A
-            cvv_response: N
-            gateway_response:
-              response:
-                authentication:
-                  responsestatus: success
-                  sessionid: DH6rQ0CRxuScK9ZDJjcuhXBodyadb^ae
-                content:
-                  refname: '90144'
-                  update:
-                  - customer:
-                      refname: customer
-                      responsestatus: failure
-                      errors:
-                        error:
-                          number: '102.021'
-                          description: name is invalid
-                  - contact:
-                      refname: contact
-                      responsestatus: failure
-                      errors:
-                        error:
-                          number: '102.021'
-                          description: name is invalid
-                  create:
-                  - customer:
-                      refname: customer
-                      responsestatus: success
-                      id: '10485'
-                      name: avs_cvv2b Test
-                  - contact:
-                      refname: contact
-                      responsestatus: success
-                      id: '11611'
-                  - salesdocument:
-                      refname: invoice
-                      responsestatus: success
-                      id: '34054'
-                  - transaction:
-                      refname: 0d18e9e7-f7f6-4ee8-a1f9-6a78219bca01
-                      responsestatus: success
-                      authorizationcode: '280278'
-                      avsresponse: A
-                      cvvresponse: N
-                      authorizationresponse: APPROVAL
-                      id: '39052'
-                      hash: '######1111'
-                      cardtype.name: Visa
-                      accountholder: avs_cvv2b Test
-                      amount: '0.00'
-                      account.id: '2013'
-                      token: c500f04b-a61c-44bd-be03-2c3a423cbbaf
-            credit_card:
-              token: qw288x8dmx00
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: ActiveRecord::RecordNotFound
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

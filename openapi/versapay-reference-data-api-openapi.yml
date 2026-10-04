@@ -225,13 +225,52 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    CountryAlpha3Code:
+      type: string
+      pattern: ^[A-Z]{3}$
+      example: USA
+      maxLength: 3
+      minLength: 3
+      description: The uppercase 3-character ISO country code
     Phone:
       type: string
       example: 503-685-4116
       description: cannot begin with 1 or 0
+    URL:
+      type: string
+      format: url
+      example: https://www.example.com
     BankCardCategory:
       type: string
       example: PREPAID
+    BankCardBrand:
+      type: string
+      example: VISA
+    BankIdentificationNumber:
+      type: string
+      maxLength: 8
+      minLength: 6
+      pattern: ^\d{6,8}$
+      example: '411111'
+    BIN:
+      type: object
+      properties:
+        url:
+          $ref: '#/components/schemas/URL'
+        bin:
+          $ref: '#/components/schemas/BankIdentificationNumber'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        type:
+          $ref: '#/components/schemas/BankCardType'
+        country:
+          $ref: '#/components/schemas/CountryAlpha3Code'
+        category:
+          $ref: '#/components/schemas/BankCardCategory'
+        brand:
+          $ref: '#/components/schemas/BankCardBrand'
+        bank:
+          $ref: '#/components/schemas/BankName'
     ResponseCode:
       type: object
       properties:
@@ -241,19 +280,6 @@ components:
         description:
           type: string
           example: Approved
-    CountryAlpha3Code:
-      type: string
-      pattern: ^[A-Z]{3}$
-      example: USA
-      maxLength: 3
-      minLength: 3
-      description: The uppercase 3-character ISO country code
-    BankIdentificationNumber:
-      type: string
-      maxLength: 8
-      minLength: 6
-      pattern: ^\d{6,8}$
-      example: '411111'
     ResponseCountryCodes:
       type: object
       properties:
@@ -296,38 +322,12 @@ components:
             - ACT: Australian Capital Territory
             - NSW: New South Wales
             - VIC: Victoria
-    BankName:
-      type: string
-      example: BANK OF VERSAPAY
-    BankCardBrand:
-      type: string
-      example: VISA
     BankCardType:
       type: string
       example: CREDIT
-    BIN:
-      type: object
-      properties:
-        url:
-          $ref: '#/components/schemas/URL'
-        bin:
-          $ref: '#/components/schemas/BankIdentificationNumber'
-        phone:
-          $ref: '#/components/schemas/Phone'
-        type:
-          $ref: '#/components/schemas/BankCardType'
-        country:
-          $ref: '#/components/schemas/CountryAlpha3Code'
-        category:
-          $ref: '#/components/schemas/BankCardCategory'
-        brand:
-          $ref: '#/components/schemas/BankCardBrand'
-        bank:
-          $ref: '#/components/schemas/BankName'
-    URL:
+    BankName:
       type: string
-      format: url
-      example: https://www.example.com
+      example: BANK OF VERSAPAY
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.
