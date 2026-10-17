@@ -258,66 +258,7 @@ paths:
       operationId: postApiNotificationsDirectMessage
       x-operation-id-source: derived
 components:
-  responses:
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: Error message
-                example: You need to sign in or create an account before continuing.
   schemas:
-    SingleReminderResponse:
-      type: object
-      properties:
-        requested:
-          type: integer
-          description: The count of invoices that were requested for reminder.
-        sent:
-          type: integer
-          description: The count of invoices that initiated a reminder.
-        not_found:
-          type: integer
-          description: The count of invoices that did not initiate a reminder because the invoice could not be found.
-        suppressed:
-          type: integer
-          description: The count of invoices that did not initiate a reminder because customer notification is suppressed.
-        invoice_suppressed:
-          type: integer
-          description: The count of invoices that did not initiate a reminder because the invoice notification is suppressed.
-        not_invited:
-          type: integer
-          description: The count of invoices that did not initiate a reminder because customer is not enabled to receive emails.
-        paid:
-          type: integer
-          description: The count of invoices that did not initiate a reminder because the invoice is already paid.
-        draft:
-          type: integer
-          description: The count of invoices that did not initiate a reminder because the invoice is in a draft state.
-        credit:
-          type: integer
-          description: The count of invoices that did not initiate a reminder because the invoice is a credit.
-        scheduled:
-          type: integer
-          description: The count of invoices that did not initiate a reminder because the invoice is currently scheduled for payment.
-        on_plan:
-          type: integer
-          description: The count of invoices that did not initiate a reminder because the invoice is on a payment plan.
-      example:
-        requested: 1
-        sent: 1
-        not_found: 0
-        suppressed: 0
-        not_invited: 0
-        paid: 0
-        draft: 0
-        credit: 0
-        scheduled: 0
-        on_plan: 0
     BulkReminderResponse:
       type: object
       properties:
@@ -365,6 +306,65 @@ components:
         credit: 1
         scheduled: 0
         on_plan: 0
+    SingleReminderResponse:
+      type: object
+      properties:
+        requested:
+          type: integer
+          description: The count of invoices that were requested for reminder.
+        sent:
+          type: integer
+          description: The count of invoices that initiated a reminder.
+        not_found:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice could not be found.
+        suppressed:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because customer notification is suppressed.
+        invoice_suppressed:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice notification is suppressed.
+        not_invited:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because customer is not enabled to receive emails.
+        paid:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is already paid.
+        draft:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is in a draft state.
+        credit:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is a credit.
+        scheduled:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is currently scheduled for payment.
+        on_plan:
+          type: integer
+          description: The count of invoices that did not initiate a reminder because the invoice is on a payment plan.
+      example:
+        requested: 1
+        sent: 1
+        not_found: 0
+        suppressed: 0
+        not_invited: 0
+        paid: 0
+        draft: 0
+        credit: 0
+        scheduled: 0
+        on_plan: 0
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: You need to sign in or create an account before continuing.
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

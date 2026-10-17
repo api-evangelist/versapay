@@ -159,67 +159,81 @@ paths:
                   maxLength: 255
 components:
   schemas:
-    Phone:
+    ControlProng:
       type: string
-      example: 503-685-4116
-      description: cannot begin with 1 or 0
-    StockTickerSymbol:
-      type: string
-      example: EXMPL
-      description: required only if ownership_type = "Public Corporation", must be <= 10 characters
-    ReferenceToken:
+      enum:
+      - Owner 1
+      - Owner 2
+      - Owner 3
+      - Owner 4
+      - Non-Owner
+      example: Non-Owner
+    ApplicationToken:
       type: string
       format: guid
       example: 1c47dece-489b-4521-89db-0a940ac58235
-      description: Specify a unique GUID as a client reference to the application
-      maxLength: 36
-    ApplicationStatusResponse:
+    Currency:
+      type: string
+      pattern: ^[a-z]{3}$
+      example: usd
+      maxLength: 3
+      minLength: 3
+    NonBusinessOwnerControlProng:
+      description: 'This is a required object when the control_prong is set to Non-Owner
+
+        '
       type: object
       required:
-      - application_status
+      - name
+      - individual_tax_id_number
+      - birth_date
+      - home_address
+      - home_phone
+      - email
       properties:
-        application_status:
-          $ref: '#/components/schemas/ApplicationStatus'
-        api_credentials:
-          $ref: '#/components/schemas/APICredentials'
-    BusinessType:
-      type: string
-      enum:
-      - AutoRental
-      - MOTO
-      - ECommerce
-      - Restaurant
-      - Lodging
-      - Retail
-      example: Restaurant
-    Person:
+        name:
+          $ref: '#/components/schemas/Person'
+        individual_tax_id_number:
+          $ref: '#/components/schemas/IndividualTaxIdentifier'
+        birth_date:
+          $ref: '#/components/schemas/Date'
+        home_address:
+          $ref: '#/components/schemas/Address'
+        home_phone:
+          $ref: '#/components/schemas/Phone'
+        email:
+          $ref: '#/components/schemas/Email'
+    ApplicationTaxIDError:
       type: object
       required:
-      - first_name
-      - last_name
-      - title
+      - field
+      - error_message
       properties:
-        first_name:
+        field:
           type: string
-          example: Alice
-          maxLength: 25
-        middle_initial:
-          type: string
-          example: B
-          minLength: 1
-          maxLength: 1
-        last_name:
-          type: string
-          example: Smith
-          maxLength: 25
-        title:
-          type: string
-          example: CFO
-          maxLength: 20
-    Email:
+          enum:
+          - Owner 1
+          - Owner 2
+          - Owner 3
+          - Owner 4
+          - Business
+          example: Owner 1
+        error_message:
+          $ref: '#/components/schemas/ErrorMessage'
+    RoutingNumber:
       type: string
-      format: email
-      example: me@example.com
+      example: '021100361'
+      pattern: ^\d{9}$
+      description: Must be a valid US Bank ABA Number
+    IndividualTaxIdentifier:
+      type: object
+      required:
+      - itin
+      properties:
+        itin:
+          $ref: '#/components/schemas/ITIN'
+        override_validation:
+          $ref: '#/components/schemas/OverrideValidation'
     Range:
       type: object
       properties:
@@ -230,10 +244,126 @@ components:
           type: number
           example: 1999999
           description: values are retrieved from GET Terms
-    Date:
+    PaymentMethodFees:
+      type: object
+      required:
+      - description
+      - per_transaction_amount
+      - per_transaction_percent
+      - per_month_amount
+      properties:
+        description:
+          type: string
+          example: Credit Card
+        per_transaction_amount:
+          type: number
+          format: float
+          example: 5.05
+          minimum: 0
+        per_transaction_percent:
+          type: number
+          format: float
+          example: 5.05
+          minimum: 0
+        per_month_amount:
+          type: number
+          format: float
+          example: 5.05
+          minimum: 0
+    DDA:
+      type: object
+      required:
+      - routing_number
+      - account_number
+      properties:
+        routing_number:
+          $ref: '#/components/schemas/RoutingNumber'
+        account_number:
+          $ref: '#/components/schemas/DemandDepositAccountNumber'
+    LinkToExisting:
       type: string
-      format: date
-      example: '2022-01-15'
+      description: Must match the value of an existing application entry that has previously been submitted
+      example: 1cb9ca4b-6596-4bac-a24b-8864222cf95d
+    ApplicationErrorResponse:
+      type: object
+      properties:
+        address_errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationAddressError'
+        tax_id_errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationTaxIDError'
+        field_errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationError'
+    ProhibitedProducts:
+      type: object
+      properties:
+        url:
+          $ref: '#/components/schemas/URL'
+        prohibited_product_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProhibitedProduct'
+    ProhibitedProduct:
+      type: string
+      example: Firearms
+    APICredentials:
+      type: object
+      required:
+      - api_token
+      - api_key
+      properties:
+        api_token:
+          $ref: '#/components/schemas/APIToken'
+        api_key:
+          $ref: '#/components/schemas/APIKey'
+    ApplicationAddressError:
+      type: object
+      required:
+      - field
+      - error_message
+      properties:
+        field:
+          type: string
+          enum:
+          - Owner 1
+          - Owner 2
+          - Owner 3
+          - Owner 4
+          - Business Physical Address
+          - Business Billing Address
+          example: Owner 1
+        error_message:
+          $ref: '#/components/schemas/ErrorMessage'
+        address_candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+    ErrorMessage:
+      type: string
+      example: Please specify a valid value
+    OverSEMinimum:
+      type: boolean
+      example: false
+    ReferenceToken:
+      type: string
+      format: guid
+      example: 1c47dece-489b-4521-89db-0a940ac58235
+      description: Specify a unique GUID as a client reference to the application
+      maxLength: 36
+    RangeHightTicketAmount:
+      type: object
+      properties:
+        from:
+          type: number
+          example: 1000
+        to:
+          type: number
+          example: 4999
     BusinessOwner:
       type: object
       required:
@@ -263,85 +393,56 @@ components:
           $ref: '#/components/schemas/Phone'
         email:
           $ref: '#/components/schemas/Email'
-    ControlProng:
-      type: string
-      enum:
-      - Owner 1
-      - Owner 2
-      - Owner 3
-      - Owner 4
-      - Non-Owner
-      example: Non-Owner
-    Address:
+    ServiceEstablishment:
       type: object
       required:
-      - address1
-      - city
-      - post_code
-      - country
+      - over_se_minimum
       properties:
-        address1:
-          type: string
-          example: 1314 NW GLISAN ST
-          minLength: 1
-          maxLength: 25
-        address2:
-          type: string
-          example: Apartment 1
-          maxLength: 25
-        city:
-          type: string
-          example: Portland
-          minLength: 1
-          maxLength: 20
-        state_province:
-          type: string
-          example: OR
-          pattern: ^[a-z]{2}$
-          maxLength: 2
-          minLength: 2
-        post_code:
-          type: string
-          example: '97209'
-          maxLength: 5
-        country:
-          type: string
-          pattern: ^[a-z]{2}$
-          example: us
-          maxLength: 2
-          minLength: 2
-        override_validation:
-          $ref: '#/components/schemas/OverrideValidation'
-    RangeAverageTicketAmount:
-      type: object
-      properties:
-        from:
-          type: number
-          example: 100
-        to:
-          type: number
-          example: 249
-    LinkToExisting:
+        over_se_minimum:
+          $ref: '#/components/schemas/OverSEMinimum'
+        se_number:
+          $ref: '#/components/schemas/SENumber'
+    Phone:
       type: string
-      description: Must match the value of an existing application entry that has previously been submitted
-      example: 1cb9ca4b-6596-4bac-a24b-8864222cf95d
-    ApplicationParameters:
+      example: 503-685-4116
+      description: cannot begin with 1 or 0
+    ApplicationContact:
       type: object
       required:
-      - rates
-      - prohibited_products
-      - terms_and_conditions
+      - name
+      - phone
+      - email
       properties:
-        rates:
+        name:
+          $ref: '#/components/schemas/Person'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        email:
+          $ref: '#/components/schemas/Email'
+    OverrideValidation:
+      type: boolean
+      example: true
+    DemandDepositAccountNumber:
+      type: string
+      example: '9876543299'
+      pattern: ^\d+$
+    AmountRanges:
+      type: object
+      properties:
+        currency_code:
+          $ref: '#/components/schemas/Currency'
+        annual_volumes:
           type: array
           items:
-            $ref: '#/components/schemas/Rate'
-        prohibited_products:
-          $ref: '#/components/schemas/ProhibitedProducts'
-        terms_and_conditions:
-          $ref: '#/components/schemas/TermsAndConditions'
-        ranges:
-          $ref: '#/components/schemas/AmountRanges'
+            $ref: '#/components/schemas/Range'
+        average_ticket_amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Range'
+        high_ticket_amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Range'
     OwnershipType:
       type: string
       enum:
@@ -356,172 +457,38 @@ components:
       - Sole Proprietorship
       - Trust
       example: Limited Liability Company
+    ApplicationStatus:
+      type: string
+      enum:
+      - Received
+      - Processing
+      - Provisionally Approved
+      - Approved
+      - On Hold
+      - Closed
+      example: Received
     TermsAndConditionsText:
       type: string
       example: This Merchant Services Agreement (this "Agreement") is entered into between...
-    Locale:
-      type: string
-      pattern: ^[a-z]{2}-[a-z]{2}$
-      example: en-us
-    ApplicationAddressError:
-      type: object
-      required:
-      - field
-      - error_message
-      properties:
-        field:
-          type: string
-          enum:
-          - Owner 1
-          - Owner 2
-          - Owner 3
-          - Owner 4
-          - Business Physical Address
-          - Business Billing Address
-          example: Owner 1
-        error_message:
-          $ref: '#/components/schemas/ErrorMessage'
-        address_candidates:
-          type: array
-          items:
-            $ref: '#/components/schemas/Address'
-    AccountFees:
-      type: object
-      required:
-      - per_month_amount
-      properties:
-        per_month_amount:
-          type: number
-          format: float
-          example: 5.05
-          minimum: 0
-    ApplicationErrorResponse:
-      type: object
-      properties:
-        address_errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ApplicationAddressError'
-        tax_id_errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ApplicationTaxIDError'
-        field_errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ApplicationError'
-    APICredentials:
-      type: object
-      required:
-      - api_token
-      - api_key
-      properties:
-        api_token:
-          $ref: '#/components/schemas/APIToken'
-        api_key:
-          $ref: '#/components/schemas/APIKey'
-    ApplicationError:
-      type: object
-      required:
-      - field
-      - error_message
-      properties:
-        field:
-          type: string
-        error_message:
-          $ref: '#/components/schemas/ErrorMessage'
-    TermsAndConditions:
-      type: object
-      properties:
-        url:
-          $ref: '#/components/schemas/URL'
-        terms_and_conditions_text:
-          $ref: '#/components/schemas/TermsAndConditionsText'
-    Document:
-      type: object
-      required:
-      - filename
-      - base64
-      properties:
-        filename:
-          type: string
-          example: example.pdf
-        base64:
-          type: string
-          format: base64
-          example: ZXhhbXBsZQ==
-        type:
-          type: string
-          enum:
-          - Bank Statement
-          - Merchant Statement
-          - Financial Statement
-          - Tax ID Number Verification
-          example: Bank Statement
-    ApplicationToken:
-      type: string
-      format: guid
-      example: 1c47dece-489b-4521-89db-0a940ac58235
-    OverrideValidation:
-      type: boolean
-      example: true
-    ExternalLink:
-      type: string
-      description: An external reference provided by the the ERP/partner originating the merchant application associated with this supplier
-      example: xyz123abc789
-    SENumber:
-      type: string
-      example: '123456789'
-      pattern: ^\d+
-      maxLength: 10
-      description: must be <= 10 characters
-    BusinessTaxIdentifier:
-      type: object
-      required:
-      - tin
-      properties:
-        tin:
-          $ref: '#/components/schemas/TIN'
-        override_validation:
-          $ref: '#/components/schemas/OverrideValidation'
-    DemandDepositAccountNumber:
-      type: string
-      example: '9876543299'
-      pattern: ^\d+$
     Boolean:
       type: boolean
       example: false
-    RangeHightTicketAmount:
-      type: object
-      properties:
-        from:
-          type: number
-          example: 1000
-        to:
-          type: number
-          example: 4999
-    RangeAnualDirectDebitVolume:
-      type: object
-      properties:
-        from:
-          type: number
-          example: 500000
-        to:
-          type: number
-          example: 999999
-    OverSEMinimum:
-      type: boolean
-      example: false
-    ErrorMessage:
+    URL:
       type: string
-      example: Please specify a valid value
-    ApplicationCreatedResponse:
+      format: url
+      example: https://www.example.com
+    APIKey:
+      type: string
+      example: Bl5cgjTnysXxyNyysXiw
+    ApplicationStatusResponse:
       type: object
       required:
-      - application_token
+      - application_status
       properties:
-        application_token:
-          $ref: '#/components/schemas/ApplicationToken'
+        application_status:
+          $ref: '#/components/schemas/ApplicationStatus'
+        api_credentials:
+          $ref: '#/components/schemas/APICredentials'
     Application:
       type: object
       required:
@@ -617,162 +584,127 @@ components:
           $ref: '#/components/schemas/ExternalLink'
         link_to_existing:
           $ref: '#/components/schemas/LinkToExisting'
-    APIToken:
+    Locale:
       type: string
-      example: 6ySjc8LfeRwqciWK8owT
+      pattern: ^[a-z]{2}-[a-z]{2}$
+      example: en-us
+    ApplicationError:
+      type: object
+      required:
+      - field
+      - error_message
+      properties:
+        field:
+          type: string
+        error_message:
+          $ref: '#/components/schemas/ErrorMessage'
+    RangeAnualDirectDebitVolume:
+      type: object
+      properties:
+        from:
+          type: number
+          example: 500000
+        to:
+          type: number
+          example: 999999
+    BusinessTaxIdentifier:
+      type: object
+      required:
+      - tin
+      properties:
+        tin:
+          $ref: '#/components/schemas/TIN'
+        override_validation:
+          $ref: '#/components/schemas/OverrideValidation'
     BusinessName:
       type: string
       example: Acme Corporation
+    Document:
+      type: object
+      required:
+      - filename
+      - base64
+      properties:
+        filename:
+          type: string
+          example: example.pdf
+        base64:
+          type: string
+          format: base64
+          example: ZXhhbXBsZQ==
+        type:
+          type: string
+          enum:
+          - Bank Statement
+          - Merchant Statement
+          - Financial Statement
+          - Tax ID Number Verification
+          example: Bank Statement
+    Date:
+      type: string
+      format: date
+      example: '2022-01-15'
+    ApplicationCreatedResponse:
+      type: object
+      required:
+      - application_token
+      properties:
+        application_token:
+          $ref: '#/components/schemas/ApplicationToken'
     ITIN:
       type: string
       example: 325-98-1975
       pattern: ^\d{3}\-?\d{2}\-?\d{4}$
-    RoutingNumber:
+    Email:
       type: string
-      example: '021100361'
-      pattern: ^\d{9}$
-      description: Must be a valid US Bank ABA Number
-    URL:
-      type: string
-      format: url
-      example: https://www.example.com
-    ProhibitedProducts:
-      type: object
-      properties:
-        url:
-          $ref: '#/components/schemas/URL'
-        prohibited_product_list:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProhibitedProduct'
-    DDA:
+      format: email
+      example: me@example.com
+    AccountFees:
       type: object
       required:
-      - routing_number
-      - account_number
-      properties:
-        routing_number:
-          $ref: '#/components/schemas/RoutingNumber'
-        account_number:
-          $ref: '#/components/schemas/DemandDepositAccountNumber'
-    NAICSCode:
-      type: string
-      pattern: ^[0-9]{6}$
-      example: '221111'
-    TIN:
-      type: string
-      example: 77-7654567
-      pattern: ^\d{2}\-?\d{7}$
-    ApplicationStatus:
-      type: string
-      enum:
-      - Received
-      - Processing
-      - Provisionally Approved
-      - Approved
-      - On Hold
-      - Closed
-      example: Received
-    NonBusinessOwnerControlProng:
-      description: 'This is a required object when the control_prong is set to Non-Owner
-
-        '
-      type: object
-      required:
-      - name
-      - individual_tax_id_number
-      - birth_date
-      - home_address
-      - home_phone
-      - email
-      properties:
-        name:
-          $ref: '#/components/schemas/Person'
-        individual_tax_id_number:
-          $ref: '#/components/schemas/IndividualTaxIdentifier'
-        birth_date:
-          $ref: '#/components/schemas/Date'
-        home_address:
-          $ref: '#/components/schemas/Address'
-        home_phone:
-          $ref: '#/components/schemas/Phone'
-        email:
-          $ref: '#/components/schemas/Email'
-    ProhibitedProduct:
-      type: string
-      example: Firearms
-    BirthDate:
-      type: string
-      format: date
-      example: '1972-01-15'
-    AmountRanges:
-      type: object
-      properties:
-        currency_code:
-          $ref: '#/components/schemas/Currency'
-        annual_volumes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Range'
-        average_ticket_amounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Range'
-        high_ticket_amounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Range'
-    ServiceEstablishment:
-      type: object
-      required:
-      - over_se_minimum
-      properties:
-        over_se_minimum:
-          $ref: '#/components/schemas/OverSEMinimum'
-        se_number:
-          $ref: '#/components/schemas/SENumber'
-    ApplicationContact:
-      type: object
-      required:
-      - name
-      - phone
-      - email
-      properties:
-        name:
-          $ref: '#/components/schemas/Person'
-        phone:
-          $ref: '#/components/schemas/Phone'
-        email:
-          $ref: '#/components/schemas/Email'
-    APIKey:
-      type: string
-      example: Bl5cgjTnysXxyNyysXiw
-    PaymentMethodFees:
-      type: object
-      required:
-      - description
-      - per_transaction_amount
-      - per_transaction_percent
       - per_month_amount
       properties:
-        description:
-          type: string
-          example: Credit Card
-        per_transaction_amount:
-          type: number
-          format: float
-          example: 5.05
-          minimum: 0
-        per_transaction_percent:
-          type: number
-          format: float
-          example: 5.05
-          minimum: 0
         per_month_amount:
           type: number
           format: float
           example: 5.05
           minimum: 0
+    ApplicationParameters:
+      type: object
+      required:
+      - rates
+      - prohibited_products
+      - terms_and_conditions
+      properties:
+        rates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rate'
+        prohibited_products:
+          $ref: '#/components/schemas/ProhibitedProducts'
+        terms_and_conditions:
+          $ref: '#/components/schemas/TermsAndConditions'
+        ranges:
+          $ref: '#/components/schemas/AmountRanges'
+    NAICSCode:
+      type: string
+      pattern: ^[0-9]{6}$
+      example: '221111'
+    RangeAverageTicketAmount:
+      type: object
+      properties:
+        from:
+          type: number
+          example: 100
+        to:
+          type: number
+          example: 249
+    SENumber:
+      type: string
+      example: '123456789'
+      pattern: ^\d+
+      maxLength: 10
+      description: must be <= 10 characters
     Rate:
       type: object
       required:
@@ -797,38 +729,106 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PaymentMethodFees'
-    ApplicationTaxIDError:
-      type: object
-      required:
-      - field
-      - error_message
-      properties:
-        field:
-          type: string
-          enum:
-          - Owner 1
-          - Owner 2
-          - Owner 3
-          - Owner 4
-          - Business
-          example: Owner 1
-        error_message:
-          $ref: '#/components/schemas/ErrorMessage'
-    Currency:
+    ExternalLink:
       type: string
-      pattern: ^[a-z]{3}$
-      example: usd
-      maxLength: 3
-      minLength: 3
-    IndividualTaxIdentifier:
+      description: An external reference provided by the the ERP/partner originating the merchant application associated with this supplier
+      example: xyz123abc789
+    Person:
       type: object
       required:
-      - itin
+      - first_name
+      - last_name
+      - title
       properties:
-        itin:
-          $ref: '#/components/schemas/ITIN'
+        first_name:
+          type: string
+          example: Alice
+          maxLength: 25
+        middle_initial:
+          type: string
+          example: B
+          minLength: 1
+          maxLength: 1
+        last_name:
+          type: string
+          example: Smith
+          maxLength: 25
+        title:
+          type: string
+          example: CFO
+          maxLength: 20
+    TIN:
+      type: string
+      example: 77-7654567
+      pattern: ^\d{2}\-?\d{7}$
+    APIToken:
+      type: string
+      example: 6ySjc8LfeRwqciWK8owT
+    TermsAndConditions:
+      type: object
+      properties:
+        url:
+          $ref: '#/components/schemas/URL'
+        terms_and_conditions_text:
+          $ref: '#/components/schemas/TermsAndConditionsText'
+    BirthDate:
+      type: string
+      format: date
+      example: '1972-01-15'
+    BusinessType:
+      type: string
+      enum:
+      - AutoRental
+      - MOTO
+      - ECommerce
+      - Restaurant
+      - Lodging
+      - Retail
+      example: Restaurant
+    Address:
+      type: object
+      required:
+      - address1
+      - city
+      - post_code
+      - country
+      properties:
+        address1:
+          type: string
+          example: 1314 NW GLISAN ST
+          minLength: 1
+          maxLength: 25
+        address2:
+          type: string
+          example: Apartment 1
+          maxLength: 25
+        city:
+          type: string
+          example: Portland
+          minLength: 1
+          maxLength: 20
+        state_province:
+          type: string
+          example: OR
+          pattern: ^[a-z]{2}$
+          maxLength: 2
+          minLength: 2
+        post_code:
+          type: string
+          example: '97209'
+          maxLength: 5
+        country:
+          type: string
+          pattern: ^[a-z]{2}$
+          example: us
+          maxLength: 2
+          minLength: 2
         override_validation:
           $ref: '#/components/schemas/OverrideValidation'
+    StockTickerSymbol:
+      type: string
+      example: EXMPL
+      description: required only if ownership_type = "Public Corporation", must be <= 10 characters
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.

@@ -225,33 +225,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    CountryAlpha3Code:
-      type: string
-      pattern: ^[A-Z]{3}$
-      example: USA
-      maxLength: 3
-      minLength: 3
-      description: The uppercase 3-character ISO country code
-    Phone:
-      type: string
-      example: 503-685-4116
-      description: cannot begin with 1 or 0
-    URL:
-      type: string
-      format: url
-      example: https://www.example.com
-    BankCardCategory:
-      type: string
-      example: PREPAID
-    BankCardBrand:
-      type: string
-      example: VISA
-    BankIdentificationNumber:
-      type: string
-      maxLength: 8
-      minLength: 6
-      pattern: ^\d{6,8}$
-      example: '411111'
     BIN:
       type: object
       properties:
@@ -271,6 +244,10 @@ components:
           $ref: '#/components/schemas/BankCardBrand'
         bank:
           $ref: '#/components/schemas/BankName'
+    URL:
+      type: string
+      format: url
+      example: https://www.example.com
     ResponseCode:
       type: object
       properties:
@@ -280,6 +257,16 @@ components:
         description:
           type: string
           example: Approved
+    BankCardCategory:
+      type: string
+      example: PREPAID
+    Phone:
+      type: string
+      example: 503-685-4116
+      description: cannot begin with 1 or 0
+    BankCardBrand:
+      type: string
+      example: VISA
     ResponseCountryCodes:
       type: object
       properties:
@@ -322,9 +309,22 @@ components:
             - ACT: Australian Capital Territory
             - NSW: New South Wales
             - VIC: Victoria
+    BankIdentificationNumber:
+      type: string
+      maxLength: 8
+      minLength: 6
+      pattern: ^\d{6,8}$
+      example: '411111'
     BankCardType:
       type: string
       example: CREDIT
+    CountryAlpha3Code:
+      type: string
+      pattern: ^[A-Z]{3}$
+      example: USA
+      maxLength: 3
+      minLength: 3
+      description: The uppercase 3-character ISO country code
     BankName:
       type: string
       example: BANK OF VERSAPAY

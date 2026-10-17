@@ -502,6 +502,20 @@ components:
                 description: Error message
                 example: API token does not have permission for this request. Please contact your account administrator.
   schemas:
+    PaymentUrls:
+      type: object
+      description: 'A map of payment URLs mapped to customer email addressed.
+
+        '
+      additionalProperties:
+        type: string
+        format: uri
+      example:
+        CUS001@example.com: https://secure.versapay.com/pay/198e7073-53d0-435a-baff-87ce390581c5G
+    Watermark:
+      type: integer
+      format: int64
+      example: 0
     InvoiceResponse:
       type: object
       properties:
@@ -911,6 +925,52 @@ components:
             line_item_dispute_reason_identifier: null
             line_item_dispute_reason: null
             line_item_extended_attributes: {}
+    LineItemResponse:
+      type: object
+      properties:
+        number:
+          type: string
+          description: Invoice line-item number.
+        description:
+          type: string
+          description: Invoice line-item description
+        quantity:
+          type: number
+          description: Invoice line-item quantity.
+        unit_cost_cents:
+          type: integer
+          description: Invoice line-item unit price in cents.
+        amount_cents:
+          type: integer
+          description: Invoice line-item total in cents.
+        balance_cents:
+          type: integer
+          description: Line-item balance in cents. Applicable if accepting short payments at line-item level.
+        id:
+          type: number
+          description: Internal id of the line-item record.
+        identifier:
+          type: string
+          description: Unique internal identifier for the line-item. Applicable if accepting short payments at line-item level.
+        invoice_id:
+          type: number
+          description: Internal id of the invoice.
+        purchase_order_number:
+          type: string
+          description: Purchase order number at the line-item level.
+        order_key:
+          type: string
+          description: Sequence number for the line-item to order-by when rendering on the invoice.
+        recurring_invoice_id:
+          type: string
+          description: Internal id of the recurring invoice. Applicable if using recurring invoices.
+        extended_attributes:
+          type: object
+          description: Additional non-standard attribute stored with the line-item record for presentment rendering.
+          properties:
+            key:
+              type: string
+              description: Key-value pair of the extended attribute on the line-item.
     Invoice:
       type: object
       required:
@@ -1227,66 +1287,6 @@ components:
           type: string
           description: Product SKU or internal code.
           example: SKU-001
-    Watermark:
-      type: integer
-      format: int64
-      example: 0
-    LineItemResponse:
-      type: object
-      properties:
-        number:
-          type: string
-          description: Invoice line-item number.
-        description:
-          type: string
-          description: Invoice line-item description
-        quantity:
-          type: number
-          description: Invoice line-item quantity.
-        unit_cost_cents:
-          type: integer
-          description: Invoice line-item unit price in cents.
-        amount_cents:
-          type: integer
-          description: Invoice line-item total in cents.
-        balance_cents:
-          type: integer
-          description: Line-item balance in cents. Applicable if accepting short payments at line-item level.
-        id:
-          type: number
-          description: Internal id of the line-item record.
-        identifier:
-          type: string
-          description: Unique internal identifier for the line-item. Applicable if accepting short payments at line-item level.
-        invoice_id:
-          type: number
-          description: Internal id of the invoice.
-        purchase_order_number:
-          type: string
-          description: Purchase order number at the line-item level.
-        order_key:
-          type: string
-          description: Sequence number for the line-item to order-by when rendering on the invoice.
-        recurring_invoice_id:
-          type: string
-          description: Internal id of the recurring invoice. Applicable if using recurring invoices.
-        extended_attributes:
-          type: object
-          description: Additional non-standard attribute stored with the line-item record for presentment rendering.
-          properties:
-            key:
-              type: string
-              description: Key-value pair of the extended attribute on the line-item.
-    PaymentUrls:
-      type: object
-      description: 'A map of payment URLs mapped to customer email addressed.
-
-        '
-      additionalProperties:
-        type: string
-        format: uri
-      example:
-        CUS001@example.com: https://secure.versapay.com/pay/198e7073-53d0-435a-baff-87ce390581c5G
 x-tagGroups:
 - name: Versapay API
   description: Introduction to the Versapay API.
