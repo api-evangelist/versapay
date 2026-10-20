@@ -1,5 +1,5 @@
 generated: '2026-10-12'
-method: none
+method: searched
 source:
 - https://zapier.com/apps/versapay/integrations
 - https://n8n.io/integrations/versapay/
@@ -10,7 +10,41 @@ checked:
 - https://monid.ai/tools/versapay
 - https://n8n.io/integrations/versapay/
 - https://zapier.com/apps/versapay/integrations
+- https://listings.pcisecuritystandards.org/assessors_and_solutions
 summary: null
 marketplace_apps: []
-edges: []
+edges:
+- partner_name: PCI Security Standards Council (program listings)
+  partner: null
+  partner_match: register-name
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://listings.pcisecuritystandards.org/assessors_and_solutions/payment_software
+  category: Payment security validation
+  contract_reference:
+    register: PCI SSC program listings (listings.pcisecuritystandards.org / pcisecuritystandards.org)
+    spec_file: null
+    standard: PCI SSC
+    role: pci-validated-vendor
+    registered_name: Versapay
+    website: null
+    matched_domain: null
+    matched_by: register-name
+    identity_source: register-name
+    certified_products:
+    - product: PCI Secure Software (Validated Secure Software)
+      lapsed: false
+      latest_expiry: '2028-07-29'
+      listed: 4
+    signal_note: one certified_products entry per PCI SSC program (Secure Software, PA-DSS, P2PE solution / component
+      / application, 3DS SDK, SPoC, CPoC, MPoC, PTS device, Secure SLC); lapsed = every listed product in that program
+      is past its expiry / reassessment date or marked expired; `listed` is context only. List Access Agreement
+      accepted on Kin's instruction 2026-10-20
+    detected_by: sweep-compliance-assurance.py
+    detected: '2026-10-20'
+    identity_note: register-name 'versapay' = versapay; wikidata P856 versapay.com agrees or unheld
+  detected_by: sweep-compliance-assurance.py
+  first_seen: '2026-10-20'
 templates: []
