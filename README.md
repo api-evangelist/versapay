@@ -1,4 +1,4 @@
-# Versapay (versapay)
+# Versapay
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,73 +64,154 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Versapay is a Toronto, Canada based B2B payments company focused on accounts receivable (AR) automation and integrated payment acceptance. Its "Collaborative AR" platform combines electronic invoicing, customer collaboration, cash application, and embedded payment processing so businesses can invoice, get paid, and reconcile inside one order-to-cash workflow. Versapay ships a genuinely public developer surface: a broad REST platform API and a hosted-iframe Ecommerce API, both documented at developers.versapay.com.
+Versapay is a Toronto, Canada based B2B payments company focused on accounts receivable (AR) automation and integrated payment acceptance for suppliers and their buyers. Its "Collaborative AR" platform combines electronic invoicing, customer collaboration, cash application, and embedded payment processing so businesses can invoice, get paid, and reconcile inside one workflow, with ERP-adjacent integrations for order-to-cash. Versapay serves the North American mid-market and enterprise segment and, unlike consumer money-movement players in Canada's Interac-dominated market, sits in the API-native B2B acquiring and AR/AP money-movement layer. Its API posture is genuinely public and honest: developers.versapay.com hosts a Redocly-rendered reference for a broad REST platform API (onboarding, wallets, orders, order transactions, gift cards, card-present EMV, settlement reporting, autopay, customers, invoices, divisions, notifications, and webhooks) plus a separate hosted-iframe Ecommerce API for PCI-reduced payment sessions. Authentication is HTTPS Basic access authentication using an API Token and Key issued from the account console, with a UAT sandbox alongside production and a documented webhook event model.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/versapay/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/versapay/refs/heads/main/apis.yml)
+**Areas:** Payments · Canada · Accounts Receivable · AR Automation · Order-to-Cash · Payment Acceptance · Payment Processing · B2B Payments · Invoicing · E-Commerce · Card Present · Webhook
 
-## Tags
+## Versapay on APIs.io
 
-- Payments
-- Canada
-- Accounts Receivable
-- AR Automation
-- Order to Cash
-- Payment Acceptance
-- Payment Processing
-- B2B Payments
-- Invoicing
-- Ecommerce
-- Card Present
-- Webhooks
+Everything profiled for Versapay is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/versapay/](https://apis.io/providers/versapay/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (22)
 
-- **Created:** 2026-07-24
-- **Modified:** 2026-07-24
+- [Versapay Agreements API](https://apis.io/apis/versapay/versapay-agreements-api/) — The Agreements API from Versapay — 7 operation(s) for agreements.
+- [Versapay Authentication API](https://apis.io/apis/versapay/versapay-authentication-api/) — Visit your account settings in `UAT` (https://uat.versapay.com/account) or `Production` (https://secure.versapay.com/account) to setup API credentials…
+- [Versapay Autopay API](https://apis.io/apis/versapay/versapay-autopay-api/) — Autopays are a digital analog to paper pre-authorized debit agreements that businesses could use, for instance, for monthly billing.
+- [Versapay Card Present EMV API](https://apis.io/apis/versapay/versapay-card-present-emv-api/) — Card Present EMV payment transactions require a Versapay certified point-of-sale terminal. Contact support@versapay.com for support & setup for POS/CP EMV…
+- [Versapay Collaboration API](https://apis.io/apis/versapay/versapay-collaboration-api/) — As a supplier your customers collaborate with you through comments about invoices and/or payments.
+- [Versapay Customers API](https://apis.io/apis/versapay/versapay-customers-api/) — As a supplier your customers are the entities that are invoiced. ## Webhooks When using Webhooks, your application will be notified when key events are…
+- [Versapay Developers API](https://apis.io/apis/versapay/versapay-developers-api/) — Operations available to developers
+- [Versapay Divisions API](https://apis.io/apis/versapay/versapay-divisions-api/) — As a supplier divisions are used to group your invoices.
+- [Versapay File Imports API](https://apis.io/apis/versapay/versapay-file-imports-api/) — As a supplier you can upload customer, invoice, and payment data in CSV file formats.
+- [Versapay Fund Sources API](https://apis.io/apis/versapay/versapay-fund-sources-api/) — The Fund Sources API from Versapay — 2 operation(s) for fund sources.
+- [Versapay Gift Cards API](https://apis.io/apis/versapay/versapay-gift-cards-api/) — Provisioned gift cards can be activated/enabled (or deactivated/disabled) as well as have their balances loaded/re-loaded with an amount. Contact…
+- [Versapay Internal API](https://apis.io/apis/versapay/versapay-internal-api/) — Operations intended only to the iframe front end
+- [Versapay Invoices API](https://apis.io/apis/versapay/versapay-invoices-api/) — As a supplier invoices are your receivables. ## Webhooks When using Webhooks, your application will be notified when key events are triggered for an invoice.
+- [Versapay Invoicing Payments API](https://apis.io/apis/versapay/versapay-invoicing-payments-api/) — As a supplier a payments are made by customers for invoices issued to them. ## Webhooks When using Webhooks, your application will be notified when key…
+- [Versapay Notifications API](https://apis.io/apis/versapay/versapay-notifications-api/) — As a supplier you can notify customers about their invoices.
+- [Versapay Onboarding API](https://apis.io/apis/versapay/versapay-onboarding-api/) — Onboarding supports the automated process of applying for merchant services. Contact support@versapay.com for support & setup of supplier onboarding partner…
+- [Versapay Order Transactions API](https://apis.io/apis/versapay/versapay-order-transactions-api/) — Order-based card/ACH and card present EMV payment transactions include verify, authorize, capture, sale, void, return refund, and return credit transaction…
+- [Versapay Orders API](https://apis.io/apis/versapay/versapay-orders-api/) — The Order entity represents the sales document in the ERP system. The fields in the ERP system should be aligned as closely as possible with the fields in…
+- [Versapay Reference Data API](https://apis.io/apis/versapay/versapay-reference-data-api/) — For convenience purposes only, Versapay can supply third party reference data to its partners and users. This data can be used to implement client-side…
+- [Versapay Settlement Reporting API](https://apis.io/apis/versapay/versapay-settlement-reporting-api/) — Settlement Reporting includes retrieval of monthly statements, daily deposit amounts (including fee information), transaction exceptions (ACH reject/return…
+- [Versapay Transactions API](https://apis.io/apis/versapay/versapay-transactions-api/) — The Transactions API from Versapay — 4 operation(s) for transactions.
+- [Versapay Wallets API](https://apis.io/apis/versapay/versapay-wallets-api/) — The Wallet entity holds vaulted & secured payment methods owned by a customer (buyer/payor) that can be used to make payments via Collaborative AR (online…
 
-## APIs
+### Published properties
 
-### Versapay API Reference
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-The core Versapay platform REST API (v1.3.35, OpenAPI 3.0.0, 86 documented paths) covering the Collaborative AR and payment-acceptance surface: onboarding applications, wallets, orders and order transactions, gift cards, card-present EMV, reference data, settlement reporting, autopay, customers, invoices and invoicing payments, divisions, notifications, collaboration, file imports, and webhooks. Authenticated with HTTPS Basic access authentication (API Token and Key) against a UAT sandbox and production.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://developers.versapay.com/](https://developers.versapay.com/)
-- **Base URL:** `https://secure.versapay.com`
+Event-driven and webhook contracts.
 
-#### Properties
+- [Versapay Webhooks](https://apis.io/asyncapis/versapay/versapay-webhooks/)
 
-- [OpenAPI](openapi/versapay-api-reference.json)
-- [Documentation](https://developers.versapay.com/)
-- [API Reference](https://developers.versapay.com/)
+#### MCP servers (1)
 
-### Versapay Ecommerce API
+Model Context Protocol servers that expose the API to agents.
 
-The Versapay Ecommerce server-side API (v2.0.0, OpenAPI 3.0.0, 11 documented paths) that configures payment sessions, manages customer wallets (credit cards and bank accounts), creates and captures order sales and payments, checks gift-card balances, and validates Apple Pay merchants. It pairs with a client-side JavaScript SDK and a Versapay-hosted iframe so sensitive payment data never transits the merchant application, reducing PCI scope. Served from `https://{subdomain}.versapay.com/api/v2`.
+- [versapay](https://apis.io/servers/versapay/versapay/)
 
-- **Human URL:** [https://developers.versapay.com/ecommerce/](https://developers.versapay.com/ecommerce/)
-- **Base URL:** `https://secure.versapay.com/api/v2`
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [OpenAPI](openapi/versapay-ecommerce-api.json)
-- [Documentation](https://developers.versapay.com/ecommerce/)
-- [API Reference](https://developers.versapay.com/ecommerce/)
+- [Versapay Agentic Access](https://apis.io/agentic-access/versapay/versapay-agentic-access/)
 
-## Common Properties
+#### Collections (2)
+
+Postman and Open Collection request collections.
+
+- [Versapay API Reference](https://apis.io/collections/versapay/open-versapay-api-reference/)
+- [Versapay Ecommerce API](https://apis.io/collections/versapay/open-versapay-ecommerce-api/)
+
+#### Overlays (2)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Versapay Api Reference Overlay](https://apis.io/overlays/versapay/versapay-api-reference-overlay/)
+- [Versapay Ecommerce Api Overlay](https://apis.io/overlays/versapay/versapay-ecommerce-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Versapay Authentication](https://apis.io/security/versapay/versapay-authentication/)
+- [Versapay Domain Security](https://apis.io/security/versapay/versapay-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Versapay Scopes](https://apis.io/scopes/versapay/versapay-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://versapay.com)
-- [Developer Portal](https://developers.versapay.com/)
 - [Documentation](https://developers.versapay.com/)
-- [API Reference](https://developers.versapay.com/)
-- [Status Page](https://status.versapay.com)
+- [API reference](https://developers.versapay.com/)
+- [Sign up](https://secure.versapay.com/account)
 - [Blog](https://versapay.com/blog)
-- [Sign Up / Login](https://secure.versapay.com/account)
-- [Terms of Service](https://versapay.com/terms)
-- [Privacy Policy](https://versapay.com/legal/privacy-policy)
 - [Security](https://versapay.com/security)
-- [LinkedIn](https://www.linkedin.com/company/versapay)
+- [Compliance](https://versapay.com/security)
+- [Terms of service](https://versapay.com/terms)
+- [Privacy policy](https://versapay.com/legal/privacy-policy)
+- [Status](https://status.versapay.com)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 53.6** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 54.4 |
+| Contract governance | 18.2 |
+| Operational transparency | 42.1 |
+| Developer ergonomics | 49.4 |
+| Access clarity | 42.1 |
+
+**Agent readiness 44.7** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 42.9** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/versapay/](https://apis.io/providers/versapay/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Versapay: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/versapay/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
